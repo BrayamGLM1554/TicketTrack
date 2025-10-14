@@ -1,0 +1,613 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:2:1-27:12
+INJECTED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:2:1-27:12
+INJECTED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:2:1-27:12
+INJECTED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:2:1-27:12
+MERGED from [com.google.firebase:firebase-analytics:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\4cde1d5b8fc2595b56cdd1b3eb24e655\transformed\firebase-analytics-23.0.0\AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:17:1-39:12
+MERGED from [androidx.compose.material3:material3-android:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\e5f629ef0255a81f7372216ff20c991f\transformed\material3-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.material:material-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\e829176c00de2bf1fca228ba618a33ce\transformed\material-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-ripple-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\553760a4407e031bab2226de4c96ca25\transformed\material-ripple-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\903fb6f93f73cf4cf4f3c9b992cea337\transformed\foundation-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\c77d498ca0636badf3917359be917b27\transformed\animation-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\e8fa58824b395dc14ae58d21be2ccbf9\transformed\foundation-layout-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-core-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\30888da37399edf1f1294f3acd743796\transformed\animation-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\b6efeb0cae226323fa7c27490ff25a24\transformed\ui-tooling-data-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\f65bc6b8aaf0a0745a74c9bd12f7a2cf\transformed\ui-unit-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\03a3d8c7803fc800d26648e1207512eb\transformed\ui-geometry-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-util-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\9db089aa4de227263bcbf015f9a68f0d\transformed\ui-util-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-text-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\67980074b17c125f426e7874306833db\transformed\ui-text-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\01797fe15409b1965a194f814fb88116\transformed\ui-tooling-preview-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\8bfa625f12dde14553edd3122b11ba63\transformed\ui-tooling-release\AndroidManifest.xml:17:1-28:12
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\5e07638da881e8d62b74a6df2bffad19\transformed\ui-graphics-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-test-manifest:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\e837968a86c0ff7d4949dc782849a4a8\transformed\ui-test-manifest-1.7.0\AndroidManifest.xml:17:1-28:12
+MERGED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:17:1-46:12
+MERGED from [com.google.android.gms:play-services-measurement-sdk:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\25ac791330a5bcc1559ae389ba209d53\transformed\play-services-measurement-sdk-23.0.0\AndroidManifest.xml:17:1-25:12
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:17:1-32:12
+MERGED from [com.google.android.gms:play-services-ads-identifier:18.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\bdea52605cba6bedfaffab4a4bd34b8b\transformed\play-services-ads-identifier-18.0.0\AndroidManifest.xml:17:1-27:12
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:17:1-30:12
+MERGED from [com.google.android.gms:play-services-measurement-base:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\ac5fb80c7fd0cbb4dc59bf659134cfbf\transformed\play-services-measurement-base-23.0.0\AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-stats:17.0.2] C:\Users\braya\.gradle\caches\8.13\transforms\b296370dc6230b8ab066b09165c57a4a\transformed\play-services-stats-17.0.2\AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:2:1-24:12
+MERGED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:15:1-41:12
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\8978b68e96d87f2f35b895c9cb731b21\transformed\play-services-base-18.5.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity-ktx:1.8.2] C:\Users\braya\.gradle\caches\8.13\transforms\7ea6fe2626d8d7e89085fe5b38b8f60a\transformed\activity-ktx-1.8.2\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\39774cbd85204c573fbd785a304c7ba5\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\1f60d624203372eb4ad8d69f0a6f3757\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\488c1567f781c253ebad1ed30c827a58\transformed\autofill-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5b5f4da20e5807a76a988751c8d0033e\transformed\graphics-path-1.0.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\79e0225e6d37ab2b548c56caf089823c\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\04fdc9e64c0a796ca9b70b417771ccf5\transformed\emoji2-1.3.0\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\accd83aeef726853178effa24c9af2df\transformed\customview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\944e1b175192c229c4da1e8c113ff8f9\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.privacysandbox.ads:ads-adservices-java:1.1.0-beta11] C:\Users\braya\.gradle\caches\8.13\transforms\9b9395f9377d601c6c104caa48ec96a8\transformed\ads-adservices-java-1.1.0-beta11\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.privacysandbox.ads:ads-adservices:1.1.0-beta11] C:\Users\braya\.gradle\caches\8.13\transforms\647451f04d932dcaf3f13e46930099ae\transformed\ads-adservices-1.1.0-beta11\AndroidManifest.xml:17:1-28:12
+MERGED from [androidx.core:core-ktx:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\29543adbc84f68576e71dcc778f19d8f\transformed\core-ktx-1.13.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\braya\.gradle\caches\8.13\transforms\0ad4862fa4b4934cdca1db2f5626a32d\transformed\savedstate-1.2.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\6481fee696da3d50809bc03d55ead57a\transformed\lifecycle-viewmodel-2.8.3\AndroidManifest.xml:2:1-5:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\fd2da1d2ebe633ec709fcbaba037aad9\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\62de17a81f688c55a19fb9f6e0fccd6a\transformed\lifecycle-livedata-core-ktx-2.8.3\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\54dc785199dd06634850ec0dfd0198ae\transformed\lifecycle-livedata-core-2.8.3\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\cc9ae83d6dbde855a9648c1bbe365389\transformed\lifecycle-process-2.8.3\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\df42c6c3c4e2bd45b1a0e61df49b726a\transformed\lifecycle-runtime-ktx-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\91044c16ccc0f4415d021c728880981d\transformed\lifecycle-runtime-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\5a4f4901b99b459d3bca9b2e26c0ba0f\transformed\lifecycle-viewmodel-savedstate-2.8.3\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\b7f922bec5c7b9ab02e73b0a6cc7b5e7\transformed\lifecycle-livedata-2.8.3\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\2397515c2398e63e4622a558aa48b614\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\08eb2597ded373575f5553d1bfc39e3a\transformed\lifecycle-viewmodel-ktx-2.8.3\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\70f606e65e9f7a58f4935e2bb3e5587c\transformed\runtime-saveable-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\5896bd2e43eecc9092d01b5bf275ab3e\transformed\runtime-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.datastore:datastore-core-android:1.1.7] C:\Users\braya\.gradle\caches\8.13\transforms\39fff94795634ac2cf818fe8c1f0eca8\transformed\datastore-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.datastore:datastore-preferences-core-android:1.1.7] C:\Users\braya\.gradle\caches\8.13\transforms\4e40b550ed2248035c5f94d7d1a0b576\transformed\datastore-preferences-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.datastore:datastore-android:1.1.7] C:\Users\braya\.gradle\caches\8.13\transforms\4ccbe4a7467174592c557c9ca4c2cf8e\transformed\datastore-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.datastore:datastore-preferences-android:1.1.7] C:\Users\braya\.gradle\caches\8.13\transforms\a88e05d668ce683e9ae3a8c1d234b315\transformed\datastore-preferences-release\AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.firebase:firebase-installations-interop:17.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\24c3666921aa681e0dcc19229ddc9923\transformed\firebase-installations-interop-17.1.1\AndroidManifest.xml:15:1-19:12
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\braya\.gradle\caches\8.13\transforms\bb4740e6647f1a08539a4fbb90e291e7\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:2:1-5:12
+MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\ec1b6238240c47687dbb7978cb2398d6\transformed\firebase-measurement-connector-19.0.0\AndroidManifest.xml:17:1-25:12
+MERGED from [com.google.android.gms:play-services-basement:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\83d2ffc1b9e633f238b0715da17c1cf5\transformed\play-services-basement-18.5.0\AndroidManifest.xml:16:1-26:12
+MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\braya\.gradle\caches\8.13\transforms\7769b830a211f61ec075cbe50a8862a0\transformed\fragment-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.8.2] C:\Users\braya\.gradle\caches\8.13\transforms\793144478d2050e90c96b5b0ec26a6d7\transformed\activity-1.8.2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity-compose:1.8.2] C:\Users\braya\.gradle\caches\8.13\transforms\1156f1f03bd7f72eafaca453ab58976b\transformed\activity-compose-1.8.2\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\ba122388d7e84b096b8d16625cc88b3d\transformed\material-icons-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\30829048fa51ee0be79b138cfc25f49a\transformed\ui-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\braya\.gradle\caches\8.13\transforms\67ae1819d55859affb16427879181f7f\transformed\savedstate-ktx-1.2.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\braya\.gradle\caches\8.13\transforms\b8499bb030c6450580b69b6738bab749\transformed\annotation-experimental-1.4.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\fa803d8e9e0eefa37dafc0fdf1703b2a\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\5a1647276c19bb3b6a17ec6bef7e7e34\transformed\documentfile-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\7023e4c52487148c1d8dcfa0787cdff7\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\8715706e69ea50afb21a523ab09e1ab6\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.firebase:firebase-components:19.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\2861cac8bb495d7b721d03af80448370\transformed\firebase-components-19.0.0\AndroidManifest.xml:15:1-20:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\e54298b60d07f7986f2f44dbeaa46c14\transformed\startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\2925ba4285bb55009bc49ed5510fb1e8\transformed\tracing-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\cb1df61c1244465adee76a107b1590a4\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\braya\.gradle\caches\8.13\transforms\afd6c655d5738f7d3024823dba3f2ec2\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
+	package
+		INJECTED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml
+	xmlns:tools
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:3:5-51
+	android:versionCode
+		INJECTED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:2:11-69
+application
+ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:5:5-25:19
+INJECTED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:5:5-25:19
+MERGED from [com.google.firebase:firebase-analytics:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\4cde1d5b8fc2595b56cdd1b3eb24e655\transformed\firebase-analytics-23.0.0\AndroidManifest.xml:7:5-20
+MERGED from [com.google.firebase:firebase-analytics:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\4cde1d5b8fc2595b56cdd1b3eb24e655\transformed\firebase-analytics-23.0.0\AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:29:5-37:19
+MERGED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:29:5-37:19
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\8bfa625f12dde14553edd3122b11ba63\transformed\ui-tooling-release\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\8bfa625f12dde14553edd3122b11ba63\transformed\ui-tooling-release\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-test-manifest:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\e837968a86c0ff7d4949dc782849a4a8\transformed\ui-test-manifest-1.7.0\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-test-manifest:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\e837968a86c0ff7d4949dc782849a4a8\transformed\ui-test-manifest-1.7.0\AndroidManifest.xml:22:5-26:19
+MERGED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:28:5-44:19
+MERGED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:28:5-44:19
+MERGED from [com.google.android.gms:play-services-measurement-sdk:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\25ac791330a5bcc1559ae389ba209d53\transformed\play-services-measurement-sdk-23.0.0\AndroidManifest.xml:22:5-23:19
+MERGED from [com.google.android.gms:play-services-measurement-sdk:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\25ac791330a5bcc1559ae389ba209d53\transformed\play-services-measurement-sdk-23.0.0\AndroidManifest.xml:22:5-23:19
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:29:5-30:19
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:29:5-30:19
+MERGED from [com.google.android.gms:play-services-ads-identifier:18.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\bdea52605cba6bedfaffab4a4bd34b8b\transformed\play-services-ads-identifier-18.0.0\AndroidManifest.xml:25:5-20
+MERGED from [com.google.android.gms:play-services-ads-identifier:18.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\bdea52605cba6bedfaffab4a4bd34b8b\transformed\play-services-ads-identifier-18.0.0\AndroidManifest.xml:25:5-20
+MERGED from [com.google.android.gms:play-services-measurement-base:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\ac5fb80c7fd0cbb4dc59bf659134cfbf\transformed\play-services-measurement-base-23.0.0\AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-measurement-base:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\ac5fb80c7fd0cbb4dc59bf659134cfbf\transformed\play-services-measurement-base-23.0.0\AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-stats:17.0.2] C:\Users\braya\.gradle\caches\8.13\transforms\b296370dc6230b8ab066b09165c57a4a\transformed\play-services-stats-17.0.2\AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-stats:17.0.2] C:\Users\braya\.gradle\caches\8.13\transforms\b296370dc6230b8ab066b09165c57a4a\transformed\play-services-stats-17.0.2\AndroidManifest.xml:7:5-20
+MERGED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:11:5-22:19
+MERGED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:11:5-22:19
+MERGED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:22:5-39:19
+MERGED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:22:5-39:19
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\8978b68e96d87f2f35b895c9cb731b21\transformed\play-services-base-18.5.0\AndroidManifest.xml:4:5-6:19
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\8978b68e96d87f2f35b895c9cb731b21\transformed\play-services-base-18.5.0\AndroidManifest.xml:4:5-6:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\04fdc9e64c0a796ca9b70b417771ccf5\transformed\emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\04fdc9e64c0a796ca9b70b417771ccf5\transformed\emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.privacysandbox.ads:ads-adservices:1.1.0-beta11] C:\Users\braya\.gradle\caches\8.13\transforms\647451f04d932dcaf3f13e46930099ae\transformed\ads-adservices-1.1.0-beta11\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.privacysandbox.ads:ads-adservices:1.1.0-beta11] C:\Users\braya\.gradle\caches\8.13\transforms\647451f04d932dcaf3f13e46930099ae\transformed\ads-adservices-1.1.0-beta11\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\cc9ae83d6dbde855a9648c1bbe365389\transformed\lifecycle-process-2.8.3\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\cc9ae83d6dbde855a9648c1bbe365389\transformed\lifecycle-process-2.8.3\AndroidManifest.xml:23:5-33:19
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\braya\.gradle\caches\8.13\transforms\bb4740e6647f1a08539a4fbb90e291e7\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:4:5-20
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\braya\.gradle\caches\8.13\transforms\bb4740e6647f1a08539a4fbb90e291e7\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:4:5-20
+MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\ec1b6238240c47687dbb7978cb2398d6\transformed\firebase-measurement-connector-19.0.0\AndroidManifest.xml:22:5-23:19
+MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\ec1b6238240c47687dbb7978cb2398d6\transformed\firebase-measurement-connector-19.0.0\AndroidManifest.xml:22:5-23:19
+MERGED from [com.google.android.gms:play-services-basement:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\83d2ffc1b9e633f238b0715da17c1cf5\transformed\play-services-basement-18.5.0\AndroidManifest.xml:20:5-24:19
+MERGED from [com.google.android.gms:play-services-basement:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\83d2ffc1b9e633f238b0715da17c1cf5\transformed\play-services-basement-18.5.0\AndroidManifest.xml:20:5-24:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\fa803d8e9e0eefa37dafc0fdf1703b2a\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\fa803d8e9e0eefa37dafc0fdf1703b2a\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\e54298b60d07f7986f2f44dbeaa46c14\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\e54298b60d07f7986f2f44dbeaa46c14\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+	android:extractNativeLibs
+		INJECTED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+	android:supportsRtl
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:12:9-35
+	android:label
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:10:9-41
+	android:fullBackupContent
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:8:9-54
+	android:roundIcon
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:11:9-54
+	android:icon
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:9:9-43
+	android:allowBackup
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:6:9-35
+	android:theme
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:13:9-49
+	android:dataExtractionRules
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:7:9-65
+activity#com.tickettrack.app.MainActivity
+ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:14:9-24:20
+	android:label
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:17:13-45
+	android:exported
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:16:13-36
+	android:theme
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:18:13-53
+	android:name
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:15:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:19:13-23:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:20:17-69
+	android:name
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:20:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:22:17-77
+	android:name
+		ADDED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml:22:27-74
+uses-sdk
+INJECTED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml
+MERGED from [com.google.firebase:firebase-analytics:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\4cde1d5b8fc2595b56cdd1b3eb24e655\transformed\firebase-analytics-23.0.0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-analytics:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\4cde1d5b8fc2595b56cdd1b3eb24e655\transformed\firebase-analytics-23.0.0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material3:material3-android:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\e5f629ef0255a81f7372216ff20c991f\transformed\material3-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material3:material3-android:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\e5f629ef0255a81f7372216ff20c991f\transformed\material3-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material:material-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\e829176c00de2bf1fca228ba618a33ce\transformed\material-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\e829176c00de2bf1fca228ba618a33ce\transformed\material-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\553760a4407e031bab2226de4c96ca25\transformed\material-ripple-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\553760a4407e031bab2226de4c96ca25\transformed\material-ripple-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\903fb6f93f73cf4cf4f3c9b992cea337\transformed\foundation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\903fb6f93f73cf4cf4f3c9b992cea337\transformed\foundation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\c77d498ca0636badf3917359be917b27\transformed\animation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\c77d498ca0636badf3917359be917b27\transformed\animation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\e8fa58824b395dc14ae58d21be2ccbf9\transformed\foundation-layout-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\e8fa58824b395dc14ae58d21be2ccbf9\transformed\foundation-layout-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\30888da37399edf1f1294f3acd743796\transformed\animation-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\30888da37399edf1f1294f3acd743796\transformed\animation-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\b6efeb0cae226323fa7c27490ff25a24\transformed\ui-tooling-data-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\b6efeb0cae226323fa7c27490ff25a24\transformed\ui-tooling-data-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\f65bc6b8aaf0a0745a74c9bd12f7a2cf\transformed\ui-unit-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\f65bc6b8aaf0a0745a74c9bd12f7a2cf\transformed\ui-unit-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\03a3d8c7803fc800d26648e1207512eb\transformed\ui-geometry-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\03a3d8c7803fc800d26648e1207512eb\transformed\ui-geometry-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\9db089aa4de227263bcbf015f9a68f0d\transformed\ui-util-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\9db089aa4de227263bcbf015f9a68f0d\transformed\ui-util-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\67980074b17c125f426e7874306833db\transformed\ui-text-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\67980074b17c125f426e7874306833db\transformed\ui-text-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\01797fe15409b1965a194f814fb88116\transformed\ui-tooling-preview-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\01797fe15409b1965a194f814fb88116\transformed\ui-tooling-preview-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\8bfa625f12dde14553edd3122b11ba63\transformed\ui-tooling-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\8bfa625f12dde14553edd3122b11ba63\transformed\ui-tooling-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\5e07638da881e8d62b74a6df2bffad19\transformed\ui-graphics-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\5e07638da881e8d62b74a6df2bffad19\transformed\ui-graphics-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-test-manifest:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\e837968a86c0ff7d4949dc782849a4a8\transformed\ui-test-manifest-1.7.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-test-manifest:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\e837968a86c0ff7d4949dc782849a4a8\transformed\ui-test-manifest-1.7.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-sdk:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\25ac791330a5bcc1559ae389ba209d53\transformed\play-services-measurement-sdk-23.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-sdk:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\25ac791330a5bcc1559ae389ba209d53\transformed\play-services-measurement-sdk-23.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-ads-identifier:18.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\bdea52605cba6bedfaffab4a4bd34b8b\transformed\play-services-ads-identifier-18.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-ads-identifier:18.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\bdea52605cba6bedfaffab4a4bd34b8b\transformed\play-services-ads-identifier-18.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-base:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\ac5fb80c7fd0cbb4dc59bf659134cfbf\transformed\play-services-measurement-base-23.0.0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-measurement-base:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\ac5fb80c7fd0cbb4dc59bf659134cfbf\transformed\play-services-measurement-base-23.0.0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-stats:17.0.2] C:\Users\braya\.gradle\caches\8.13\transforms\b296370dc6230b8ab066b09165c57a4a\transformed\play-services-stats-17.0.2\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-stats:17.0.2] C:\Users\braya\.gradle\caches\8.13\transforms\b296370dc6230b8ab066b09165c57a4a\transformed\play-services-stats-17.0.2\AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:19:5-44
+MERGED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:19:5-44
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\8978b68e96d87f2f35b895c9cb731b21\transformed\play-services-base-18.5.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\8978b68e96d87f2f35b895c9cb731b21\transformed\play-services-base-18.5.0\AndroidManifest.xml:3:5-44
+MERGED from [androidx.activity:activity-ktx:1.8.2] C:\Users\braya\.gradle\caches\8.13\transforms\7ea6fe2626d8d7e89085fe5b38b8f60a\transformed\activity-ktx-1.8.2\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.8.2] C:\Users\braya\.gradle\caches\8.13\transforms\7ea6fe2626d8d7e89085fe5b38b8f60a\transformed\activity-ktx-1.8.2\AndroidManifest.xml:5:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\39774cbd85204c573fbd785a304c7ba5\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\39774cbd85204c573fbd785a304c7ba5\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\1f60d624203372eb4ad8d69f0a6f3757\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\1f60d624203372eb4ad8d69f0a6f3757\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\488c1567f781c253ebad1ed30c827a58\transformed\autofill-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\488c1567f781c253ebad1ed30c827a58\transformed\autofill-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5b5f4da20e5807a76a988751c8d0033e\transformed\graphics-path-1.0.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5b5f4da20e5807a76a988751c8d0033e\transformed\graphics-path-1.0.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\79e0225e6d37ab2b548c56caf089823c\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\79e0225e6d37ab2b548c56caf089823c\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\04fdc9e64c0a796ca9b70b417771ccf5\transformed\emoji2-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\04fdc9e64c0a796ca9b70b417771ccf5\transformed\emoji2-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\accd83aeef726853178effa24c9af2df\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\accd83aeef726853178effa24c9af2df\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\944e1b175192c229c4da1e8c113ff8f9\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\944e1b175192c229c4da1e8c113ff8f9\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.privacysandbox.ads:ads-adservices-java:1.1.0-beta11] C:\Users\braya\.gradle\caches\8.13\transforms\9b9395f9377d601c6c104caa48ec96a8\transformed\ads-adservices-java-1.1.0-beta11\AndroidManifest.xml:5:5-44
+MERGED from [androidx.privacysandbox.ads:ads-adservices-java:1.1.0-beta11] C:\Users\braya\.gradle\caches\8.13\transforms\9b9395f9377d601c6c104caa48ec96a8\transformed\ads-adservices-java-1.1.0-beta11\AndroidManifest.xml:5:5-44
+MERGED from [androidx.privacysandbox.ads:ads-adservices:1.1.0-beta11] C:\Users\braya\.gradle\caches\8.13\transforms\647451f04d932dcaf3f13e46930099ae\transformed\ads-adservices-1.1.0-beta11\AndroidManifest.xml:20:5-44
+MERGED from [androidx.privacysandbox.ads:ads-adservices:1.1.0-beta11] C:\Users\braya\.gradle\caches\8.13\transforms\647451f04d932dcaf3f13e46930099ae\transformed\ads-adservices-1.1.0-beta11\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core-ktx:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\29543adbc84f68576e71dcc778f19d8f\transformed\core-ktx-1.13.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\29543adbc84f68576e71dcc778f19d8f\transformed\core-ktx-1.13.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\braya\.gradle\caches\8.13\transforms\0ad4862fa4b4934cdca1db2f5626a32d\transformed\savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\braya\.gradle\caches\8.13\transforms\0ad4862fa4b4934cdca1db2f5626a32d\transformed\savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\6481fee696da3d50809bc03d55ead57a\transformed\lifecycle-viewmodel-2.8.3\AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\6481fee696da3d50809bc03d55ead57a\transformed\lifecycle-viewmodel-2.8.3\AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\fd2da1d2ebe633ec709fcbaba037aad9\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\fd2da1d2ebe633ec709fcbaba037aad9\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\62de17a81f688c55a19fb9f6e0fccd6a\transformed\lifecycle-livedata-core-ktx-2.8.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\62de17a81f688c55a19fb9f6e0fccd6a\transformed\lifecycle-livedata-core-ktx-2.8.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\54dc785199dd06634850ec0dfd0198ae\transformed\lifecycle-livedata-core-2.8.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\54dc785199dd06634850ec0dfd0198ae\transformed\lifecycle-livedata-core-2.8.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\cc9ae83d6dbde855a9648c1bbe365389\transformed\lifecycle-process-2.8.3\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\cc9ae83d6dbde855a9648c1bbe365389\transformed\lifecycle-process-2.8.3\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\df42c6c3c4e2bd45b1a0e61df49b726a\transformed\lifecycle-runtime-ktx-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\df42c6c3c4e2bd45b1a0e61df49b726a\transformed\lifecycle-runtime-ktx-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\91044c16ccc0f4415d021c728880981d\transformed\lifecycle-runtime-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\91044c16ccc0f4415d021c728880981d\transformed\lifecycle-runtime-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\5a4f4901b99b459d3bca9b2e26c0ba0f\transformed\lifecycle-viewmodel-savedstate-2.8.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\5a4f4901b99b459d3bca9b2e26c0ba0f\transformed\lifecycle-viewmodel-savedstate-2.8.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\b7f922bec5c7b9ab02e73b0a6cc7b5e7\transformed\lifecycle-livedata-2.8.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\b7f922bec5c7b9ab02e73b0a6cc7b5e7\transformed\lifecycle-livedata-2.8.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\2397515c2398e63e4622a558aa48b614\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\2397515c2398e63e4622a558aa48b614\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\08eb2597ded373575f5553d1bfc39e3a\transformed\lifecycle-viewmodel-ktx-2.8.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\08eb2597ded373575f5553d1bfc39e3a\transformed\lifecycle-viewmodel-ktx-2.8.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\70f606e65e9f7a58f4935e2bb3e5587c\transformed\runtime-saveable-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\70f606e65e9f7a58f4935e2bb3e5587c\transformed\runtime-saveable-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\5896bd2e43eecc9092d01b5bf275ab3e\transformed\runtime-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\5896bd2e43eecc9092d01b5bf275ab3e\transformed\runtime-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.datastore:datastore-core-android:1.1.7] C:\Users\braya\.gradle\caches\8.13\transforms\39fff94795634ac2cf818fe8c1f0eca8\transformed\datastore-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.datastore:datastore-core-android:1.1.7] C:\Users\braya\.gradle\caches\8.13\transforms\39fff94795634ac2cf818fe8c1f0eca8\transformed\datastore-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.datastore:datastore-preferences-core-android:1.1.7] C:\Users\braya\.gradle\caches\8.13\transforms\4e40b550ed2248035c5f94d7d1a0b576\transformed\datastore-preferences-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.datastore:datastore-preferences-core-android:1.1.7] C:\Users\braya\.gradle\caches\8.13\transforms\4e40b550ed2248035c5f94d7d1a0b576\transformed\datastore-preferences-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.datastore:datastore-android:1.1.7] C:\Users\braya\.gradle\caches\8.13\transforms\4ccbe4a7467174592c557c9ca4c2cf8e\transformed\datastore-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-android:1.1.7] C:\Users\braya\.gradle\caches\8.13\transforms\4ccbe4a7467174592c557c9ca4c2cf8e\transformed\datastore-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-preferences-android:1.1.7] C:\Users\braya\.gradle\caches\8.13\transforms\a88e05d668ce683e9ae3a8c1d234b315\transformed\datastore-preferences-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-preferences-android:1.1.7] C:\Users\braya\.gradle\caches\8.13\transforms\a88e05d668ce683e9ae3a8c1d234b315\transformed\datastore-preferences-release\AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-installations-interop:17.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\24c3666921aa681e0dcc19229ddc9923\transformed\firebase-installations-interop-17.1.1\AndroidManifest.xml:17:5-44
+MERGED from [com.google.firebase:firebase-installations-interop:17.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\24c3666921aa681e0dcc19229ddc9923\transformed\firebase-installations-interop-17.1.1\AndroidManifest.xml:17:5-44
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\braya\.gradle\caches\8.13\transforms\bb4740e6647f1a08539a4fbb90e291e7\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\braya\.gradle\caches\8.13\transforms\bb4740e6647f1a08539a4fbb90e291e7\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\ec1b6238240c47687dbb7978cb2398d6\transformed\firebase-measurement-connector-19.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\ec1b6238240c47687dbb7978cb2398d6\transformed\firebase-measurement-connector-19.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-basement:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\83d2ffc1b9e633f238b0715da17c1cf5\transformed\play-services-basement-18.5.0\AndroidManifest.xml:18:5-43
+MERGED from [com.google.android.gms:play-services-basement:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\83d2ffc1b9e633f238b0715da17c1cf5\transformed\play-services-basement-18.5.0\AndroidManifest.xml:18:5-43
+MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\braya\.gradle\caches\8.13\transforms\7769b830a211f61ec075cbe50a8862a0\transformed\fragment-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\braya\.gradle\caches\8.13\transforms\7769b830a211f61ec075cbe50a8862a0\transformed\fragment-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.8.2] C:\Users\braya\.gradle\caches\8.13\transforms\793144478d2050e90c96b5b0ec26a6d7\transformed\activity-1.8.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.8.2] C:\Users\braya\.gradle\caches\8.13\transforms\793144478d2050e90c96b5b0ec26a6d7\transformed\activity-1.8.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-compose:1.8.2] C:\Users\braya\.gradle\caches\8.13\transforms\1156f1f03bd7f72eafaca453ab58976b\transformed\activity-compose-1.8.2\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.8.2] C:\Users\braya\.gradle\caches\8.13\transforms\1156f1f03bd7f72eafaca453ab58976b\transformed\activity-compose-1.8.2\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\ba122388d7e84b096b8d16625cc88b3d\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\ba122388d7e84b096b8d16625cc88b3d\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\30829048fa51ee0be79b138cfc25f49a\transformed\ui-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\30829048fa51ee0be79b138cfc25f49a\transformed\ui-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\braya\.gradle\caches\8.13\transforms\67ae1819d55859affb16427879181f7f\transformed\savedstate-ktx-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\braya\.gradle\caches\8.13\transforms\67ae1819d55859affb16427879181f7f\transformed\savedstate-ktx-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\braya\.gradle\caches\8.13\transforms\b8499bb030c6450580b69b6738bab749\transformed\annotation-experimental-1.4.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\braya\.gradle\caches\8.13\transforms\b8499bb030c6450580b69b6738bab749\transformed\annotation-experimental-1.4.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\fa803d8e9e0eefa37dafc0fdf1703b2a\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\fa803d8e9e0eefa37dafc0fdf1703b2a\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\5a1647276c19bb3b6a17ec6bef7e7e34\transformed\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\5a1647276c19bb3b6a17ec6bef7e7e34\transformed\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\7023e4c52487148c1d8dcfa0787cdff7\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\7023e4c52487148c1d8dcfa0787cdff7\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\8715706e69ea50afb21a523ab09e1ab6\transformed\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\8715706e69ea50afb21a523ab09e1ab6\transformed\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-components:19.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\2861cac8bb495d7b721d03af80448370\transformed\firebase-components-19.0.0\AndroidManifest.xml:18:5-44
+MERGED from [com.google.firebase:firebase-components:19.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\2861cac8bb495d7b721d03af80448370\transformed\firebase-components-19.0.0\AndroidManifest.xml:18:5-44
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\e54298b60d07f7986f2f44dbeaa46c14\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\e54298b60d07f7986f2f44dbeaa46c14\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\2925ba4285bb55009bc49ed5510fb1e8\transformed\tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\2925ba4285bb55009bc49ed5510fb1e8\transformed\tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\cb1df61c1244465adee76a107b1590a4\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\cb1df61c1244465adee76a107b1590a4\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\braya\.gradle\caches\8.13\transforms\afd6c655d5738f7d3024823dba3f2ec2\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\braya\.gradle\caches\8.13\transforms\afd6c655d5738f7d3024823dba3f2ec2\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+	android:targetSdkVersion
+		INJECTED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\braya\AndroidStudioProjects\TicketTrack\app\src\main\AndroidManifest.xml
+uses-permission#android.permission.INTERNET
+ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:22:5-67
+MERGED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:23:5-67
+MERGED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:8:5-67
+MERGED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:8:5-67
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:22:22-64
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:23:5-79
+MERGED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:24:5-79
+MERGED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:7:5-79
+MERGED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:7:5-79
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:23:22-76
+uses-permission#android.permission.WAKE_LOCK
+ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:24:5-68
+MERGED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:25:5-68
+MERGED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:25:5-68
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:25:5-68
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:25:5-68
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:25:5-68
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:25:5-68
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:24:22-65
+uses-permission#com.google.android.gms.permission.AD_ID
+ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:25:5-79
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:27:5-79
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:27:5-79
+MERGED from [com.google.android.gms:play-services-ads-identifier:18.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\bdea52605cba6bedfaffab4a4bd34b8b\transformed\play-services-ads-identifier-18.0.0\AndroidManifest.xml:23:5-79
+MERGED from [com.google.android.gms:play-services-ads-identifier:18.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\bdea52605cba6bedfaffab4a4bd34b8b\transformed\play-services-ads-identifier-18.0.0\AndroidManifest.xml:23:5-79
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:26:5-79
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:26:5-79
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:25:22-76
+uses-permission#android.permission.ACCESS_ADSERVICES_ATTRIBUTION
+ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:26:5-88
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:27:5-88
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:27:5-88
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:26:22-85
+uses-permission#android.permission.ACCESS_ADSERVICES_AD_ID
+ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:27:5-82
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:28:5-82
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\261c269db1dccc21592dfe2e1f689ef3\transformed\play-services-measurement-sdk-api-23.0.0\AndroidManifest.xml:28:5-82
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:27:22-79
+service#com.google.firebase.components.ComponentDiscoveryService
+ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:30:9-36:19
+MERGED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:12:9-21:19
+MERGED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:12:9-21:19
+MERGED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:30:9-38:19
+MERGED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:30:9-38:19
+	android:exported
+		ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:32:13-37
+	tools:targetApi
+		ADDED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:34:13-32
+	android:directBootAware
+		ADDED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:32:13-43
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:31:13-84
+meta-data#com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar
+ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:33:13-35:85
+	android:value
+		ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:35:17-82
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement-api:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\434ff15a43889246e9e18deb016293a1\transformed\play-services-measurement-api-23.0.0\AndroidManifest.xml:34:17-139
+activity#androidx.compose.ui.tooling.PreviewActivity
+ADDED from [androidx.compose.ui:ui-tooling-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\8bfa625f12dde14553edd3122b11ba63\transformed\ui-tooling-release\AndroidManifest.xml:23:9-25:39
+	android:exported
+		ADDED from [androidx.compose.ui:ui-tooling-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\8bfa625f12dde14553edd3122b11ba63\transformed\ui-tooling-release\AndroidManifest.xml:25:13-36
+	android:name
+		ADDED from [androidx.compose.ui:ui-tooling-android:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\8bfa625f12dde14553edd3122b11ba63\transformed\ui-tooling-release\AndroidManifest.xml:24:13-71
+activity#androidx.activity.ComponentActivity
+ADDED from [androidx.compose.ui:ui-test-manifest:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\e837968a86c0ff7d4949dc782849a4a8\transformed\ui-test-manifest-1.7.0\AndroidManifest.xml:23:9-25:39
+	android:exported
+		ADDED from [androidx.compose.ui:ui-test-manifest:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\e837968a86c0ff7d4949dc782849a4a8\transformed\ui-test-manifest-1.7.0\AndroidManifest.xml:25:13-36
+	android:name
+		ADDED from [androidx.compose.ui:ui-test-manifest:1.7.0] C:\Users\braya\.gradle\caches\8.13\transforms\e837968a86c0ff7d4949dc782849a4a8\transformed\ui-test-manifest-1.7.0\AndroidManifest.xml:24:13-63
+uses-permission#com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE
+ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:26:5-110
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:26:5-110
+MERGED from [com.google.android.gms:play-services-measurement-impl:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\e02687b8de7c4a14ed1aac105b034b01\transformed\play-services-measurement-impl-23.0.0\AndroidManifest.xml:26:5-110
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:26:22-107
+receiver#com.google.android.gms.measurement.AppMeasurementReceiver
+ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:29:9-33:20
+	android:enabled
+		ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:31:13-35
+	android:exported
+		ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:32:13-37
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:30:13-85
+service#com.google.android.gms.measurement.AppMeasurementService
+ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:35:9-38:40
+	android:enabled
+		ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:38:13-37
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:36:13-84
+service#com.google.android.gms.measurement.AppMeasurementJobService
+ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:39:9-43:72
+	android:enabled
+		ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:41:13-35
+	android:exported
+		ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:42:13-37
+	android:permission
+		ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:43:13-69
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement:23.0.0] C:\Users\braya\.gradle\caches\8.13\transforms\293075f9dbc91fa5a8d47c9a9768d929\transformed\play-services-measurement-23.0.0\AndroidManifest.xml:40:13-87
+meta-data#com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsKtxRegistrar
+ADDED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:15:13-17:85
+	android:value
+		ADDED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:17:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:16:17-130
+meta-data#com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar
+ADDED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:18:13-20:85
+	android:value
+		ADDED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:20:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-installations:19.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f1643bf9e013d3df26ede0bdc5c7e55\transformed\firebase-installations-19.0.1\AndroidManifest.xml:19:17-127
+provider#com.google.firebase.provider.FirebaseInitProvider
+ADDED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:23:9-28:39
+	android:authorities
+		ADDED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:25:13-72
+	android:exported
+		ADDED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:27:13-37
+	android:directBootAware
+		ADDED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:26:13-43
+	android:initOrder
+		ADDED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:28:13-36
+	android:name
+		ADDED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:24:13-77
+meta-data#com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar
+ADDED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:35:13-37:85
+	android:value
+		ADDED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:37:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-common:22.0.1] C:\Users\braya\.gradle\caches\8.13\transforms\78180178e49172e74d0143fba0d2807e\transformed\firebase-common-22.0.1\AndroidManifest.xml:36:17-109
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\8978b68e96d87f2f35b895c9cb731b21\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:9-173
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\8978b68e96d87f2f35b895c9cb731b21\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:146-170
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\8978b68e96d87f2f35b895c9cb731b21\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:86-145
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\8978b68e96d87f2f35b895c9cb731b21\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:19-85
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\04fdc9e64c0a796ca9b70b417771ccf5\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\cc9ae83d6dbde855a9648c1bbe365389\transformed\lifecycle-process-2.8.3\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\cc9ae83d6dbde855a9648c1bbe365389\transformed\lifecycle-process-2.8.3\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\e54298b60d07f7986f2f44dbeaa46c14\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\braya\.gradle\caches\8.13\transforms\e54298b60d07f7986f2f44dbeaa46c14\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\04fdc9e64c0a796ca9b70b417771ccf5\transformed\emoji2-1.3.0\AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\04fdc9e64c0a796ca9b70b417771ccf5\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\04fdc9e64c0a796ca9b70b417771ccf5\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\04fdc9e64c0a796ca9b70b417771ccf5\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\04fdc9e64c0a796ca9b70b417771ccf5\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\04fdc9e64c0a796ca9b70b417771ccf5\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braya\.gradle\caches\8.13\transforms\04fdc9e64c0a796ca9b70b417771ccf5\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+uses-library#android.ext.adservices
+ADDED from [androidx.privacysandbox.ads:ads-adservices:1.1.0-beta11] C:\Users\braya\.gradle\caches\8.13\transforms\647451f04d932dcaf3f13e46930099ae\transformed\ads-adservices-1.1.0-beta11\AndroidManifest.xml:23:9-25:40
+	android:required
+		ADDED from [androidx.privacysandbox.ads:ads-adservices:1.1.0-beta11] C:\Users\braya\.gradle\caches\8.13\transforms\647451f04d932dcaf3f13e46930099ae\transformed\ads-adservices-1.1.0-beta11\AndroidManifest.xml:25:13-37
+	android:name
+		ADDED from [androidx.privacysandbox.ads:ads-adservices:1.1.0-beta11] C:\Users\braya\.gradle\caches\8.13\transforms\647451f04d932dcaf3f13e46930099ae\transformed\ads-adservices-1.1.0-beta11\AndroidManifest.xml:24:13-50
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+permission#com.tickettrack.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+uses-permission#com.tickettrack.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.13.1] C:\Users\braya\.gradle\caches\8.13\transforms\5f9d9379efe0fcd84ad741448a825b1a\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\cc9ae83d6dbde855a9648c1bbe365389\transformed\lifecycle-process-2.8.3\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\cc9ae83d6dbde855a9648c1bbe365389\transformed\lifecycle-process-2.8.3\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\braya\.gradle\caches\8.13\transforms\cc9ae83d6dbde855a9648c1bbe365389\transformed\lifecycle-process-2.8.3\AndroidManifest.xml:30:17-78
+meta-data#com.google.android.gms.version
+ADDED from [com.google.android.gms:play-services-basement:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\83d2ffc1b9e633f238b0715da17c1cf5\transformed\play-services-basement-18.5.0\AndroidManifest.xml:21:9-23:69
+	android:value
+		ADDED from [com.google.android.gms:play-services-basement:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\83d2ffc1b9e633f238b0715da17c1cf5\transformed\play-services-basement-18.5.0\AndroidManifest.xml:23:13-66
+	android:name
+		ADDED from [com.google.android.gms:play-services-basement:18.5.0] C:\Users\braya\.gradle\caches\8.13\transforms\83d2ffc1b9e633f238b0715da17c1cf5\transformed\play-services-basement-18.5.0\AndroidManifest.xml:22:13-58
+meta-data#androidx.profileinstaller.ProfileInstallerInitializer
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+receiver#androidx.profileinstaller.ProfileInstallReceiver
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+	android:enabled
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+	android:permission
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+	android:directBootAware
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+action#androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+action#androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+action#androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+action#androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braya\.gradle\caches\8.13\transforms\7813a15a8a72b4e224bd4f748b48c5c0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
