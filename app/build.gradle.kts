@@ -48,6 +48,11 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
     implementation("com.google.firebase:firebase-analytics")
 
+    // Integración de ViewModel con Jetpack Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
+    // Soporte para state flows y coroutines en Compose
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.6")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
