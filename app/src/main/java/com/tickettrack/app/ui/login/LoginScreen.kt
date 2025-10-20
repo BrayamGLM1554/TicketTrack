@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun LoginScreen(
     onNavigateToRegister: () -> Unit = {},
+    onNavigateToForgotPassword: () -> Unit = {},
     viewModel: LoginViewModel = viewModel()
 ) {
     val state = viewModel.state.collectAsState()
@@ -43,7 +44,10 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF5AC5C5),
-                    focusedLabelColor = Color(0xFF5AC5C5)
+                    focusedLabelColor = Color(0xFF5AC5C5),
+                    unfocusedTextColor = Color.Black,
+                    focusedTextColor = Color.Black,
+                    errorTextColor = Color.Black
                 )
             )
 
@@ -57,7 +61,10 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF5AC5C5),
-                    focusedLabelColor = Color(0xFF5AC5C5)
+                    focusedLabelColor = Color(0xFF5AC5C5),
+                    unfocusedTextColor = Color.Black,
+                    focusedTextColor = Color.Black,
+                    errorTextColor = Color.Black
                 )
             )
 
@@ -68,7 +75,7 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                TextButton(onClick = { /* TODO: Implementar recuperación de contraseña */ }) {
+                TextButton(onClick = onNavigateToForgotPassword) {
                     Text(
                         text = "¿Olvidaste tu contraseña?",
                         color = Color(0xFF5AC5C5),
