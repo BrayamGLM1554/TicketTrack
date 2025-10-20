@@ -19,15 +19,15 @@ fun LoginScreen(
     val state = viewModel.state.collectAsState()
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
         ) {
             Text(
                 text = "Iniciar Sesión",
@@ -61,7 +61,23 @@ fun LoginScreen(
                 )
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Link "¿Olvidaste tu contraseña?"
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = { /* TODO: Implementar recuperación de contraseña */ }) {
+                    Text(
+                        text = "¿Olvidaste tu contraseña?",
+                        color = Color(0xFF5AC5C5),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             Button(
                 onClick = { viewModel.login() },
@@ -91,25 +107,30 @@ fun LoginScreen(
                     color = MaterialTheme.colorScheme.error
                 )
             }
+        }
 
-            Spacer(modifier = Modifier.height(24.dp))
+        // Link "¿No tienes cuenta? Regístrate aquí" en la parte inferior
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "¿No tienes cuenta?",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray
+            )
 
-            // Link para ir al registro
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
+            Spacer(modifier = Modifier.height(4.dp))
+
+            TextButton(onClick = onNavigateToRegister) {
                 Text(
-                    text = "¿No tienes cuenta? ",
+                    text = "Regístrate aquí",
+                    color = Color(0xFF5AC5C5),
+                    fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.bodyMedium
                 )
-                TextButton(onClick = onNavigateToRegister) {
-                    Text(
-                        text = "Regístrate aquí",
-                        color = Color(0xFF5AC5C5),
-                        fontWeight = FontWeight.Bold
-                    )
-                }
             }
         }
     }

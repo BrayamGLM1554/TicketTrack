@@ -62,6 +62,10 @@ fun AppNavigation() {
                 // Por ahora vamos al login
                 currentScreen = "login"
             },
+            onNavigateBack = {
+                // Regresa a la pantalla anterior (RegisterScreen)
+                currentScreen = "register"
+            },
             viewModel = registerViewModel
         )
     }

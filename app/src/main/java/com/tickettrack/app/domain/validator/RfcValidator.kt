@@ -43,7 +43,7 @@ object RfcValidator {
 /**
  * Clase de resultado de validación.
  */
-data class ValidationResult(
-    val isValid: Boolean,
-    val errorMessage: String? = null
-)
+//data class ValidationResult(
+//    val isValid: Boolean,
+//    val errorMessage: String? = null
+//)

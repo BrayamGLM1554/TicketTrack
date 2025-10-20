@@ -2,6 +2,8 @@ package com.tickettrack.app.ui.register
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -9,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun RegisterEmployeeScreen(
     onNavigateToLogin: () -> Unit,
     onRegistrationSuccess: () -> Unit,
+    onNavigateBack: () -> Unit,
     viewModel: RegisterViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -36,13 +38,27 @@ fun RegisterEmployeeScreen(
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize()
     ) {
+        // Botón de regreso
+        IconButton(
+            onClick = onNavigateBack,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Regresar",
+                tint = Color(0xFF5AC5C5)
+            )
+        }
+
+        // Contenido principal
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -81,7 +97,10 @@ fun RegisterEmployeeScreen(
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF5AC5C5),
-                    focusedLabelColor = Color(0xFF5AC5C5)
+                    focusedLabelColor = Color(0xFF5AC5C5),
+                    unfocusedTextColor = Color.Black,
+                    focusedTextColor = Color.Black,
+                    errorTextColor = Color.Black
                 )
             )
 
@@ -104,7 +123,10 @@ fun RegisterEmployeeScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF5AC5C5),
-                    focusedLabelColor = Color(0xFF5AC5C5)
+                    focusedLabelColor = Color(0xFF5AC5C5),
+                    unfocusedTextColor = Color.Black,
+                    focusedTextColor = Color.Black,
+                    errorTextColor = Color.Black
                 )
             )
 
@@ -127,7 +149,10 @@ fun RegisterEmployeeScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF5AC5C5),
-                    focusedLabelColor = Color(0xFF5AC5C5)
+                    focusedLabelColor = Color(0xFF5AC5C5),
+                    unfocusedTextColor = Color.Black,
+                    focusedTextColor = Color.Black,
+                    errorTextColor = Color.Black
                 )
             )
 
@@ -150,7 +175,10 @@ fun RegisterEmployeeScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF5AC5C5),
-                    focusedLabelColor = Color(0xFF5AC5C5)
+                    focusedLabelColor = Color(0xFF5AC5C5),
+                    unfocusedTextColor = Color.Black,
+                    focusedTextColor = Color.Black,
+                    errorTextColor = Color.Black
                 )
             )
 
@@ -194,22 +222,7 @@ fun RegisterEmployeeScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             // Link para ir al login
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "¿Ya tienes cuenta? ",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                TextButton(onClick = onNavigateToLogin) {
-                    Text(
-                        text = "Aquí",
-                        color = Color(0xFF5AC5C5),
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
+
         }
     }
 }
