@@ -7,14 +7,15 @@ plugins {
 
 android {
     namespace = "com.tickettrack.app"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 35
+//    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.tickettrack.app"
-        minSdk = 35
-        targetSdk = 36
+//        minSdk = 35
+        minSdk = 26
+        targetSdk = 35
+//        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
