@@ -42,7 +42,7 @@ fun RegisterScreen(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Regresar",
-                tint = Color(0xFF5AC5C5)
+                tint = Color(0xFF187083)
             )
         }
 
@@ -185,7 +185,7 @@ fun RegisterScreen(
                     .fillMaxWidth()
                     .height(56.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF5AC5C5)
+                    containerColor = Color(0xFF187083)
                 ),
                 shape = MaterialTheme.shapes.medium
             ) {

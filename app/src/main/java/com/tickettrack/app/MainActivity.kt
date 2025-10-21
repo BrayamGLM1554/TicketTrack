@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tickettrack.app.ui.forgotpassword.ForgotPasswordScreen
 import com.tickettrack.app.ui.login.LoginScreen
+import com.tickettrack.app.ui.main.MainScreen
 import com.tickettrack.app.ui.register.RegisterEmployeeScreen
 import com.tickettrack.app.ui.register.RegisterScreen
 import com.tickettrack.app.ui.register.RegisterViewModel
@@ -39,13 +40,15 @@ fun AppNavigation() {
         )
 
         "login" -> LoginScreen(
-            onNavigateToRegister = {
-                currentScreen = "register"
-            },
-            onNavigateToForgotPassword = {
-                currentScreen = "forgotPassword"
-            }
+            onNavigateToRegister = { currentScreen = "register" },
+            onNavigateToForgotPassword = { currentScreen = "forgotPassword" },
+            onLoginSuccess = { currentScreen = "main" } // <--- aquí
         )
+
+        "main" -> MainScreen(
+            onLogout = { currentScreen = "login" }
+        )
+
 
         "forgotPassword" -> ForgotPasswordScreen(
             onNavigateBack = {

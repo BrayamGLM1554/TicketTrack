@@ -54,6 +54,9 @@ dependencies {
     // Soporte para state flows y coroutines en Compose
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.6")
 
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

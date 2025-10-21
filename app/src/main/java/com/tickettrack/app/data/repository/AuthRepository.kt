@@ -2,17 +2,22 @@ package com.tickettrack.app.data.repository
 
 import com.tickettrack.app.data.model.LoginRequest
 import com.tickettrack.app.data.model.LoginResponse
+import kotlinx.coroutines.delay
 
 class AuthRepository {
 
     suspend fun login(request: LoginRequest): LoginResponse {
-        // Space reserved for future functionality
-        // Example future implementation:
-        // val response = httpClient.post("https://api-gateway-tickettrack/login") {
-        //     contentType(ContentType.Application.Json)
-        //     setBody(request)
-        // }
-        // return response.body()
-        throw NotImplementedError("Login API call not yet implemented")
+        // Simulamos una llamada a red
+        delay(1200)
+
+        // Credenciales ficticias válidas
+        if (request.email == "admin@tickettrack.com" && request.password == "1234") {
+            return LoginResponse(
+                token = "fake_jwt_token_12345",
+                userId = "user_001"
+            )
+        } else {
+            throw Exception("Credenciales inválidas")
+        }
     }
 }

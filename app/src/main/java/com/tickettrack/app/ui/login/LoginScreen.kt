@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun LoginScreen(
     onNavigateToRegister: () -> Unit = {},
     onNavigateToForgotPassword: () -> Unit = {},
+    onLoginSuccess: () -> Unit = {}, // <-- callback para MainScreen
     viewModel: LoginViewModel = viewModel()
 ) {
     val state = viewModel.state.collectAsState()
@@ -70,7 +71,6 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Link "¿Olvidaste tu contraseña?"
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
@@ -78,7 +78,7 @@ fun LoginScreen(
                 TextButton(onClick = onNavigateToForgotPassword) {
                     Text(
                         text = "¿Olvidaste tu contraseña?",
-                        color = Color(0xFF5AC5C5),
+                        color = Color(0xFF187083),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
@@ -87,13 +87,17 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Button(
-                onClick = { viewModel.login() },
+                onClick = {
+                    viewModel.login(
+                        onSuccess = { onLoginSuccess() } // <-- aquí navegamos
+                    )
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
                 enabled = !state.value.isLoading,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF5AC5C5)
+                    containerColor = Color(0xFF187083)
                 ),
                 shape = MaterialTheme.shapes.medium
             ) {
@@ -116,7 +120,6 @@ fun LoginScreen(
             }
         }
 
-        // Link "¿No tienes cuenta? Regístrate aquí" en la parte inferior
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -134,7 +137,7 @@ fun LoginScreen(
             TextButton(onClick = onNavigateToRegister) {
                 Text(
                     text = "Regístrate aquí",
-                    color = Color(0xFF5AC5C5),
+                    color = Color(0xFF187083),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.bodyMedium
                 )
