@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -15,10 +16,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun LoginScreen(
     onNavigateToRegister: () -> Unit = {},
     onNavigateToForgotPassword: () -> Unit = {},
-    onLoginSuccess: () -> Unit = {}, // <-- callback para MainScreen
-    viewModel: LoginViewModel = viewModel()
+    onLoginSuccess: () -> Unit = {}
 ) {
+    val context = LocalContext.current
+    val viewModel: LoginViewModel = viewModel(
+        factory = androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.getInstance(
+            context.applicationContext as android.app.Application
+        )
+    )
     val state = viewModel.state.collectAsState()
+
+    // ✅ Validación de email en tiempo real
+    val isEmailValid = android.util.Patterns.EMAIL_ADDRESS.matcher(state.value.email).matches()
+            || state.value.email.isEmpty()
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -43,6 +53,15 @@ fun LoginScreen(
                 onValueChange = { viewModel.onEmailChanged(it) },
                 label = { Text("Correo electrónico") },
                 modifier = Modifier.fillMaxWidth(),
+                isError = !isEmailValid, // ✅ Muestra error si no es válido
+                supportingText = {
+                    if (!isEmailValid) {
+                        Text(
+                            text = "Formato de correo inválido",
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF5AC5C5),
                     focusedLabelColor = Color(0xFF5AC5C5),
@@ -88,14 +107,12 @@ fun LoginScreen(
 
             Button(
                 onClick = {
-                    viewModel.login(
-                        onSuccess = { onLoginSuccess() } // <-- aquí navegamos
-                    )
+                    viewModel.login(onSuccess = onLoginSuccess)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                enabled = !state.value.isLoading,
+                enabled = !state.value.isLoading && isEmailValid && state.value.email.isNotEmpty() && state.value.password.isNotEmpty(), // ✅ Deshabilitar si no es válido
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF187083)
                 ),

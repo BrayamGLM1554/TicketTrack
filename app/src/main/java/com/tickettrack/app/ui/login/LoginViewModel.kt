@@ -1,18 +1,35 @@
 package com.tickettrack.app.ui.login
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.tickettrack.app.data.model.LoginRequest
-import com.tickettrack.app.data.repository.AuthRepository
-import kotlinx.coroutines.delay
+import com.tickettrack.app.data.local.TokenManager
+import com.tickettrack.app.domain.useCase.LoginUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _state = MutableStateFlow(LoginState())
     val state = _state.asStateFlow()
+
+    private val loginUseCase = LoginUseCase()
+    private val tokenManager = TokenManager(application)
+
+    init {
+        // Verificar si ya hay una sesión activa
+        if (tokenManager.isLoggedIn()) {
+            _state.value = _state.value.copy(
+                isLoggedIn = true,
+                token = tokenManager.getToken(),
+                userName = tokenManager.getUserName(),
+                userEmail = tokenManager.getUserEmail(),
+                role = tokenManager.getUserRole(),
+                companyEmail = tokenManager.getCompanyEmail()
+            )
+        }
+    }
 
     fun onEmailChanged(value: String) {
         _state.value = _state.value.copy(email = value)
@@ -22,26 +39,51 @@ class LoginViewModel : ViewModel() {
         _state.value = _state.value.copy(password = value)
     }
 
-    // Agregamos el callback onSuccess
     fun login(onSuccess: () -> Unit = {}) {
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true, errorMessage = null)
 
-            try {
-                delay(1500) // Simula red
+            val result = loginUseCase(
+                email = _state.value.email,
+                password = _state.value.password
+            )
 
-                if (_state.value.email == "admin@tickettrack.com" && _state.value.password == "1234") {
-                    _state.value = _state.value.copy(isLoading = false)
-                    onSuccess() // <--- esto dispara la navegación
-                } else {
-                    throw Exception("Credenciales inválidas")
+            result.fold(
+                onSuccess = { response ->
+                    // Guardar token y datos del usuario
+                    tokenManager.saveToken(response.token)
+                    tokenManager.saveUserData(
+                        name = response.name,
+                        email = response.email,
+                        role = response.claims.role,
+                        companyEmail = response.claims.companyEmail,
+                        expiresAt = response.expiresAt
+                    )
+
+                    _state.value = _state.value.copy(
+                        isLoading = false,
+                        isLoggedIn = true,
+                        token = response.token,
+                        userName = response.name,
+                        userEmail = response.email,
+                        role = response.claims.role,
+                        companyEmail = response.claims.companyEmail
+                    )
+
+                    onSuccess()
+                },
+                onFailure = { exception ->
+                    _state.value = _state.value.copy(
+                        isLoading = false,
+                        errorMessage = exception.message ?: "Error desconocido"
+                    )
                 }
-            } catch (e: Exception) {
-                _state.value = _state.value.copy(
-                    isLoading = false,
-                    errorMessage = e.message ?: "Error desconocido"
-                )
-            }
+            )
         }
+    }
+
+    fun logout() {
+        tokenManager.clearAll()
+        _state.value = LoginState()
     }
 }
