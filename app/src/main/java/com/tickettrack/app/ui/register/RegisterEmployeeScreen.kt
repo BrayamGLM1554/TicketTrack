@@ -1,11 +1,14 @@
 package com.tickettrack.app.ui.register
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,16 +17,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.foundation.text.KeyboardOptions
 
 /**
  * Pantalla 2: Registro de datos del encargado de la cuenta.
- *
- * Esta pantalla captura los datos del encargado y realiza el registro completo
- * al presionar el botón "Registrar".
  */
 @Composable
 fun RegisterEmployeeScreen(
@@ -33,17 +35,23 @@ fun RegisterEmployeeScreen(
     viewModel: RegisterViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    var passwordVisible by remember { mutableStateOf(false) }
+    var confirmPasswordVisible by remember { mutableStateOf(false) }
 
-    // Observar el éxito del registro
+    LaunchedEffect(Unit) {
+        if (state.registrationSuccess) {
+            viewModel.resetState()
+        }
+    }
+
     LaunchedEffect(state.registrationSuccess) {
         if (state.registrationSuccess) {
-            // Esperar 3 segundos y navegar
             kotlinx.coroutines.delay(3000)
+            viewModel.resetState()
             onRegistrationSuccess()
         }
     }
 
-    // Diálogo de error
     if (state.errorMessage != null) {
         AlertDialog(
             onDismissRequest = { viewModel.clearError() },
@@ -88,15 +96,15 @@ fun RegisterEmployeeScreen(
         )
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         // Botón de regreso
         IconButton(
             onClick = onNavigateBack,
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(16.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -105,15 +113,13 @@ fun RegisterEmployeeScreen(
             )
         }
 
-        // Contenido principal
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Título
             Text(
                 text = "Crea tu cuenta",
                 style = MaterialTheme.typography.headlineMedium.copy(
@@ -130,7 +136,6 @@ fun RegisterEmployeeScreen(
                 modifier = Modifier.padding(bottom = 32.dp)
             )
 
-            // Campo: Nombre del encargado de la cuenta
             OutlinedTextField(
                 value = state.ownerName,
                 onValueChange = viewModel::onOwnerNameChanged,
@@ -155,7 +160,6 @@ fun RegisterEmployeeScreen(
                 )
             )
 
-            // Campo: CURP
             OutlinedTextField(
                 value = state.ownerCurp,
                 onValueChange = viewModel::onOwnerCurpChanged,
@@ -181,7 +185,6 @@ fun RegisterEmployeeScreen(
                 )
             )
 
-            // Campo: Teléfono de trabajo
             OutlinedTextField(
                 value = state.ownerPhone,
                 onValueChange = viewModel::onOwnerPhoneChanged,
@@ -207,7 +210,6 @@ fun RegisterEmployeeScreen(
                 )
             )
 
-            // Campo: Correo empresarial
             OutlinedTextField(
                 value = state.ownerEmail,
                 onValueChange = viewModel::onOwnerEmailChanged,
@@ -221,7 +223,7 @@ fun RegisterEmployeeScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 32.dp),
+                    .padding(bottom = 16.dp),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -248,8 +250,26 @@ fun RegisterEmployeeScreen(
                     .fillMaxWidth()
                     .padding(bottom = 16.dp),
                 singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = if (passwordVisible)
+                    VisualTransformation.None
+                else
+                    PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                trailingIcon = {
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(
+                            imageVector = if (passwordVisible)
+                                Icons.Filled.Visibility
+                            else
+                                Icons.Filled.VisibilityOff,
+                            contentDescription = if (passwordVisible)
+                                "Ocultar contraseña"
+                            else
+                                "Mostrar contraseña",
+                            tint = Color(0xFF5AC5C5)
+                        )
+                    }
+                },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF5AC5C5),
                     focusedLabelColor = Color(0xFF5AC5C5),
@@ -259,7 +279,6 @@ fun RegisterEmployeeScreen(
                 )
             )
 
-// NUEVO: Campo de Confirmar Contraseña
             OutlinedTextField(
                 value = state.confirmPassword,
                 onValueChange = viewModel::onConfirmPasswordChanged,
@@ -275,8 +294,26 @@ fun RegisterEmployeeScreen(
                     .fillMaxWidth()
                     .padding(bottom = 32.dp),
                 singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = if (confirmPasswordVisible)
+                    VisualTransformation.None
+                else
+                    PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                trailingIcon = {
+                    IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
+                        Icon(
+                            imageVector = if (confirmPasswordVisible)
+                                Icons.Filled.Visibility
+                            else
+                                Icons.Filled.VisibilityOff,
+                            contentDescription = if (confirmPasswordVisible)
+                                "Ocultar contraseña"
+                            else
+                                "Mostrar contraseña",
+                            tint = Color(0xFF5AC5C5)
+                        )
+                    }
+                },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF5AC5C5),
                     focusedLabelColor = Color(0xFF5AC5C5),
@@ -286,7 +323,6 @@ fun RegisterEmployeeScreen(
                 )
             )
 
-            // Botón Registrar
             Button(
                 onClick = { viewModel.register() },
                 modifier = Modifier
@@ -314,27 +350,8 @@ fun RegisterEmployeeScreen(
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-
-//            // Link para ir al login
-//            Row(
-//                modifier = Modifier.fillMaxWidth(),
-//                horizontalArrangement = Arrangement.Center
-//            ) {
-//                Text(
-//                    text = "¿Ya tienes cuenta? ",
-//                    style = MaterialTheme.typography.bodyMedium
-//                )
-//                TextButton(onClick = onNavigateToLogin) {
-//                    Text(
-//                        text = "Aquí",
-//                        color = Color(0xFF5AC5C5),
-//                        fontWeight = FontWeight.Bold
-//                    )
-//                }
-//            }
         }
 
-        // Card de éxito (overlay)
         if (state.registrationSuccess) {
             Box(
                 modifier = Modifier

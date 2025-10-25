@@ -1,6 +1,8 @@
 package com.tickettrack.app.ui.register
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -17,9 +19,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 /**
  * Pantalla 1: Registro de datos de la empresa.
- *
- * Esta pantalla captura los datos de la empresa y valida antes
- * de permitir avanzar a la segunda pantalla.
  */
 @Composable
 fun RegisterScreen(
@@ -29,15 +28,19 @@ fun RegisterScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    Box(
-        modifier = Modifier.fillMaxSize()
+    LaunchedEffect(Unit) {
+        viewModel.resetState()
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         // Botón de regreso
         IconButton(
             onClick = onNavigateToLogin,
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(16.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -46,15 +49,13 @@ fun RegisterScreen(
             )
         }
 
-        // Contenido principal
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Título
             Text(
                 text = "Crea tu cuenta",
                 style = MaterialTheme.typography.headlineMedium.copy(
@@ -71,7 +72,6 @@ fun RegisterScreen(
                 modifier = Modifier.padding(bottom = 32.dp)
             )
 
-            // Campo: Nombre de la empresa
             OutlinedTextField(
                 value = state.companyName,
                 onValueChange = viewModel::onCompanyNameChanged,
@@ -96,7 +96,6 @@ fun RegisterScreen(
                 )
             )
 
-            // Campo: RFC
             OutlinedTextField(
                 value = state.companyRfc,
                 onValueChange = viewModel::onCompanyRfcChanged,
@@ -122,7 +121,6 @@ fun RegisterScreen(
                 )
             )
 
-            // Campo: Teléfono oficina
             OutlinedTextField(
                 value = state.companyPhone,
                 onValueChange = viewModel::onCompanyPhoneChanged,
@@ -148,7 +146,6 @@ fun RegisterScreen(
                 )
             )
 
-            // Campo: Correo empresarial principal
             OutlinedTextField(
                 value = state.companyEmail,
                 onValueChange = viewModel::onCompanyEmailChanged,
@@ -174,7 +171,6 @@ fun RegisterScreen(
                 )
             )
 
-            // Botón Siguiente
             Button(
                 onClick = {
                     if (viewModel.validateCompanyData()) {
@@ -197,8 +193,6 @@ fun RegisterScreen(
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-
-
         }
     }
 }
