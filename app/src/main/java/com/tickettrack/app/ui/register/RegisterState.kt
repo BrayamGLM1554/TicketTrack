@@ -19,6 +19,10 @@ data class RegisterState(
     val ownerPhone: String = "",
     val ownerEmail: String = "",
 
+    // NUEVOS CAMPOS: Contraseñas
+    val password: String = "",
+    val confirmPassword: String = "",
+
     // Estados de validación (Pantalla 1)
     val companyNameError: String? = null,
     val companyRfcError: String? = null,
@@ -30,6 +34,10 @@ data class RegisterState(
     val ownerCurpError: String? = null,
     val ownerPhoneError: String? = null,
     val ownerEmailError: String? = null,
+
+    // NUEVOS: Estados de validación de contraseñas
+    val passwordError: String? = null,
+    val confirmPasswordError: String? = null,
 
     // Estados generales
     val isLoading: Boolean = false,

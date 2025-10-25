@@ -1,14 +1,21 @@
 package com.tickettrack.app.data.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
 /**
- * Modelo de datos para la respuesta del registro de usuario.
- *
- * Este modelo representa la estructura que se recibirá del API Gateway
- * después de completar el registro.
+ * Modelo de datos para la respuesta del API Gateway.
  */
+@Serializable
 data class RegisterResponse(
-    val success: Boolean,
-    val message: String,
-    val userId: String? = null,
+    @SerialName("message")
+    val message: String = "",
+
+    @SerialName("uid")
+    val uid: String? = null,
+
+    // Campos calculados
+    val success: Boolean = true, // Si llegó aquí sin excepción, fue exitoso
+    val userId: String? = uid,
     val companyId: String? = null
 )

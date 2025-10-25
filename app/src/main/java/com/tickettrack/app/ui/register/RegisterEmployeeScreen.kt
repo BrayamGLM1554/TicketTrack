@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -11,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,8 +37,55 @@ fun RegisterEmployeeScreen(
     // Observar el éxito del registro
     LaunchedEffect(state.registrationSuccess) {
         if (state.registrationSuccess) {
+            // Esperar 3 segundos y navegar
+            kotlinx.coroutines.delay(3000)
             onRegistrationSuccess()
         }
+    }
+
+    // Diálogo de error
+    if (state.errorMessage != null) {
+        AlertDialog(
+            onDismissRequest = { viewModel.clearError() },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Error,
+                    contentDescription = "Error",
+                    tint = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.size(48.dp)
+                )
+            },
+            title = {
+                Text(
+                    text = "Error en el registro",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Text(
+                    text = state.errorMessage ?: "Ocurrió un error inesperado",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.Black
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = { viewModel.clearError() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF5AC5C5)
+                    )
+                ) {
+                    Text("Entendido")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { viewModel.clearError() }) {
+                    Text("Cerrar", color = Color.Gray)
+                }
+            },
+            containerColor = Color.White
+        )
     }
 
     Box(
@@ -50,7 +101,7 @@ fun RegisterEmployeeScreen(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Regresar",
-                tint = Color(0xFF187083)
+                tint = Color(0xFF5AC5C5)
             )
         }
 
@@ -182,15 +233,58 @@ fun RegisterEmployeeScreen(
                 )
             )
 
-            // Mensaje de error general
-            if (state.errorMessage != null) {
-                Text(
-                    text = state.errorMessage ?: "",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(bottom = 16.dp)
+            OutlinedTextField(
+                value = state.password,
+                onValueChange = viewModel::onPasswordChanged,
+                label = { Text("Contraseña") },
+                placeholder = { Text("Mínimo 8 caracteres") },
+                isError = state.passwordError != null,
+                supportingText = {
+                    state.passwordError?.let {
+                        Text(it, color = MaterialTheme.colorScheme.error)
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                singleLine = true,
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFF5AC5C5),
+                    focusedLabelColor = Color(0xFF5AC5C5),
+                    unfocusedTextColor = Color.Black,
+                    focusedTextColor = Color.Black,
+                    errorTextColor = Color.Black
                 )
-            }
+            )
+
+// NUEVO: Campo de Confirmar Contraseña
+            OutlinedTextField(
+                value = state.confirmPassword,
+                onValueChange = viewModel::onConfirmPasswordChanged,
+                label = { Text("Confirmar contraseña") },
+                placeholder = { Text("Repite tu contraseña") },
+                isError = state.confirmPasswordError != null,
+                supportingText = {
+                    state.confirmPasswordError?.let {
+                        Text(it, color = MaterialTheme.colorScheme.error)
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 32.dp),
+                singleLine = true,
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFF5AC5C5),
+                    focusedLabelColor = Color(0xFF5AC5C5),
+                    unfocusedTextColor = Color.Black,
+                    focusedTextColor = Color.Black,
+                    errorTextColor = Color.Black
+                )
+            )
 
             // Botón Registrar
             Button(
@@ -199,7 +293,7 @@ fun RegisterEmployeeScreen(
                     .fillMaxWidth()
                     .height(56.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF187083)
+                    containerColor = Color(0xFF5AC5C5)
                 ),
                 shape = MaterialTheme.shapes.medium,
                 enabled = !state.isLoading
@@ -221,8 +315,83 @@ fun RegisterEmployeeScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Link para ir al login
+//            // Link para ir al login
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.Center
+//            ) {
+//                Text(
+//                    text = "¿Ya tienes cuenta? ",
+//                    style = MaterialTheme.typography.bodyMedium
+//                )
+//                TextButton(onClick = onNavigateToLogin) {
+//                    Text(
+//                        text = "Aquí",
+//                        color = Color(0xFF5AC5C5),
+//                        fontWeight = FontWeight.Bold
+//                    )
+//                }
+//            }
+        }
 
+        // Card de éxito (overlay)
+        if (state.registrationSuccess) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFF4CAF50)
+                    ),
+                    elevation = CardDefaults.cardElevation(8.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = "Éxito",
+                            tint = Color.White,
+                            modifier = Modifier.size(64.dp)
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Text(
+                            text = "¡Registro Exitoso!",
+                            style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = "Tu cuenta ha sido creada correctamente",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        CircularProgressIndicator(
+                            color = Color.White,
+                            modifier = Modifier.size(32.dp),
+                            strokeWidth = 3.dp
+                        )
+                    }
+                }
+            }
         }
     }
 }

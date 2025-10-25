@@ -1,9 +1,8 @@
 package com.tickettrack.app.ui.register
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tickettrack.app.data.model.AccountOwnerData
-import com.tickettrack.app.data.model.CompanyData
 import com.tickettrack.app.data.model.RegisterRequest
 import com.tickettrack.app.data.repository.RegisterRepository
 import com.tickettrack.app.domain.validator.CurpValidator
@@ -13,7 +12,7 @@ import com.tickettrack.app.domain.validator.RfcValidator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
+import com.tickettrack.app.domain.validator.PasswordValidator
 /**
  * ViewModel para el proceso de registro de usuarios.
  *
@@ -22,6 +21,10 @@ import kotlinx.coroutines.launch
 class RegisterViewModel(
     private val repository: RegisterRepository = RegisterRepository()
 ) : ViewModel() {
+
+    companion object {
+        private const val TAG = "RegisterViewModel"
+    }
 
     private val _state = MutableStateFlow(RegisterState())
     val state = _state.asStateFlow()
@@ -36,7 +39,6 @@ class RegisterViewModel(
     }
 
     fun onCompanyRfcChanged(value: String) {
-        // Convertir a mayúsculas automáticamente
         val upperValue = value.uppercase()
         _state.value = _state.value.copy(
             companyRfc = upperValue,
@@ -45,7 +47,6 @@ class RegisterViewModel(
     }
 
     fun onCompanyPhoneChanged(value: String) {
-        // Permitir solo números y guiones
         val filtered = value.filter { it.isDigit() || it == '-' }
         _state.value = _state.value.copy(
             companyPhone = filtered,
@@ -60,11 +61,6 @@ class RegisterViewModel(
         )
     }
 
-    /**
-     * Valida los datos de la empresa antes de avanzar a la siguiente pantalla.
-     *
-     * @return true si todos los campos son válidos, false en caso contrario
-     */
     fun validateCompanyData(): Boolean {
         val nameValid = _state.value.companyName.isNotBlank()
         val rfcValidation = RfcValidator.validate(_state.value.companyRfc)
@@ -92,7 +88,6 @@ class RegisterViewModel(
     }
 
     fun onOwnerCurpChanged(value: String) {
-        // Convertir a mayúsculas automáticamente
         val upperValue = value.uppercase()
         _state.value = _state.value.copy(
             ownerCurp = upperValue,
@@ -101,7 +96,6 @@ class RegisterViewModel(
     }
 
     fun onOwnerPhoneChanged(value: String) {
-        // Permitir solo números y guiones
         val filtered = value.filter { it.isDigit() || it == '-' }
         _state.value = _state.value.copy(
             ownerPhone = filtered,
@@ -116,30 +110,33 @@ class RegisterViewModel(
         )
     }
 
-    /**
-     * Valida los datos del encargado y realiza el registro completo.
-     */
+
     fun register() {
-        // Primero validar los datos del encargado
         val nameValid = _state.value.ownerName.isNotBlank()
         val curpValidation = CurpValidator.validate(_state.value.ownerCurp)
         val phoneValidation = PhoneValidator.validate(_state.value.ownerPhone)
         val emailValidation = EmailValidator.validate(_state.value.ownerEmail)
 
+        // NUEVO: Validar contraseñas usando el PasswordValidator de tu compañero
+        val passwordValidation = PasswordValidator.validate(_state.value.password)
+        val passwordsMatch = _state.value.password == _state.value.confirmPassword
+
         _state.value = _state.value.copy(
             ownerNameError = if (!nameValid) "El nombre del encargado es requerido" else null,
             ownerCurpError = curpValidation.errorMessage,
             ownerPhoneError = phoneValidation.errorMessage,
-            ownerEmailError = emailValidation.errorMessage
+            ownerEmailError = emailValidation.errorMessage,
+            // NUEVO: Errores de contraseña
+            passwordError = passwordValidation.errorMessage,
+            confirmPasswordError = if (!passwordsMatch) "Las contraseñas no coinciden" else null
         )
 
-        // Si hay errores de validación, no continuar
         if (!nameValid || !curpValidation.isValid ||
-            !phoneValidation.isValid || !emailValidation.isValid) {
+            !phoneValidation.isValid || !emailValidation.isValid ||
+            !passwordValidation.isValid || !passwordsMatch) {  // NUEVO: Validar contraseñas
             return
         }
 
-        // Proceder con el registro
         viewModelScope.launch {
             _state.value = _state.value.copy(
                 isLoading = true,
@@ -147,44 +144,73 @@ class RegisterViewModel(
             )
 
             try {
+                // Limpiar teléfonos (quitar guiones)
+                val cleanCompanyPhone = _state.value.companyPhone.replace("-", "")
+                val cleanOwnerPhone = _state.value.ownerPhone.replace("-", "")
+
+                // MODIFICADO: Usar la contraseña del usuario en lugar de generar una temporal
                 val request = RegisterRequest(
-                    company = CompanyData(
-                        name = _state.value.companyName,
-                        rfc = _state.value.companyRfc,
-                        phone = _state.value.companyPhone,
-                        email = _state.value.companyEmail
-                    ),
-                    accountOwner = AccountOwnerData(
-                        name = _state.value.ownerName,
-                        curp = _state.value.ownerCurp,
-                        phone = _state.value.ownerPhone,
-                        email = _state.value.ownerEmail
-                    )
+                    companyName = _state.value.companyName,
+                    rfc = _state.value.companyRfc,
+                    officePhone = cleanCompanyPhone,
+                    companyEmail = _state.value.companyEmail,
+                    nameOfManager = _state.value.ownerName,
+                    curp = _state.value.ownerCurp,
+                    workPhone = cleanOwnerPhone,
+                    personalEmail = _state.value.ownerEmail,
+                    password = _state.value.password  // MODIFICADO: Usar password del estado
                 )
 
-                // TODO: Descomentar cuando el API esté listo
-                // val response = repository.register(request)
-
-                // Simulación temporal (eliminar cuando el API esté listo)
-                kotlinx.coroutines.delay(1500)
+                Log.d(TAG, "Starting registration...")
+                val response = repository.register(request)
+                Log.d(TAG, "Registration response: $response")
 
                 _state.value = _state.value.copy(
                     isLoading = false,
-                    registrationSuccess = true
+                    registrationSuccess = response.success,
+                    errorMessage = if (!response.success) response.message else null
                 )
+
+                if (response.success) {
+                    Log.i(TAG, "Registration successful")
+                }
+
             } catch (e: Exception) {
+                Log.e(TAG, "Registration error", e)
                 _state.value = _state.value.copy(
                     isLoading = false,
-                    errorMessage = e.message ?: "Error al registrar usuario"
+                    errorMessage = "Error al registrar usuario: ${e.message}"
                 )
             }
         }
     }
-
-    /**
-     * Limpia el mensaje de error general.
-     */
     fun clearError() {
         _state.value = _state.value.copy(errorMessage = null)
+    }
+
+    /**
+     * Resetea todo el estado del registro.
+     * Se debe llamar cuando el usuario abandona el flujo de registro.
+     */
+    fun resetState() {
+        _state.value = RegisterState()
+    }
+
+    // ========== Funciones para Pantalla 2 (Encargado) ==========
+
+// ... tus funciones existentes ...
+
+    fun onPasswordChanged(value: String) {
+        _state.value = _state.value.copy(
+            password = value,
+            passwordError = null
+        )
+    }
+
+    fun onConfirmPasswordChanged(value: String) {
+        _state.value = _state.value.copy(
+            confirmPassword = value,
+            confirmPasswordError = null
+        )
     }
 }

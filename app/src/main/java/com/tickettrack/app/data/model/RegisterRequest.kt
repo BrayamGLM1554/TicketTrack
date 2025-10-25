@@ -1,26 +1,39 @@
 package com.tickettrack.app.data.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
 /**
- * Modelo de datos para la petición de registro de usuario.
+ * Modelo de datos para la petición de registro al API Gateway.
  *
- * Este modelo representa la estructura que se enviará al API Gateway
- * cuando se complete el proceso de registro.
+ * Los nombres de campos coinciden con el formato esperado por el backend.
  */
+@Serializable
 data class RegisterRequest(
-    val company: CompanyData,
-    val accountOwner: AccountOwnerData
-)
+    @SerialName("CompanyName")
+    val companyName: String,
 
-data class CompanyData(
-    val name: String,
+    @SerialName("Rfc")
     val rfc: String,
-    val phone: String,
-    val email: String
-)
 
-data class AccountOwnerData(
-    val name: String,
+    @SerialName("OfficePhone")
+    val officePhone: String,
+
+    @SerialName("CompanyEmail")
+    val companyEmail: String,
+
+    @SerialName("NameOfManager")
+    val nameOfManager: String,
+
+    @SerialName("Curp")
     val curp: String,
-    val phone: String,
-    val email: String
+
+    @SerialName("WorkPhone")
+    val workPhone: String,
+
+    @SerialName("PersonalEmail")
+    val personalEmail: String,
+
+    @SerialName("Password")
+    val password: String
 )
