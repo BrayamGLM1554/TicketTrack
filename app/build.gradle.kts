@@ -87,4 +87,10 @@ dependencies {
 
     // Kotlinx Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
+    // Coil para imágenes (si no está)
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
+    // SwipeRefresh (si no está)
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.32.0")
 }

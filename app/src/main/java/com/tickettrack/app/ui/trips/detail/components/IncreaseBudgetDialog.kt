@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.tickettrack.app.data.model.trip.Urgency
+import com.tickettrack.app.domain.model.trip.Urgency
 
 /**
  * Diálogo para solicitar aumento de presupuesto.

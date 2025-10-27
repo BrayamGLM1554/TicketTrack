@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tickettrack.app.data.model.trip.Trip
+import com.tickettrack.app.domain.model.trip.Trip
 import com.tickettrack.app.domain.model.trip.TripStatus
 
 /**

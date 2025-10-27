@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tickettrack.app.data.model.trip.Budget
-import com.tickettrack.app.data.model.trip.BudgetIncrease
+import com.tickettrack.app.domain.model.trip.Budget
+import com.tickettrack.app.domain.model.trip.BudgetIncrease
 
 /**
  * Sección de presupuesto con historial expandible.

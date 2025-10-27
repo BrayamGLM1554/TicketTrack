@@ -9,7 +9,7 @@ import com.tickettrack.app.data.model.trip.toDomain
 import com.tickettrack.app.data.repository.trip.DriverRepository
 import com.tickettrack.app.data.repository.trip.TripRepository
 import com.tickettrack.app.domain.model.trip.TripStatus
-import com.tickettrack.app.data.model.trip.Urgency
+import com.tickettrack.app.domain.model.trip.Urgency
 import com.tickettrack.app.domain.validator.TripValidator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

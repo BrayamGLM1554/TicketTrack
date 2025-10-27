@@ -1,6 +1,4 @@
-package com.tickettrack.app.data.model.trip
-
-import com.tickettrack.app.domain.model.trip.TripStatus
+package com.tickettrack.app.domain.model.trip
 
 /**
  * Representa un cambio de estado en el historial.

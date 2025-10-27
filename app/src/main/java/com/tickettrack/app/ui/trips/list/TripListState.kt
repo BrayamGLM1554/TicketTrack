@@ -1,6 +1,6 @@
 package com.tickettrack.app.ui.trips.list
 
-import com.tickettrack.app.data.model.trip.Trip
+import com.tickettrack.app.domain.model.trip.Trip
 import com.tickettrack.app.domain.model.trip.TripStatus
 
 /**

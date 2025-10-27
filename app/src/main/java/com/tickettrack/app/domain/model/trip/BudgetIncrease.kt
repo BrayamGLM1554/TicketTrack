@@ -1,4 +1,6 @@
-package com.tickettrack.app.data.model.trip
+package com.tickettrack.app.domain.model.trip
+
+import com.tickettrack.app.domain.model.trip.Urgency
 
 /**
  * Representa un aumento de presupuesto en el historial.

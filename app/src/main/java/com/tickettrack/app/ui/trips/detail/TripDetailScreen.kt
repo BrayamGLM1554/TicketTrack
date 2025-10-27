@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.tickettrack.app.domain.model.trip.Trip
 import com.tickettrack.app.ui.trips.detail.components.BudgetSection
 import com.tickettrack.app.ui.trips.detail.components.DriverSection
 import com.tickettrack.app.ui.trips.detail.components.IncreaseBudgetDialog
@@ -210,7 +211,7 @@ fun TripDetailScreen(
 
 @Composable
 private fun TripInfoCard(
-    trip: com.tickettrack.app.data.model.trip.Trip,
+    trip: Trip,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -314,7 +315,7 @@ private fun TripInfoCard(
 
 @Composable
 private fun ActionsSection(
-    trip: com.tickettrack.app.data.model.trip.Trip,
+    trip: Trip,
     isChangingStatus: Boolean,
     onStartTrip: () -> Unit,
     onCompleteTrip: () -> Unit,

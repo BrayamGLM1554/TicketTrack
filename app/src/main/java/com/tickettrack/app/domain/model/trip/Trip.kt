@@ -1,6 +1,9 @@
-package com.tickettrack.app.data.model.trip
+package com.tickettrack.app.domain.model.trip
 
-import com.tickettrack.app.domain.model.trip.TripStatus
+import com.tickettrack.app.domain.model.trip.Budget
+import com.tickettrack.app.domain.model.trip.Cargo
+import com.tickettrack.app.domain.model.trip.Location
+import com.tickettrack.app.domain.model.trip.StatusChange
 
 /**
  * Modelo de dominio de un Viaje.

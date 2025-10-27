@@ -1,4 +1,6 @@
-package com.tickettrack.app.data.model.trip
+package com.tickettrack.app.domain.model.trip
+
+import com.tickettrack.app.domain.model.trip.Coordinates
 
 /**
  * Ubicación geográfica con dirección y coordenadas.

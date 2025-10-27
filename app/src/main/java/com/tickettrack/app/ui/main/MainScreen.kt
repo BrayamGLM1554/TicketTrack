@@ -12,6 +12,7 @@ import com.tickettrack.app.ui.main.dashboard.MainDashboardScreen
 import com.tickettrack.app.ui.main.drivers.DriversScreen
 import com.tickettrack.app.ui.main.drivers.DriverViewModel
 import com.tickettrack.app.ui.trips.TripNavigationScreen
+import com.tickettrack.app.ui.expenses.ExpenseMainNavigationScreen // ✅ NUEVO IMPORT
 
 @Composable
 fun MainScreen(
@@ -46,20 +47,10 @@ fun MainScreen(
         Box(modifier = Modifier.padding(padding)) {
             when (state.value.selectedTab) {
                 "Inicio" -> MainDashboardScreen(viewModel = viewModel)
-                "Viajes" -> TripNavigationScreen() // ✅ Integración del módulo de viajes
-                "Gastos" -> GastosScreen()
+                "Viajes" -> TripNavigationScreen()
+                "Gastos" -> ExpenseMainNavigationScreen() // ✅ REEMPLAZADO
                 "Transportista" -> DriversScreen(viewModel = driverViewModel)
             }
         }
-    }
-}
-
-@Composable
-fun GastosScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = androidx.compose.ui.Alignment.Center
-    ) {
-        Text("Pantalla de Gastos - Por implementar")
     }
 }

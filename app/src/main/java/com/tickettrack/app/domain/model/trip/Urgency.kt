@@ -1,4 +1,4 @@
-package com.tickettrack.app.data.model.trip
+package com.tickettrack.app.domain.model.trip
 
 /**
  * Niveles de urgencia para aumentos de presupuesto.
