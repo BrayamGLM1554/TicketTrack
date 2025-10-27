@@ -11,6 +11,7 @@ import com.tickettrack.app.ui.main.components.TopBar
 import com.tickettrack.app.ui.main.dashboard.MainDashboardScreen
 import com.tickettrack.app.ui.main.drivers.DriversScreen
 import com.tickettrack.app.ui.main.drivers.DriverViewModel
+import com.tickettrack.app.ui.trips.TripNavigationScreen
 
 @Composable
 fun MainScreen(
@@ -28,10 +29,10 @@ fun MainScreen(
     Scaffold(
         topBar = {
             TopBar(
-                companyName = state.value.companyName, // ✅ Pasa el nombre del usuario
+                companyName = state.value.companyName,
                 onLogout = {
-                    viewModel.logout() // ✅ Limpia el token
-                    onLogout() // ✅ Navega al login
+                    viewModel.logout()
+                    onLogout()
                 }
             )
         },
@@ -45,21 +46,11 @@ fun MainScreen(
         Box(modifier = Modifier.padding(padding)) {
             when (state.value.selectedTab) {
                 "Inicio" -> MainDashboardScreen(viewModel = viewModel)
-                "Viajes" -> ViajesScreen()
+                "Viajes" -> TripNavigationScreen() // ✅ Integración del módulo de viajes
                 "Gastos" -> GastosScreen()
                 "Transportista" -> DriversScreen(viewModel = driverViewModel)
             }
         }
-    }
-}
-
-@Composable
-fun ViajesScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = androidx.compose.ui.Alignment.Center
-    ) {
-        Text("Pantalla de Viajes - Por implementar")
     }
 }
 
