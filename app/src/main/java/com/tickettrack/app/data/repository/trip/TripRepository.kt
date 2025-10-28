@@ -2,84 +2,62 @@ package com.tickettrack.app.data.repository.trip
 
 import android.util.Log
 import com.tickettrack.app.data.model.trip.*
+import com.tickettrack.app.data.remote.TripApiService
 import com.tickettrack.app.domain.model.trip.*
 import kotlinx.coroutines.delay
-import java.time.Instant
 
 /**
  * Repositorio para operaciones CRUD de viajes.
  *
- * Siguiendo Clean Architecture y SOLID:
- * - Single Responsibility: Solo maneja acceso a datos de viajes
- * - Dependency Inversion: Puede ser reemplazado por una interfaz
- * - Preparado para integración con Firebase/API Gateway
+ * Estrategia híbrida:
+ * - Métodos con API disponible: Usan Retrofit + convierten a Domain
+ * - Métodos sin API: Mock temporal con cache local
  *
- * Estado actual: Simulación con datos de prueba
- * TODO: Implementar llamadas reales a Firebase cuando el microservicio esté listo
+ * @param apiService Servicio de API para llamadas HTTP
  */
-class TripRepository {
+class TripRepository(
+    private val apiService: TripApiService
+) {
 
     companion object {
         private const val TAG = "TripRepository"
 
-        // Simulación de datos para desarrollo
-        private val mockTrips = mutableListOf<TripResponse>()
+        // Cache local para funcionalidades sin API
+        private val tripCache = mutableMapOf<String, Trip>()
     }
 
+    // ==========================================
+    // MÉTODOS CON API REAL
+    // ==========================================
+
     /**
-     * Crea un nuevo viaje.
-     *
-     * @param request Datos del viaje a crear
-     * @return Viaje creado con ID generado
+     * Crea un nuevo viaje usando la API real.
+     * Convierte: Domain → API Request → API Response → Domain
      */
-    suspend fun createTrip(request: TripRequest): Result<TripResponse> {
+    suspend fun createTrip(trip: Trip): Result<Trip> {
         return try {
-            Log.d(TAG, "Creating trip: ${request.cargoName}")
+            Log.d(TAG, "Creating trip via API: ${trip.cargoName}")
 
-            // Simular delay de red
-            delay(1500)
+            // 1. Convertir Domain → API Request
+            val apiRequest = trip.toApiRequest()
 
-            // TODO: Reemplazar con llamada real a Firebase
-            // val tripRef = firestore.collection("trips").document()
-            // tripRef.set(request).await()
+            // 2. Llamar a la API
+            val response = apiService.createTrip(apiRequest)
 
-            // Generar ID simulado
-            val tripId = "trip_${System.currentTimeMillis()}"
-            val now = Instant.now().toString()
+            if (response.isSuccessful && response.body() != null) {
+                // 3. Convertir API Response → Domain
+                val tripDomain = response.body()!!.toDomain()
 
-            // Crear respuesta simulada
-            val response = TripResponse(
-                id = tripId,
-                cargoName = request.cargoName,
-                origin = request.origin,
-                destination = request.destination,
-                cargo = request.cargo,
-                budget = request.budget,
-                assignedDriverId = request.assignedDriverId,
-                createdByAdminId = request.createdByAdminId,
-                status = "pending",
-                statusHistory = listOf(
-                    StatusChangeData(
-                        status = "pending",
-                        changedAt = now,
-                        changedBy = request.createdByAdminId,
-                        changedByName = "Admin"
-                    )
-                ),
-                totalExpenses = 0.0,
-                remainingBudget = request.budget.initial,
-                expenseCount = 0,
-                budgetIncreaseCount = 0,
-                createdAt = now,
-                updatedAt = now,
-                completedAt = null
-            )
+                // 4. Guardar en cache local
+                tripCache[tripDomain.id] = tripDomain
 
-            // Guardar en lista simulada
-            mockTrips.add(response)
-
-            Log.d(TAG, "Trip created successfully: $tripId")
-            Result.success(response)
+                Log.d(TAG, "Trip created successfully: ${tripDomain.id}")
+                Result.success(tripDomain)
+            } else {
+                val error = "Error ${response.code()}: ${response.message()}"
+                Log.e(TAG, error)
+                Result.failure(Exception(error))
+            }
 
         } catch (e: Exception) {
             Log.e(TAG, "Error creating trip", e)
@@ -88,59 +66,107 @@ class TripRepository {
     }
 
     /**
-     * Obtiene todos los viajes de un admin.
-     *
-     * @param adminId UID del admin
-     * @return Lista de viajes
+     * Obtiene todos los viajes de la compañía usando la API.
      */
-    suspend fun getTripsByAdmin(adminId: String): Result<List<TripResponse>> {
+    suspend fun getTripsByAdmin(adminId: String): Result<List<Trip>> {
         return try {
-            Log.d(TAG, "Fetching trips for admin: $adminId")
+            Log.d(TAG, "Fetching trips from API")
 
-            // Simular delay de red
-            delay(1000)
+            val response = apiService.getAllTrips()
 
-            // TODO: Reemplazar con llamada real a Firebase
-            // val snapshot = firestore.collection("trips")
-            //     .whereEqualTo("createdByAdminId", adminId)
-            //     .get()
-            //     .await()
+            if (response.isSuccessful && response.body() != null) {
+                // Convertir lista de API → Domain
+                val trips = response.body()!!.toDomain()
 
-            // Filtrar viajes del admin
-            val trips = mockTrips.filter { it.createdByAdminId == adminId }
+                // Actualizar cache
+                trips.forEach { tripCache[it.id] = it }
 
-            Log.d(TAG, "Found ${trips.size} trips")
-            Result.success(trips)
+                Log.d(TAG, "Found ${trips.size} trips from API")
+                Result.success(trips)
+            } else {
+                val error = "Error ${response.code()}: ${response.message()}"
+                Log.e(TAG, error)
+                Result.failure(Exception(error))
+            }
 
         } catch (e: Exception) {
-            Log.e(TAG, "Error fetching trips", e)
+            Log.e(TAG, "Error fetching trips from API", e)
             Result.failure(e)
         }
     }
 
     /**
-     * Obtiene todos los viajes asignados a un transportista.
-     *
-     * @param driverId UID del transportista
-     * @return Lista de viajes asignados
+     * Obtiene un viaje por su ID usando la API.
      */
-    suspend fun getTripsByDriver(driverId: String): Result<List<TripResponse>> {
+    suspend fun getTripById(tripId: String): Result<Trip?> {
         return try {
-            Log.d(TAG, "Fetching trips for driver: $driverId")
+            Log.d(TAG, "Fetching trip from API: $tripId")
 
-            // Simular delay de red
-            delay(1000)
+            val response = apiService.getTripById(tripId)
 
-            // TODO: Reemplazar con llamada real a Firebase
-            // val snapshot = firestore.collection("trips")
-            //     .whereEqualTo("assignedDriverId", driverId)
-            //     .get()
-            //     .await()
+            if (response.isSuccessful && response.body() != null) {
+                val trip = response.body()!!.toDomain()
+                tripCache[trip.id] = trip
 
-            // Filtrar viajes del transportista
-            val trips = mockTrips.filter { it.assignedDriverId == driverId }
+                Log.d(TAG, "Trip found via API: ${trip.cargoName}")
+                Result.success(trip)
+            } else if (response.code() == 404) {
+                Log.d(TAG, "Trip not found: $tripId")
+                Result.success(null)
+            } else {
+                val error = "Error ${response.code()}: ${response.message()}"
+                Log.e(TAG, error)
+                Result.failure(Exception(error))
+            }
 
-            Log.d(TAG, "Found ${trips.size} trips for driver")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error fetching trip from API", e)
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Obtiene lista de transportistas disponibles desde la API.
+     */
+    suspend fun getTransportistas(): Result<List<TransportistaResponse>> {
+        return try {
+            Log.d(TAG, "Fetching transportistas from API")
+
+            val response = apiService.getTransportistas()
+
+            if (response.isSuccessful && response.body() != null) {
+                val transportistas = response.body()!!
+                Log.d(TAG, "Found ${transportistas.size} transportistas")
+                Result.success(transportistas)
+            } else {
+                val error = "Error ${response.code()}: ${response.message()}"
+                Log.e(TAG, error)
+                Result.failure(Exception(error))
+            }
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Error fetching transportistas", e)
+            Result.failure(e)
+        }
+    }
+
+    // ==========================================
+    // MÉTODOS SIN API (Mock Temporal)
+    // ==========================================
+
+    /**
+     * Obtiene viajes asignados a un transportista.
+     * ⚠️ MOCK: Filtra del cache local.
+     * TODO: Implementar cuando exista endpoint GET /trips/api/driver/{driverId}
+     */
+    suspend fun getTripsByDriver(driverId: String): Result<List<Trip>> {
+        return try {
+            Log.d(TAG, "[MOCK] Fetching trips for driver: $driverId")
+            delay(500)
+
+            val trips = tripCache.values.filter { it.assignedDriverId == driverId }
+
+            Log.d(TAG, "[MOCK] Found ${trips.size} trips for driver")
             Result.success(trips)
 
         } catch (e: Exception) {
@@ -150,98 +176,60 @@ class TripRepository {
     }
 
     /**
-     * Obtiene un viaje por su ID.
-     *
-     * @param tripId ID del viaje
-     * @return Viaje encontrado o null
-     */
-    suspend fun getTripById(tripId: String): Result<TripResponse?> {
-        return try {
-            Log.d(TAG, "Fetching trip: $tripId")
-
-            // Simular delay de red
-            delay(500)
-
-            // TODO: Reemplazar con llamada real a Firebase
-            // val doc = firestore.collection("trips").document(tripId).get().await()
-            // val trip = doc.toObject(TripResponse::class.java)
-
-            val trip = mockTrips.find { it.id == tripId }
-
-            if (trip != null) {
-                Log.d(TAG, "Trip found: ${trip.cargoName}")
-            } else {
-                Log.d(TAG, "Trip not found")
-            }
-
-            Result.success(trip)
-
-        } catch (e: Exception) {
-            Log.e(TAG, "Error fetching trip", e)
-            Result.failure(e)
-        }
-    }
-
-    /**
      * Aumenta el presupuesto de un viaje.
-     *
-     * @param request Datos del aumento
-     * @return Viaje actualizado
+     * ⚠️ MOCK: Actualiza solo en cache local.
+     * TODO: Implementar cuando exista endpoint PUT /trips/api/{id}/budget
      */
-    suspend fun increaseBudget(request: IncreaseBudgetRequest): Result<TripResponse> {
+    suspend fun increaseBudget(
+        tripId: String,
+        newAmount: Double,
+        reason: String,
+        urgency: Urgency,
+        requestedBy: String,
+        requestedByName: String
+    ): Result<Trip> {
         return try {
-            Log.d(TAG, "Increasing budget for trip: ${request.tripId}")
-
-            // Simular delay de red
+            Log.d(TAG, "[MOCK] Increasing budget for trip: $tripId")
             delay(1000)
 
-            // TODO: Reemplazar con llamada real a Firebase
-            // val tripRef = firestore.collection("trips").document(request.tripId)
-            // Actualizar budget.current, budget.history, budgetIncreaseCount, remainingBudget
+            val trip = tripCache[tripId]
+                ?: return Result.failure(Exception("Viaje no encontrado"))
 
-            // Buscar viaje en lista simulada
-            val tripIndex = mockTrips.indexOfFirst { it.id == request.tripId }
-            if (tripIndex == -1) {
-                throw Exception("Viaje no encontrado")
-            }
+            val now = java.time.Instant.now().toString()
 
-            val trip = mockTrips[tripIndex]
-            val now = Instant.now().toString()
-
-            // Crear nuevo entry en historial
-            val newHistoryEntry = BudgetIncreaseData(
-                previousAmount = request.previousAmount,
-                newAmount = request.newAmount,
-                increase = request.increase,
-                reason = request.reason,
-                requestedBy = request.requestedBy,
-                requestedByName = request.requestedByName,
-                approvedBy = request.approvedBy,
-                approvedByName = request.approvedByName,
+            // Crear nueva entrada en historial
+            val budgetIncrease = BudgetIncrease(
+                previousAmount = trip.budget.current,
+                newAmount = newAmount,
+                increase = newAmount - trip.budget.current,
+                reason = reason,
+                requestedBy = requestedBy,
+                requestedByName = requestedByName,
+                approvedBy = requestedBy,
+                approvedByName = requestedByName,
                 requestedAt = now,
                 approvedAt = now,
-                urgency = request.urgency,
-                supportingExpenses = request.supportingExpenses
+                urgency = urgency,
+                supportingExpenses = emptyList()
             )
 
             // Actualizar presupuesto
             val updatedBudget = trip.budget.copy(
-                current = request.newAmount,
-                history = trip.budget.history + newHistoryEntry
+                current = newAmount,
+                history = trip.budget.history + budgetIncrease
             )
 
             // Actualizar viaje
             val updatedTrip = trip.copy(
                 budget = updatedBudget,
-                remainingBudget = request.newAmount - trip.totalExpenses,
+                remainingBudget = newAmount - trip.totalExpenses,
                 budgetIncreaseCount = trip.budgetIncreaseCount + 1,
                 updatedAt = now
             )
 
-            // Actualizar en lista simulada
-            mockTrips[tripIndex] = updatedTrip
+            tripCache[tripId] = updatedTrip
 
-            Log.d(TAG, "Budget increased successfully")
+            Log.d(TAG, "[MOCK] Budget increased successfully")
             Result.success(updatedTrip)
 
         } catch (e: Exception) {
@@ -252,48 +240,41 @@ class TripRepository {
 
     /**
      * Actualiza el estado de un viaje.
-     *
-     * @param request Datos del cambio de estado
-     * @return Viaje actualizado
+     * ⚠️ MOCK: Actualiza solo en cache local.
+     * TODO: Implementar cuando exista endpoint PUT /trips/api/{id}/status
      */
-    suspend fun updateTripStatus(request: UpdateTripStatusRequest): Result<TripResponse> {
+    suspend fun updateTripStatus(
+        tripId: String,
+        newStatus: TripStatus,
+        changedBy: String,
+        changedByName: String
+    ): Result<Trip> {
         return try {
-            Log.d(TAG, "Updating trip status: ${request.tripId} -> ${request.newStatus}")
-
-            // Simular delay de red
+            Log.d(TAG, "[MOCK] Updating trip status: $tripId -> $newStatus")
             delay(1000)
 
-            // TODO: Reemplazar con llamada real a Firebase
-            // Actualizar status, statusHistory, y si es completed, registrar completedAt
+            val trip = tripCache[tripId]
+                ?: return Result.failure(Exception("Viaje no encontrado"))
 
-            val tripIndex = mockTrips.indexOfFirst { it.id == request.tripId }
-            if (tripIndex == -1) {
-                throw Exception("Viaje no encontrado")
-            }
+            val now = java.time.Instant.now().toString()
 
-            val trip = mockTrips[tripIndex]
-            val now = Instant.now().toString()
-
-            // Crear nuevo entry en historial de estados
-            val newStatusEntry = StatusChangeData(
-                status = request.newStatus,
+            val statusChange = StatusChange(
+                status = newStatus,
                 changedAt = now,
-                changedBy = request.changedBy,
-                changedByName = request.changedByName
+                changedBy = changedBy,
+                changedByName = changedByName
             )
 
-            // Actualizar viaje
             val updatedTrip = trip.copy(
-                status = request.newStatus,
-                statusHistory = trip.statusHistory + newStatusEntry,
+                status = newStatus,
+                statusHistory = trip.statusHistory + statusChange,
                 updatedAt = now,
-                completedAt = if (request.newStatus == "completed") now else trip.completedAt
+                completedAt = if (newStatus == TripStatus.COMPLETED) now else trip.completedAt
             )
 
-            // Actualizar en lista simulada
-            mockTrips[tripIndex] = updatedTrip
+            tripCache[tripId] = updatedTrip
 
-            Log.d(TAG, "Trip status updated successfully")
+            Log.d(TAG, "[MOCK] Trip status updated successfully")
             Result.success(updatedTrip)
 
         } catch (e: Exception) {
@@ -303,19 +284,18 @@ class TripRepository {
     }
 
     /**
-     * Elimina un viaje.
-     * Solo para desarrollo/testing.
+     * Elimina un viaje del cache.
+     * ⚠️ MOCK: Solo local.
+     * TODO: Implementar endpoint DELETE /trips/api/{id} si es necesario
      */
     suspend fun deleteTrip(tripId: String): Result<Unit> {
         return try {
-            Log.d(TAG, "Deleting trip: $tripId")
-
+            Log.d(TAG, "[MOCK] Deleting trip: $tripId")
             delay(500)
 
-            // TODO: Implementar en Firebase si es necesario
-            mockTrips.removeIf { it.id == tripId }
+            tripCache.remove(tripId)
 
-            Log.d(TAG, "Trip deleted successfully")
+            Log.d(TAG, "[MOCK] Trip deleted")
             Result.success(Unit)
 
         } catch (e: Exception) {
@@ -325,11 +305,11 @@ class TripRepository {
     }
 
     /**
-     * Limpia todos los datos simulados.
+     * Limpia el cache local.
      * Solo para testing.
      */
-    fun clearMockData() {
-        mockTrips.clear()
-        Log.d(TAG, "Mock data cleared")
+    fun clearCache() {
+        tripCache.clear()
+        Log.d(TAG, "Cache cleared")
     }
 }

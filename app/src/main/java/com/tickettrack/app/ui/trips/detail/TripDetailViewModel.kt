@@ -3,144 +3,124 @@ package com.tickettrack.app.ui.trips.detail
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tickettrack.app.data.model.trip.IncreaseBudgetRequest
-import com.tickettrack.app.data.model.trip.UpdateTripStatusRequest
-import com.tickettrack.app.data.model.trip.toDomain
-import com.tickettrack.app.data.repository.trip.DriverRepository
+import com.tickettrack.app.data.local.TokenManager
+import com.tickettrack.app.data.remote.TripRetrofitClient
 import com.tickettrack.app.data.repository.trip.TripRepository
 import com.tickettrack.app.domain.model.trip.TripStatus
 import com.tickettrack.app.domain.model.trip.Urgency
-import com.tickettrack.app.domain.validator.TripValidator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.Instant
 
 /**
  * ViewModel para la pantalla de detalle de viaje.
- *
- * Maneja:
- * - Carga del viaje y transportista
- * - Aumento de presupuesto
- * - Cambio de estado del viaje
- * - Expansión de secciones
+ * Conectado con API real usando TripRetrofitClient.
  */
 class TripDetailViewModel(
-    private val tripRepository: TripRepository = TripRepository(),
-    private val driverRepository: DriverRepository = DriverRepository()
+    private val tripId: String,
+    private val tokenManager: TokenManager? = null
 ) : ViewModel() {
 
     companion object {
         private const val TAG = "TripDetailViewModel"
     }
 
+    // Repository con API real
+    private val repository = TripRepository(
+        apiService = TripRetrofitClient.tripApiService
+    )
+
     private val _state = MutableStateFlow(TripDetailState())
     val state: StateFlow<TripDetailState> = _state.asStateFlow()
 
+    init {
+        loadTripDetails()
+    }
+
+    // ==========================================
+    // Cargar Detalles del Viaje
+    // ==========================================
+
     /**
-     * Carga el viaje por ID.
+     * Carga los detalles del viaje desde la API.
      */
-    fun loadTrip(tripId: String, userId: String, userName: String, userRole: String) {
+    fun loadTripDetails() {
         viewModelScope.launch {
-            try {
-                Log.d(TAG, "Loading trip: $tripId")
-
-                _state.update { it.copy(
+            _state.update {
+                it.copy(
                     isLoadingTrip = true,
-                    currentUserId = userId,
-                    currentUserName = userName,
-                    currentUserRole = userRole
-                )}
+                    errorMessage = null,
+                    currentUserId = tokenManager?.getUserEmail() ?: "",
+                    currentUserName = tokenManager?.getUserName() ?: "",
+                    currentUserRole = tokenManager?.getUserRole() ?: ""
+                )
+            }
 
-                val result = tripRepository.getTripById(tripId)
+            try {
+                Log.d(TAG, "Loading trip details: $tripId")
 
-                result.fold(
-                    onSuccess = { tripResponse ->
-                        if (tripResponse != null) {
-                            val trip = tripResponse.toDomain()
+                val result = repository.getTripById(tripId)
 
-                            _state.update { it.copy(
+                result.onSuccess { trip ->
+                    if (trip != null) {
+                        Log.d(TAG, "Trip loaded successfully: ${trip.cargoName}")
+
+                        _state.update {
+                            it.copy(
                                 trip = trip,
-                                isLoadingTrip = false
-                            )}
+                                isLoadingTrip = false,
+                                errorMessage = null
+                            )
+                        }
 
-                            // Cargar datos del transportista
-                            loadDriver(trip.assignedDriverId)
+                        // Cargar info del transportista (si lo necesitas)
+                        // loadDriver(trip.assignedDriverId)
 
-                            Log.d(TAG, "Trip loaded successfully")
-                        } else {
-                            _state.update { it.copy(
+                    } else {
+                        Log.e(TAG, "Trip not found: $tripId")
+                        _state.update {
+                            it.copy(
                                 isLoadingTrip = false,
                                 errorMessage = "Viaje no encontrado"
-                            )}
+                            )
                         }
-                    },
-                    onFailure = { exception ->
-                        _state.update { it.copy(
-                            isLoadingTrip = false,
-                            errorMessage = "Error al cargar viaje: ${exception.message}"
-                        )}
-
-                        Log.e(TAG, "Error loading trip", exception)
                     }
-                )
+                }
+
+                result.onFailure { error ->
+                    Log.e(TAG, "Error loading trip: ${error.message}")
+                    _state.update {
+                        it.copy(
+                            isLoadingTrip = false,
+                            errorMessage = "Error al cargar viaje: ${error.message}"
+                        )
+                    }
+                }
 
             } catch (e: Exception) {
-                _state.update { it.copy(
-                    isLoadingTrip = false,
-                    errorMessage = "Error inesperado: ${e.message}"
-                )}
-
-                Log.e(TAG, "Unexpected error loading trip", e)
+                Log.e(TAG, "Exception loading trip", e)
+                _state.update {
+                    it.copy(
+                        isLoadingTrip = false,
+                        errorMessage = "Error inesperado: ${e.message}"
+                    )
+                }
             }
         }
     }
 
     /**
-     * Carga los datos del transportista.
+     * Refresca los detalles del viaje.
      */
-    private fun loadDriver(driverId: String) {
-        viewModelScope.launch {
-            try {
-                Log.d(TAG, "Loading driver: $driverId")
-
-                _state.update { it.copy(isLoadingDriver = true) }
-
-                val result = driverRepository.getDriverById(driverId)
-
-                result.fold(
-                    onSuccess = { driver ->
-                        _state.update { it.copy(
-                            driver = driver,
-                            isLoadingDriver = false
-                        )}
-
-                        Log.d(TAG, "Driver loaded successfully")
-                    },
-                    onFailure = { exception ->
-                        _state.update { it.copy(
-                            isLoadingDriver = false,
-                            errorMessage = "Error al cargar transportista: ${exception.message}"
-                        )}
-
-                        Log.e(TAG, "Error loading driver", exception)
-                    }
-                )
-
-            } catch (e: Exception) {
-                _state.update { it.copy(
-                    isLoadingDriver = false,
-                    errorMessage = "Error inesperado: ${e.message}"
-                )}
-
-                Log.e(TAG, "Unexpected error loading driver", e)
-            }
-        }
+    fun refresh() {
+        loadTripDetails()
     }
 
-    // ==================== SECCIONES EXPANDIBLES ====================
+    // ==========================================
+    // Secciones Expandibles
+    // ==========================================
 
     fun toggleBudgetHistory() {
         _state.update { it.copy(isBudgetHistoryExpanded = !it.isBudgetHistoryExpanded) }
@@ -150,19 +130,23 @@ class TripDetailViewModel(
         _state.update { it.copy(isStatusHistoryExpanded = !it.isStatusHistoryExpanded) }
     }
 
-    // ==================== AUMENTAR PRESUPUESTO ====================
+    // ==========================================
+    // Aumentar Presupuesto (Mock)
+    // ==========================================
 
     fun showIncreaseBudgetDialog() {
         val currentBudget = _state.value.trip?.budget?.current ?: 0.0
 
-        _state.update { it.copy(
-            showIncreaseBudgetDialog = true,
-            newBudgetAmount = currentBudget.toString(),
-            increaseReason = "",
-            selectedUrgency = Urgency.MEDIUM,
-            newBudgetAmountError = null,
-            increaseReasonError = null
-        )}
+        _state.update {
+            it.copy(
+                showIncreaseBudgetDialog = true,
+                newBudgetAmount = currentBudget.toString(),
+                increaseReason = "",
+                selectedUrgency = Urgency.MEDIUM,
+                newBudgetAmountError = null,
+                increaseReasonError = null
+            )
+        }
     }
 
     fun hideIncreaseBudgetDialog() {
@@ -170,28 +154,11 @@ class TripDetailViewModel(
     }
 
     fun onNewBudgetAmountChanged(value: String) {
-        _state.update { it.copy(
-            newBudgetAmount = value,
-            newBudgetAmountError = null
-        )}
-    }
-
-    fun validateNewBudgetAmount() {
-        val currentAmount = _state.value.trip?.budget?.current ?: 0.0
-        val result = TripValidator.validateNewBudget(_state.value.newBudgetAmount, currentAmount)
-        _state.update { it.copy(newBudgetAmountError = result.errorMessage) }
+        _state.update { it.copy(newBudgetAmount = value, newBudgetAmountError = null) }
     }
 
     fun onIncreaseReasonChanged(value: String) {
-        _state.update { it.copy(
-            increaseReason = value,
-            increaseReasonError = null
-        )}
-    }
-
-    fun validateIncreaseReason() {
-        val result = TripValidator.validateIncreaseReason(_state.value.increaseReason)
-        _state.update { it.copy(increaseReasonError = result.errorMessage) }
+        _state.update { it.copy(increaseReason = value, increaseReasonError = null) }
     }
 
     fun onUrgencySelected(urgency: Urgency) {
@@ -200,80 +167,92 @@ class TripDetailViewModel(
 
     /**
      * Aumenta el presupuesto del viaje.
+     * ⚠️ MOCK: Usa cache local hasta que exista endpoint en API.
      */
     fun increaseBudget() {
+        val currentState = _state.value
+        val trip = currentState.trip ?: return
+
+        // Validar monto
+        val newAmount = currentState.newBudgetAmount.toDoubleOrNull()
+        if (newAmount == null || newAmount <= 0) {
+            _state.update { it.copy(newBudgetAmountError = "Ingrese un monto válido") }
+            return
+        }
+
+        // Validar que el nuevo monto sea mayor al actual
+        if (newAmount <= trip.budget.current) {
+            _state.update {
+                it.copy(newBudgetAmountError = "El nuevo monto debe ser mayor al actual ($${trip.budget.current})")
+            }
+            return
+        }
+
+        // Validar razón
+        if (currentState.increaseReason.isBlank()) {
+            _state.update { it.copy(increaseReasonError = "La razón es requerida") }
+            return
+        }
+
+        if (currentState.increaseReason.length < 10) {
+            _state.update { it.copy(increaseReasonError = "La razón debe tener al menos 10 caracteres") }
+            return
+        }
+
         viewModelScope.launch {
+            _state.update { it.copy(isIncreasingBudget = true, errorMessage = null) }
+
             try {
-                val currentState = _state.value
-                val trip = currentState.trip ?: return@launch
+                Log.d(TAG, "[MOCK] Increasing budget for trip: $tripId")
 
-                // Validar
-                validateNewBudgetAmount()
-                validateIncreaseReason()
-
-                if (!currentState.isIncreaseBudgetFormValid()) {
-                    Log.w(TAG, "Validation failed")
-                    return@launch
-                }
-
-                Log.d(TAG, "Increasing budget for trip: ${trip.id}")
-
-                _state.update { it.copy(isIncreasingBudget = true) }
-
-                val newAmount = currentState.newBudgetAmount.toDouble()
-                val currentAmount = trip.budget.current
-                val increase = newAmount - currentAmount
-
-                val request = IncreaseBudgetRequest(
-                    tripId = trip.id,
-                    previousAmount = currentAmount,
+                val result = repository.increaseBudget(
+                    tripId = tripId,
                     newAmount = newAmount,
-                    increase = increase,
                     reason = currentState.increaseReason,
+                    urgency = currentState.selectedUrgency,
                     requestedBy = currentState.currentUserId,
-                    requestedByName = currentState.currentUserName,
-                    approvedBy = currentState.currentUserId,
-                    approvedByName = currentState.currentUserName,
-                    urgency = currentState.selectedUrgency.toFirebaseString(),
-                    supportingExpenses = emptyList()
+                    requestedByName = currentState.currentUserName
                 )
 
-                val result = tripRepository.increaseBudget(request)
-
-                result.fold(
-                    onSuccess = { tripResponse ->
-                        val updatedTrip = tripResponse.toDomain()
-
-                        _state.update { it.copy(
+                result.onSuccess { updatedTrip ->
+                    Log.d(TAG, "[MOCK] Budget increased successfully")
+                    _state.update {
+                        it.copy(
                             trip = updatedTrip,
                             isIncreasingBudget = false,
-                            showIncreaseBudgetDialog = false
-                        )}
-
-                        Log.d(TAG, "Budget increased successfully")
-                    },
-                    onFailure = { exception ->
-                        _state.update { it.copy(
-                            isIncreasingBudget = false,
-                            errorMessage = "Error al aumentar presupuesto: ${exception.message}"
-                        )}
-
-                        Log.e(TAG, "Error increasing budget", exception)
+                            showIncreaseBudgetDialog = false,
+                            newBudgetAmount = "",
+                            increaseReason = "",
+                            selectedUrgency = Urgency.MEDIUM
+                        )
                     }
-                )
+                }
+
+                result.onFailure { error ->
+                    Log.e(TAG, "Error increasing budget: ${error.message}")
+                    _state.update {
+                        it.copy(
+                            isIncreasingBudget = false,
+                            errorMessage = "Error al aumentar presupuesto: ${error.message}"
+                        )
+                    }
+                }
 
             } catch (e: Exception) {
-                _state.update { it.copy(
-                    isIncreasingBudget = false,
-                    errorMessage = "Error inesperado: ${e.message}"
-                )}
-
-                Log.e(TAG, "Unexpected error increasing budget", e)
+                Log.e(TAG, "Exception increasing budget", e)
+                _state.update {
+                    it.copy(
+                        isIncreasingBudget = false,
+                        errorMessage = "Error inesperado: ${e.message}"
+                    )
+                }
             }
         }
     }
 
-    // ==================== CAMBIAR ESTADO ====================
+    // ==========================================
+    // Cambiar Estado (Mock)
+    // ==========================================
 
     /**
      * Inicia el viaje (pending → in_progress).
@@ -298,74 +277,80 @@ class TripDetailViewModel(
 
     /**
      * Cambia el estado del viaje.
+     * ⚠️ MOCK: Usa cache local hasta que exista endpoint en API.
      */
     private fun changeStatus(newStatus: TripStatus) {
         viewModelScope.launch {
+            _state.update { it.copy(isChangingStatus = true, errorMessage = null) }
+
             try {
                 val currentState = _state.value
-                val trip = currentState.trip ?: return@launch
 
-                Log.d(TAG, "Changing trip status to: ${newStatus.name}")
+                Log.d(TAG, "[MOCK] Changing status for trip: $tripId to $newStatus")
 
-                _state.update { it.copy(isChangingStatus = true) }
-
-                val request = UpdateTripStatusRequest(
-                    tripId = trip.id,
-                    newStatus = newStatus.toFirebaseString(),
+                val result = repository.updateTripStatus(
+                    tripId = tripId,
+                    newStatus = newStatus,
                     changedBy = currentState.currentUserId,
                     changedByName = currentState.currentUserName
                 )
 
-                val result = tripRepository.updateTripStatus(request)
-
-                result.fold(
-                    onSuccess = { tripResponse ->
-                        val updatedTrip = tripResponse.toDomain()
-
-                        _state.update { it.copy(
+                result.onSuccess { updatedTrip ->
+                    Log.d(TAG, "[MOCK] Status changed successfully")
+                    _state.update {
+                        it.copy(
                             trip = updatedTrip,
                             isChangingStatus = false,
                             statusChangeSuccess = true
-                        )}
-
-                        Log.d(TAG, "Status changed successfully")
-
-                        // Reset success después de 2 segundos
-                        kotlinx.coroutines.delay(2000)
-                        _state.update { it.copy(statusChangeSuccess = false) }
-                    },
-                    onFailure = { exception ->
-                        _state.update { it.copy(
-                            isChangingStatus = false,
-                            errorMessage = "Error al cambiar estado: ${exception.message}"
-                        )}
-
-                        Log.e(TAG, "Error changing status", exception)
+                        )
                     }
-                )
+
+                    // Reset success después de 2 segundos
+                    kotlinx.coroutines.delay(2000)
+                    _state.update { it.copy(statusChangeSuccess = false) }
+                }
+
+                result.onFailure { error ->
+                    Log.e(TAG, "Error changing status: ${error.message}")
+                    _state.update {
+                        it.copy(
+                            isChangingStatus = false,
+                            errorMessage = "Error al cambiar estado: ${error.message}"
+                        )
+                    }
+                }
 
             } catch (e: Exception) {
-                _state.update { it.copy(
-                    isChangingStatus = false,
-                    errorMessage = "Error inesperado: ${e.message}"
-                )}
-
-                Log.e(TAG, "Unexpected error changing status", e)
+                Log.e(TAG, "Exception changing status", e)
+                _state.update {
+                    it.copy(
+                        isChangingStatus = false,
+                        errorMessage = "Error inesperado: ${e.message}"
+                    )
+                }
             }
         }
     }
 
-    /**
-     * Limpia el mensaje de error.
-     */
+    // ==========================================
+    // Helpers
+    // ==========================================
+
     fun clearError() {
         _state.update { it.copy(errorMessage = null) }
     }
 
     /**
-     * Resetea el estado.
+     * Verifica si el usuario puede aumentar presupuesto.
      */
-    fun resetState() {
-        _state.value = TripDetailState()
+    fun canIncreaseBudget(): Boolean {
+        return _state.value.canIncreaseBudget()
+    }
+
+    /**
+     * Verifica si el usuario puede cambiar el estado.
+     */
+    fun canChangeStatus(): Boolean {
+        return _state.value.canChangeStatus()
     }
 }

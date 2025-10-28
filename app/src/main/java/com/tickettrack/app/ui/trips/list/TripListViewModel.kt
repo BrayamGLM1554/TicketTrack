@@ -3,7 +3,8 @@ package com.tickettrack.app.ui.trips.list
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tickettrack.app.data.model.trip.toDomain
+import com.tickettrack.app.data.local.TokenManager
+import com.tickettrack.app.data.remote.TripRetrofitClient
 import com.tickettrack.app.data.repository.trip.TripRepository
 import com.tickettrack.app.domain.model.trip.TripStatus
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,80 +14,80 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel para la pantalla de lista de viajes.
- *
- * Siguiendo MVVM y Clean Architecture:
- * - Maneja la lógica de negocio de la UI
- * - Se comunica con el repositorio (Data Layer)
- * - Expone estado inmutable a la UI
- * - No contiene referencias a Android Framework (excepto ViewModel y Log)
+ * ViewModel para la lista de viajes.
+ * Conectado con API real usando TripRetrofitClient.
  */
 class TripListViewModel(
-    private val tripRepository: TripRepository = TripRepository()
+    private val tokenManager: TokenManager? = null
 ) : ViewModel() {
 
     companion object {
         private const val TAG = "TripListViewModel"
     }
 
-    // Estado privado mutable
-    private val _state = MutableStateFlow(TripListState())
+    // Repository con API real
+    private val repository = TripRepository(
+        apiService = TripRetrofitClient.tripApiService
+    )
 
-    // Estado público inmutable
+    private val _state = MutableStateFlow(TripListState())
     val state: StateFlow<TripListState> = _state.asStateFlow()
 
     /**
-     * Carga los viajes del usuario actual.
-     * - Si es admin: carga todos sus viajes
-     * - Si es driver: carga solo los asignados a él
+     * Carga todos los viajes desde la API.
      */
     fun loadTrips(userId: String, userRole: String) {
         viewModelScope.launch {
-            try {
-                Log.d(TAG, "Loading trips for user: $userId, role: $userRole")
-
-                _state.update { it.copy(
+            _state.update {
+                it.copy(
                     isLoading = true,
                     errorMessage = null,
                     currentUserId = userId,
                     currentUserRole = userRole
-                )}
+                )
+            }
 
-                val result = if (userRole == "admin" || userRole == "consignatario") {
-                    tripRepository.getTripsByAdmin(userId)
+            try {
+                Log.d(TAG, "Loading trips for user: $userId (role: $userRole)")
+
+                val result = if (userRole == "ADMIN" || userRole == "consignatario") {
+                    // Admin ve todos los viajes
+                    repository.getTripsByAdmin(userId)
                 } else {
-                    tripRepository.getTripsByDriver(userId)
+                    // Driver ve solo sus viajes asignados
+                    repository.getTripsByDriver(userId)
                 }
 
-                result.fold(
-                    onSuccess = { tripResponses ->
-                        val trips = tripResponses.map { it.toDomain() }
-
-                        _state.update { it.copy(
+                result.onSuccess { trips ->
+                    Log.d(TAG, "Trips loaded successfully: ${trips.size}")
+                    _state.update {
+                        it.copy(
                             trips = trips,
                             isLoading = false,
-                            isEmpty = trips.isEmpty()
-                        )}
-
-                        Log.d(TAG, "Loaded ${trips.size} trips successfully")
-                    },
-                    onFailure = { exception ->
-                        _state.update { it.copy(
-                            isLoading = false,
-                            errorMessage = exception.message ?: "Error al cargar viajes"
-                        )}
-
-                        Log.e(TAG, "Error loading trips", exception)
+                            isEmpty = trips.isEmpty(),
+                            errorMessage = null
+                        )
                     }
-                )
+                }
+
+                result.onFailure { error ->
+                    Log.e(TAG, "Error loading trips: ${error.message}")
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = error.message ?: "Error al cargar viajes"
+                        )
+                    }
+                }
 
             } catch (e: Exception) {
-                _state.update { it.copy(
-                    isLoading = false,
-                    errorMessage = e.message ?: "Error inesperado"
-                )}
-
-                Log.e(TAG, "Unexpected error loading trips", e)
+                Log.e(TAG, "Exception loading trips", e)
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "Error inesperado: ${e.message}"
+                    )
+                }
             }
         }
     }
@@ -96,59 +97,65 @@ class TripListViewModel(
      */
     fun refreshTrips() {
         viewModelScope.launch {
+            _state.update { it.copy(isRefreshing = true) }
+
             try {
-                val currentState = _state.value
+                val userId = _state.value.currentUserId
+                val userRole = _state.value.currentUserRole
 
-                Log.d(TAG, "Refreshing trips")
-
-                _state.update { it.copy(isRefreshing = true, errorMessage = null) }
-
-                val result = if (currentState.currentUserRole == "admin" || currentState.currentUserRole == "consignatario") {
-                    tripRepository.getTripsByAdmin(currentState.currentUserId)
+                val result = if (userRole == "ADMIN" || userRole == "consignatario") {
+                    repository.getTripsByAdmin(userId)
                 } else {
-                    tripRepository.getTripsByDriver(currentState.currentUserId)
+                    repository.getTripsByDriver(userId)
                 }
 
-                result.fold(
-                    onSuccess = { tripResponses ->
-                        val trips = tripResponses.map { it.toDomain() }
-
-                        _state.update { it.copy(
+                result.onSuccess { trips ->
+                    _state.update {
+                        it.copy(
                             trips = trips,
                             isRefreshing = false,
                             isEmpty = trips.isEmpty()
-                        )}
-
-                        Log.d(TAG, "Trips refreshed successfully")
-                    },
-                    onFailure = { exception ->
-                        _state.update { it.copy(
-                            isRefreshing = false,
-                            errorMessage = exception.message ?: "Error al refrescar"
-                        )}
-
-                        Log.e(TAG, "Error refreshing trips", exception)
+                        )
                     }
-                )
+                }
+
+                result.onFailure { error ->
+                    _state.update {
+                        it.copy(
+                            isRefreshing = false,
+                            errorMessage = error.message
+                        )
+                    }
+                }
 
             } catch (e: Exception) {
-                _state.update { it.copy(
-                    isRefreshing = false,
-                    errorMessage = e.message ?: "Error inesperado"
-                )}
-
-                Log.e(TAG, "Unexpected error refreshing trips", e)
+                _state.update {
+                    it.copy(
+                        isRefreshing = false,
+                        errorMessage = e.message
+                    )
+                }
             }
         }
     }
 
     /**
-     * Aplica un filtro de estado.
+     * Filtra viajes por estado.
      */
     fun filterByStatus(status: TripStatus?) {
-        Log.d(TAG, "Filtering by status: ${status?.name ?: "ALL"}")
-
         _state.update { it.copy(selectedStatusFilter = status) }
+    }
+
+    /**
+     * Limpia todos los filtros.
+     */
+    fun clearFilters() {
+        _state.update {
+            it.copy(
+                selectedStatusFilter = null,
+                searchQuery = ""
+            )
+        }
     }
 
     /**
@@ -159,37 +166,16 @@ class TripListViewModel(
     }
 
     /**
-     * Muestra u oculta los filtros.
+     * Alterna la visibilidad de los filtros.
      */
     fun toggleFilters() {
         _state.update { it.copy(showFilters = !it.showFilters) }
     }
 
     /**
-     * Limpia el error actual.
+     * Limpia el mensaje de error.
      */
     fun clearError() {
         _state.update { it.copy(errorMessage = null) }
-    }
-
-    /**
-     * Limpia todos los filtros.
-     */
-    fun clearFilters() {
-        Log.d(TAG, "Clearing all filters")
-
-        _state.update { it.copy(
-            selectedStatusFilter = null,
-            searchQuery = ""
-        )}
-    }
-
-    /**
-     * Resetea el estado completo.
-     */
-    fun resetState() {
-        Log.d(TAG, "Resetting state")
-
-        _state.value = TripListState()
     }
 }

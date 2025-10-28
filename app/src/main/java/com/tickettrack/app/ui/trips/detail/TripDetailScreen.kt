@@ -1,50 +1,50 @@
 package com.tickettrack.app.ui.trips.detail
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.tickettrack.app.data.local.TokenManager
+import com.tickettrack.app.domain.model.trip.StatusChange
 import com.tickettrack.app.domain.model.trip.Trip
+import com.tickettrack.app.domain.model.trip.TripStatus
 import com.tickettrack.app.ui.trips.detail.components.BudgetSection
 import com.tickettrack.app.ui.trips.detail.components.DriverSection
 import com.tickettrack.app.ui.trips.detail.components.IncreaseBudgetDialog
 
 /**
- * Pantalla de detalle de viaje.
- *
- * Muestra:
- * - Información del viaje (carga, origen, destino)
- * - Presupuesto con historial expandible
- * - Transportista asignado
- * - Botones de acción (aumentar presupuesto, cambiar estado)
+ * Pantalla de detalle de un viaje.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TripDetailScreen(
     tripId: String,
-    onNavigateBack: () -> Unit,
-    currentUserId: String,
-    currentUserName: String,
-    currentUserRole: String,
-    viewModel: TripDetailViewModel = viewModel()
+    onNavigateBack: () -> Unit
 ) {
-    val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+    val tokenManager = remember { TokenManager(context) }
 
-    // Cargar viaje al iniciar
-    LaunchedEffect(Unit) {
-        viewModel.loadTrip(tripId, currentUserId, currentUserName, currentUserRole)
+    // Inicializar ViewModel con TokenManager
+    val viewModel: TripDetailViewModel = remember {
+        TripDetailViewModel(
+            tripId = tripId,
+            tokenManager = tokenManager
+        )
     }
+
+    val state by viewModel.state.collectAsState()
 
     // Mostrar error si existe
     if (state.errorMessage != null) {
@@ -81,8 +81,8 @@ fun TripDetailScreen(
             onNewAmountChanged = viewModel::onNewBudgetAmountChanged,
             onReasonChanged = viewModel::onIncreaseReasonChanged,
             onUrgencySelected = viewModel::onUrgencySelected,
-            onConfirm = viewModel::increaseBudget,
-            onDismiss = viewModel::hideIncreaseBudgetDialog
+            onConfirm = { viewModel.increaseBudget() },
+            onDismiss = { viewModel.hideIncreaseBudgetDialog() }
         )
     }
 
@@ -90,10 +90,19 @@ fun TripDetailScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = "Detalle de Viaje",
-                        fontWeight = FontWeight.Bold
-                    )
+                    Column {
+                        Text(
+                            text = "Detalle del Viaje",
+                            fontWeight = FontWeight.Bold
+                        )
+                        state.trip?.let { trip ->
+                            Text(
+                                text = trip.cargoName,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray
+                            )
+                        }
+                    }
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
@@ -116,92 +125,106 @@ fun TripDetailScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            when {
-                state.isLoadingTrip -> {
-                    // Loading
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center),
-                        color = Color(0xFF5AC5C5)
-                    )
-                }
-                state.trip != null -> {
-                    // Contenido principal
+            if (state.isLoadingTrip) {
+                // Loading state
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
                     Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState())
-                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        val trip = state.trip!!
-
-                        // Información del Viaje
-                        TripInfoCard(trip = trip)
-
-                        // Presupuesto
-                        BudgetSection(
-                            budget = trip.budget,
-                            totalExpenses = trip.totalExpenses,
-                            remainingBudget = trip.remainingBudget,
-                            isHistoryExpanded = state.isBudgetHistoryExpanded,
-                            canIncreaseBudget = state.canIncreaseBudget() && trip.canIncreaseBudget(),
-                            onToggleHistory = viewModel::toggleBudgetHistory,
-                            onIncreaseBudget = viewModel::showIncreaseBudgetDialog
+                        CircularProgressIndicator(color = Color(0xFF5AC5C5))
+                        Text(
+                            text = "Cargando viaje...",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.Gray
                         )
-
-                        // Transportista
-                        DriverSection(
-                            driver = state.driver,
-                            isLoading = state.isLoadingDriver
-                        )
-
-                        // Botones de acción
-                        if (state.canChangeStatus()) {
-                            ActionsSection(
-                                trip = trip,
-                                isChangingStatus = state.isChangingStatus,
-                                onStartTrip = viewModel::startTrip,
-                                onCompleteTrip = viewModel::completeTrip,
-                                onCancelTrip = viewModel::cancelTrip
-                            )
-                        }
-
-                        // Espaciador final
-                        Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
-                else -> {
-                    // Sin datos
-                    Text(
-                        text = "No se pudo cargar el viaje",
-                        modifier = Modifier.align(Alignment.Center),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color.Gray
-                    )
-                }
-            }
-
-            // Snackbar de éxito al cambiar estado
-            if (state.statusChangeSuccess) {
-                Snackbar(
+            } else if (state.trip != null) {
+                // Contenido principal
+                Column(
                     modifier = Modifier
-                        .align(Alignment.BottomCenter)
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
                         .padding(16.dp),
-                    containerColor = Color(0xFF4CAF50)
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
+                    // Header con estado
+                    TripHeader(
+                        trip = state.trip!!,
+                        onStartTrip = { viewModel.startTrip() },
+                        onCompleteTrip = { viewModel.completeTrip() },
+                        onCancelTrip = { viewModel.cancelTrip() },
+                        canChangeStatus = viewModel.canChangeStatus(),
+                        isChangingStatus = state.isChangingStatus
+                    )
+
+                    // Sección de presupuesto
+                    BudgetSection(
+                        budget = state.trip!!.budget,
+                        totalExpenses = state.trip!!.totalExpenses,
+                        remainingBudget = state.trip!!.remainingBudget,
+                        isHistoryExpanded = state.isBudgetHistoryExpanded,
+                        canIncreaseBudget = viewModel.canIncreaseBudget(),
+                        onToggleHistory = { viewModel.toggleBudgetHistory() },
+                        onIncreaseBudget = { viewModel.showIncreaseBudgetDialog() }
+                    )
+
+                    // Sección de transportista
+                    DriverSection(
+                        driverId = state.trip!!.assignedDriverId,
+                        driverName = "Transportista", // Temporal hasta tener endpoint
+                        isLoading = state.isLoadingDriver
+                    )
+
+                    // Información de la carga
+                    CargoInfoCard(trip = state.trip!!)
+
+                    // Ubicaciones
+                    LocationsCard(trip = state.trip!!)
+
+                    // Historial de estados
+                    if (state.trip!!.statusHistory.isNotEmpty()) {
+                        StatusHistoryCard(
+                            history = state.trip!!.statusHistory,
+                            isExpanded = state.isStatusHistoryExpanded,
+                            onToggle = { viewModel.toggleStatusHistory() }
+                        )
+                    }
+
+                    // Espaciador final
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            } else {
+                // Sin datos
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.CheckCircle,
-                            contentDescription = "Éxito",
-                            tint = Color.White
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Estado actualizado exitosamente",
-                            color = Color.White
+                            text = "⚠️",
+                            style = MaterialTheme.typography.displayMedium
                         )
+                        Text(
+                            text = "No se pudo cargar el viaje",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.Gray
+                        )
+                        Button(
+                            onClick = { viewModel.refresh() },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF5AC5C5)
+                            )
+                        ) {
+                            Text("Reintentar")
+                        }
                     }
                 }
             }
@@ -210,12 +233,16 @@ fun TripDetailScreen(
 }
 
 @Composable
-private fun TripInfoCard(
+private fun TripHeader(
     trip: Trip,
-    modifier: Modifier = Modifier
+    onStartTrip: () -> Unit,
+    onCompleteTrip: () -> Unit,
+    onCancelTrip: () -> Unit,
+    canChangeStatus: Boolean,
+    isChangingStatus: Boolean
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
@@ -227,103 +254,132 @@ private fun TripInfoCard(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Header con nombre y estado
+            // Estado actual
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = trip.cargoName,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f)
+                    text = "Estado:",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
                 )
 
-                StatusBadge(status = trip.status.getDisplayName(), icon = trip.getStatusIcon())
-            }
-
-            Divider()
-
-            // Carga
-            SectionTitle("Información de la Carga")
-            InfoRow("Tipo", trip.cargo.type)
-            InfoRow("Peso", trip.cargo.getWeightInTonsFormatted())
-            InfoRow("Descripción", trip.cargo.description)
-            if (!trip.cargo.specialRequirements.isNullOrBlank()) {
-                InfoRow("Requisitos", trip.cargo.specialRequirements!!)
-            }
-
-            Divider()
-
-            // Origen y Destino
-            SectionTitle("Ruta")
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = "📍 Origen",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = Color(0xFF5AC5C5),
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = trip.origin.city,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Medium
-                    )
-                    Text(
-                        text = trip.origin.state,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
-                    )
-                }
-
-                Text(
-                    text = "→",
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = Color.Gray
-                )
-
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.End
+                Surface(
+                    shape = MaterialTheme.shapes.small,
+                    color = Color(trip.status.getColor())
                 ) {
                     Text(
-                        text = "🏁 Destino",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = Color(0xFF5AC5C5),
+                        text = trip.status.getDisplayName(),
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
-                    Text(
-                        text = trip.destination.city,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Medium
-                    )
-                    Text(
-                        text = trip.destination.state,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
-                    )
                 }
+            }
+
+            // Botones de acción (solo si tiene permisos)
+            if (canChangeStatus && !isChangingStatus) {
+                Divider()
+
+                when (trip.status) {
+                    TripStatus.PENDING -> {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Button(
+                                onClick = onStartTrip,
+                                modifier = Modifier.weight(1f),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF4CAF50)
+                                )
+                            ) {
+                                Text("Iniciar Viaje")
+                            }
+
+                            OutlinedButton(
+                                onClick = onCancelTrip,
+                                modifier = Modifier.weight(1f),
+                                colors = ButtonDefaults.outlinedButtonColors(
+                                    contentColor = Color(0xFFF44336)
+                                )
+                            ) {
+                                Text("Cancelar")
+                            }
+                        }
+                    }
+                    TripStatus.IN_PROGRESS -> {
+                        Button(
+                            onClick = onCompleteTrip,
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF2196F3)
+                            )
+                        ) {
+                            Text("Completar Viaje")
+                        }
+                    }
+                    else -> {
+                        // No hay acciones disponibles
+                    }
+                }
+            }
+
+            if (isChangingStatus) {
+                LinearProgressIndicator(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Color(0xFF5AC5C5)
+                )
             }
         }
     }
 }
 
 @Composable
-private fun ActionsSection(
-    trip: Trip,
-    isChangingStatus: Boolean,
-    onStartTrip: () -> Unit,
-    onCompleteTrip: () -> Unit,
-    onCancelTrip: () -> Unit,
-    modifier: Modifier = Modifier
+private fun CargoInfoCard(
+    trip: Trip
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.cardElevation(2.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "📦 Información de la Carga",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+
+            Divider()
+
+            InfoRow("Tipo:", trip.cargo.type)
+            InfoRow("Peso:", "${trip.cargo.weight} kg")
+            InfoRow("Descripción:", trip.cargo.description)
+
+            trip.cargo.specialRequirements?.let {
+                InfoRow("Requisitos especiales:", it)
+            }
+        }
+    }
+}
+
+@Composable
+private fun LocationsCard(
+    trip: Trip
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
@@ -336,48 +392,100 @@ private fun ActionsSection(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Acciones",
-                style = MaterialTheme.typography.titleMedium,
+                text = "📍 Ubicaciones",
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
 
-            when {
-                trip.canStart() -> {
-                    Button(
-                        onClick = onStartTrip,
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = !isChangingStatus,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF2196F3)
-                        )
-                    ) {
-                        Text("Iniciar Viaje")
-                    }
-                }
-                trip.canFinalize() -> {
-                    Button(
-                        onClick = onCompleteTrip,
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = !isChangingStatus,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF4CAF50)
-                        )
-                    ) {
-                        Text("Finalizar Viaje")
-                    }
+            // Origen
+            Column {
+                Text(
+                    text = "Origen",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF5AC5C5)
+                )
+                Text(
+                    text = trip.origin.getFullAddress(),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            Divider()
+
+            // Destino
+            Column {
+                Text(
+                    text = "Destino",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF5AC5C5)
+                )
+                Text(
+                    text = trip.destination.getFullAddress(),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun StatusHistoryCard(
+    history: List<StatusChange>,
+    isExpanded: Boolean,
+    onToggle: () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.cardElevation(2.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            // Header clickeable
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .then(
+                        if (history.isNotEmpty()) {
+                            Modifier.clickableWithoutRipple(onClick = onToggle)
+                        } else {
+                            Modifier
+                        }
+                    ),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "📋 Historial de Estados (${history.size})",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+
+                if (history.isNotEmpty()) {
+                    Text(
+                        text = if (isExpanded) "▲" else "▼",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color(0xFF5AC5C5)
+                    )
                 }
             }
 
-            if (trip.canCancel()) {
-                OutlinedButton(
-                    onClick = onCancelTrip,
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = !isChangingStatus,
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = Color(0xFFF44336)
-                    )
-                ) {
-                    Text("Cancelar Viaje")
+            // Contenido expandible
+            if (isExpanded && history.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Divider()
+                Spacer(modifier = Modifier.height(12.dp))
+
+                history.forEach { change ->
+                    StatusChangeItem(change)
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }
@@ -385,39 +493,63 @@ private fun ActionsSection(
 }
 
 @Composable
-private fun StatusBadge(status: String, icon: String) {
-    Surface(
-        color = Color(0xFFE3F2FD),
-        shape = MaterialTheme.shapes.small
+private fun StatusChangeItem(
+    change: StatusChange
+) {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFF5F5F5)
+        )
     ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(text = icon)
-            Spacer(modifier = Modifier.width(4.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = change.status.getDisplayName(),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Surface(
+                    shape = MaterialTheme.shapes.small,
+                    color = Color(change.status.getColor())
+                ) {
+                    Text(
+                        text = change.status.name,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White
+                    )
+                }
+            }
+
             Text(
-                text = status,
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF1976D2)
+                text = "Cambiado por: ${change.changedByName}",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray
+            )
+
+            Text(
+                text = change.getFormattedDate(),
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray
             )
         }
     }
 }
 
 @Composable
-private fun SectionTitle(text: String) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.titleSmall,
-        fontWeight = FontWeight.Bold,
-        color = Color(0xFF5AC5C5)
-    )
-}
-
-@Composable
-private fun InfoRow(label: String, value: String) {
+private fun InfoRow(
+    label: String,
+    value: String
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -430,10 +562,19 @@ private fun InfoRow(label: String, value: String) {
         Text(
             text = value,
             style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Medium,
-            color = Color.Black,
-            modifier = Modifier.weight(1f),
-            textAlign = androidx.compose.ui.text.style.TextAlign.End
+            fontWeight = FontWeight.Medium
         )
     }
+}
+
+// Extension para clickeable sin ripple
+@Composable
+private fun Modifier.clickableWithoutRipple(onClick: () -> Unit): Modifier {
+    return this.then(
+        Modifier.clickable(
+            indication = null,
+            interactionSource = remember { MutableInteractionSource() },
+            onClick = onClick
+        )
+    )
 }

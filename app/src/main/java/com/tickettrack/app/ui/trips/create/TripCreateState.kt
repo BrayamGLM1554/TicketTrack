@@ -1,6 +1,5 @@
 package com.tickettrack.app.ui.trips.create
 
-import com.tickettrack.app.data.model.trip.DriverResponse
 
 /**
  * Estado del formulario de creación de viaje.

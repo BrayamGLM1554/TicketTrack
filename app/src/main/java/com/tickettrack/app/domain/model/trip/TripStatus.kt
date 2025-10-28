@@ -20,13 +20,12 @@ enum class TripStatus {
             }
         }
     }
-
-    fun toFirebaseString(): String {
+    fun getColor(): Int {
         return when (this) {
-            PENDING -> "pending"
-            IN_PROGRESS -> "in_progress"
-            COMPLETED -> "completed"
-            CANCELLED -> "cancelled"
+            PENDING -> 0xFFFF9800.toInt()      // Naranja
+            IN_PROGRESS -> 0xFF2196F3.toInt()  // Azul
+            COMPLETED -> 0xFF4CAF50.toInt()    // Verde
+            CANCELLED -> 0xFFF44336.toInt()    // Rojo
         }
     }
 

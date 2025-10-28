@@ -9,14 +9,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tickettrack.app.data.model.trip.DriverResponse
 
 /**
  * Sección de información del transportista asignado.
  */
 @Composable
 fun DriverSection(
-    driver: DriverResponse?,
+    driverId: String?,
+    driverName: String?,
     isLoading: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -58,83 +58,64 @@ fun DriverSection(
                 ) {
                     CircularProgressIndicator(color = Color(0xFF5AC5C5))
                 }
-            } else if (driver != null) {
-                // Información del transportista
+            } else if (driverId != null && driverName != null) {
+                // Información básica del transportista
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    // Nombre y foto (placeholder)
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        // Placeholder para foto
-                        Surface(
-                            modifier = Modifier.size(64.dp),
-                            shape = MaterialTheme.shapes.medium,
-                            color = Color(0xFFE0E0E0)
-                        ) {
-                            Box(
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = driver.name.take(2).uppercase(),
-                                    style = MaterialTheme.typography.headlineMedium,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.width(16.dp))
-
-                        Column {
-                            Text(
-                                text = driver.name,
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold
-                            )
-
-                            Text(
-                                text = "${driver.completedTrips} viajes completados",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = Color(0xFF4CAF50)
-                            )
-                        }
-                    }
-
-                    Divider()
-
-                    // Información del vehículo
-                    Text(
-                        text = "Información del Vehículo",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF5AC5C5)
-                    )
-
-                    DriverInfoRow("Unidad Asignada", driver.assignedUnit)
-                    DriverInfoRow("Placas", driver.plates)
-                    DriverInfoRow("Marca", driver.brand)
-                    DriverInfoRow("Modelo", driver.model)
-
-                    // Foto del camión (placeholder)
-                    Spacer(modifier = Modifier.height(8.dp))
-
+                    // Placeholder para foto
                     Surface(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(120.dp),
+                        modifier = Modifier.size(64.dp),
                         shape = MaterialTheme.shapes.medium,
-                        color = Color(0xFFE0E0E0)
+                        color = Color(0xFF5AC5C5)
                     ) {
                         Box(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "🚚",
-                                fontSize = 48.sp
+                                text = driverName.take(2).uppercase(),
+                                style = MaterialTheme.typography.headlineMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = driverName,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Text(
+                        text = "ID: $driverId",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
+                    )
+
+                    Divider()
+
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color(0xFFE3F2FD)
+                        )
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "ℹ️",
+                                fontSize = 20.sp,
+                                modifier = Modifier.padding(end = 8.dp)
+                            )
+                            Text(
+                                text = "Información detallada del transportista disponible próximamente",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color(0xFF1976D2)
                             )
                         }
                     }
@@ -142,35 +123,11 @@ fun DriverSection(
             } else {
                 // Sin datos
                 Text(
-                    text = "No se pudo cargar la información del transportista",
+                    text = "No se asignó transportista",
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Gray
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun DriverInfoRow(
-    label: String,
-    value: String,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.Gray
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Medium,
-            color = Color.Black
-        )
     }
 }

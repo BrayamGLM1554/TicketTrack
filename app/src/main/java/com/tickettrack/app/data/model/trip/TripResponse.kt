@@ -1,163 +1,101 @@
 package com.tickettrack.app.data.model.trip
 
-import com.tickettrack.app.domain.model.trip.*
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
 /**
- * Modelo de respuesta del backend/Firebase para un viaje.
- *
- * Siguiendo Clean Architecture:
- * - Este modelo pertenece a la Data Layer
- * - Se deserializa desde Firebase
- * - Se convierte a modelo de dominio (Trip) para usar en la app
+ * Response de la API real para un viaje.
+ * Estructura simple que coincide EXACTAMENTE con la API.
  */
-@Serializable
 data class TripResponse(
-    @SerialName("id")
+    @SerializedName("Id")
     val id: String = "",
 
-    @SerialName("cargoName")
-    val cargoName: String = "",
+    @SerializedName("Origin")
+    val origin: String = "",
 
-    @SerialName("origin")
-    val origin: LocationData = LocationData("", "", "", "", CoordinatesData(0.0, 0.0)),
+    @SerializedName("Destination")
+    val destination: String = "",
 
-    @SerialName("destination")
-    val destination: LocationData = LocationData("", "", "", "", CoordinatesData(0.0, 0.0)),
+    @SerializedName("Cargo")
+    val cargo: String = "",
 
-    @SerialName("cargo")
-    val cargo: CargoData = CargoData("", 0.0, ""),
+    @SerializedName("TripName")
+    val tripName: String = "",
 
-    @SerialName("budget")
-    val budget: BudgetData = BudgetData(0.0, 0.0),
+    @SerializedName("BudgetAssigned")
+    val budgetAssigned: Double = 0.0,
 
-    @SerialName("assignedDriverId")
-    val assignedDriverId: String = "",
+    @SerializedName("TransportistaUid")
+    val transportistaUid: String = "",
 
-    @SerialName("createdByAdminId")
-    val createdByAdminId: String = "",
-
-    @SerialName("status")
+    @SerializedName("Status")
     val status: String = "pending",
 
-    @SerialName("statusHistory")
-    val statusHistory: List<StatusChangeData> = emptyList(),
-
-    @SerialName("totalExpenses")
-    val totalExpenses: Double = 0.0,
-
-    @SerialName("remainingBudget")
-    val remainingBudget: Double = 0.0,
-
-    @SerialName("expenseCount")
-    val expenseCount: Int = 0,
-
-    @SerialName("budgetIncreaseCount")
-    val budgetIncreaseCount: Int = 0,
-
-    @SerialName("createdAt")
+    @SerializedName("CreatedAt")
     val createdAt: String = "",
 
-    @SerialName("updatedAt")
+    @SerializedName("UpdatedAt")
     val updatedAt: String = "",
 
-    @SerialName("completedAt")
-    val completedAt: String? = null
+    @SerializedName("Transportista")
+    val transportista: TransportistaResponse? = null
 )
 
-@Serializable
+// ============================================
+// Modelos adicionales para funcionalidades mock
+// ============================================
+
+/**
+ * Request para aumentar presupuesto (funcionalidad sin endpoint aún).
+ */
+data class IncreaseBudgetRequest(
+    val tripId: String,
+    val previousAmount: Double,
+    val newAmount: Double,
+    val increase: Double,
+    val reason: String,
+    val requestedBy: String,
+    val requestedByName: String,
+    val approvedBy: String,
+    val approvedByName: String,
+    val urgency: String,
+    val supportingExpenses: List<String>
+)
+
+/**
+ * Request para actualizar estado (funcionalidad sin endpoint aún).
+ */
+data class UpdateTripStatusRequest(
+    val tripId: String,
+    val newStatus: String,
+    val changedBy: String,
+    val changedByName: String
+)
+
+/**
+ * Datos de cambio de presupuesto (para historial mock).
+ */
+data class BudgetIncreaseData(
+    val previousAmount: Double = 0.0,
+    val newAmount: Double = 0.0,
+    val increase: Double = 0.0,
+    val reason: String = "",
+    val requestedBy: String = "",
+    val requestedByName: String = "",
+    val approvedBy: String = "",
+    val approvedByName: String = "",
+    val requestedAt: String = "",
+    val approvedAt: String = "",
+    val urgency: String = "",
+    val supportingExpenses: List<String> = emptyList()
+)
+
+/**
+ * Datos de cambio de estado (para historial mock).
+ */
 data class StatusChangeData(
-    @SerialName("status")
     val status: String = "pending",
-
-    @SerialName("changedAt")
     val changedAt: String = "",
-
-    @SerialName("changedBy")
     val changedBy: String = "",
-
-    @SerialName("changedByName")
     val changedByName: String = ""
 )
-
-// Extension functions para convertir de Data a Domain
-
-fun TripResponse.toDomain(): Trip {
-    return Trip(
-        id = this.id,
-        cargoName = this.cargoName,
-        origin = this.origin.toDomain(),
-        destination = this.destination.toDomain(),
-        cargo = this.cargo.toDomain(),
-        budget = this.budget.toDomain(),
-        assignedDriverId = this.assignedDriverId,
-        createdByAdminId = this.createdByAdminId,
-        status = TripStatus.fromString(this.status),
-        statusHistory = this.statusHistory.map { it.toDomain() },
-        totalExpenses = this.totalExpenses,
-        remainingBudget = this.remainingBudget,
-        expenseCount = this.expenseCount,
-        budgetIncreaseCount = this.budgetIncreaseCount,
-        createdAt = this.createdAt,
-        updatedAt = this.updatedAt,
-        completedAt = this.completedAt
-    )
-}
-
-fun LocationData.toDomain(): Location {
-    return Location(
-        address = this.address,
-        city = this.city,
-        state = this.state,
-        zipCode = this.zipCode,
-        coordinates = Coordinates(
-            latitude = this.coordinates.latitude,
-            longitude = this.coordinates.longitude
-        )
-    )
-}
-
-fun CargoData.toDomain(): Cargo {
-    return Cargo(
-        type = this.type,
-        weight = this.weight,
-        description = this.description,
-        specialRequirements = this.specialRequirements
-    )
-}
-
-fun BudgetData.toDomain(): Budget {
-    return Budget(
-        initial = this.initial,
-        current = this.current,
-        currency = this.currency,
-        history = this.history.map { it.toDomain() }
-    )
-}
-
-fun BudgetIncreaseData.toDomain(): BudgetIncrease {
-    return BudgetIncrease(
-        previousAmount = this.previousAmount,
-        newAmount = this.newAmount,
-        increase = this.increase,
-        reason = this.reason,
-        requestedBy = this.requestedBy,
-        requestedByName = this.requestedByName,
-        approvedBy = this.approvedBy,
-        approvedByName = this.approvedByName,
-        requestedAt = this.requestedAt,
-        approvedAt = this.approvedAt,
-        urgency = Urgency.fromString(this.urgency),
-        supportingExpenses = this.supportingExpenses
-    )
-}
-
-fun StatusChangeData.toDomain(): StatusChange {
-    return StatusChange(
-        status = TripStatus.fromString(this.status),
-        changedAt = this.changedAt,
-        changedBy = this.changedBy,
-        changedByName = this.changedByName
-    )
-}

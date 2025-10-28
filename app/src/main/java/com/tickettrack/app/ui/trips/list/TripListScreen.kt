@@ -107,7 +107,7 @@ fun TripListScreen(
         },
         floatingActionButton = {
             // Solo admin/consignatario puede crear viajes
-            if (currentUserRole == "admin" || currentUserRole == "consignatario") {
+            if (currentUserRole == "ADMIN" || currentUserRole == "consignatario") {
                 FloatingActionButton(
                     onClick = onNavigateToCreateTrip,
                     containerColor = Color(0xFF5AC5C5),
@@ -154,7 +154,7 @@ fun TripListScreen(
                     // Estado vacío
                     state.isEmpty -> {
                         EmptyState(
-                            message = if (currentUserRole == "admin" || currentUserRole == "consignatario") {
+                            message = if (currentUserRole == "ADMIN" || currentUserRole == "consignatario") {
                                 "No hay viajes registrados.\n¡Crea tu primer viaje!"
                             } else {
                                 "No tienes viajes asignados aún."
