@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.tickettrack.app.data.local.TokenManager
+import com.tickettrack.app.data.remote.TripRetrofitClient
 import com.tickettrack.app.ui.forgotpassword.ForgotPasswordScreen
 import com.tickettrack.app.ui.login.LoginScreen
 import com.tickettrack.app.ui.main.MainScreen
@@ -17,11 +19,24 @@ import com.tickettrack.app.ui.theme.TicketTrackTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // ⭐ CRÍTICO: Inicializar TripRetrofitClient ANTES de setContent
+        initializeTripModule()
+
         setContent {
             TicketTrackTheme {
                 AppNavigation()
             }
         }
+    }
+
+    /**
+     * Inicializa el módulo de trips con TokenManager.
+     * Debe llamarse ANTES de cualquier uso de TripRetrofitClient.
+     */
+    private fun initializeTripModule() {
+        val tokenManager = TokenManager(this)
+        TripRetrofitClient.initialize(tokenManager)
     }
 }
 
@@ -42,14 +57,12 @@ fun AppNavigation() {
         "login" -> LoginScreen(
             onNavigateToRegister = { currentScreen = "register" },
             onNavigateToForgotPassword = { currentScreen = "forgotPassword" },
-            onLoginSuccess = { currentScreen = "main" } // <--- aquí
+            onLoginSuccess = { currentScreen = "main" }
         )
 
         "main" -> MainScreen(
             onLogout = { currentScreen = "login" }
         )
-
-
 
         "forgotPassword" -> ForgotPasswordScreen(
             onNavigateBack = {
@@ -75,12 +88,9 @@ fun AppNavigation() {
                 currentScreen = "login"
             },
             onRegistrationSuccess = {
-                // Aquí puedes decidir a dónde ir después del registro exitoso
-                // Por ahora vamos al login
                 currentScreen = "login"
             },
             onNavigateBack = {
-                // Regresa a la pantalla anterior (RegisterScreen)
                 currentScreen = "register"
             },
             viewModel = registerViewModel

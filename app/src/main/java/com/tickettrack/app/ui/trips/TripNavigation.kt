@@ -1,4 +1,5 @@
 package com.tickettrack.app.ui.trips
+
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import com.tickettrack.app.data.local.TokenManager
@@ -25,7 +26,7 @@ fun TripNavigationScreen() {
     // Datos del usuario actual
     val currentUserId = tokenManager.getUserEmail() ?: ""
     val currentUserName = tokenManager.getUserName() ?: "Usuario"
-    val currentUserRole = tokenManager.getUserRole() ?: "admin"
+    val currentUserRole = tokenManager.getUserRole() ?: "ADMIN"
 
     // Estado de navegación
     var currentScreen by remember { mutableStateOf("list") }
@@ -61,14 +62,12 @@ fun TripNavigationScreen() {
         }
 
         "detail" -> {
+            // ✅ CORRECCIÓN: TripDetailScreen solo necesita tripId y callback
             TripDetailScreen(
                 tripId = selectedTripId,
                 onNavigateBack = {
                     currentScreen = "list"
-                },
-                currentUserId = currentUserId,
-                currentUserName = currentUserName,
-                currentUserRole = currentUserRole
+                }
             )
         }
     }

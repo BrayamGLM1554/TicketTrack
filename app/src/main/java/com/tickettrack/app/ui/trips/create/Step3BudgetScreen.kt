@@ -1,9 +1,11 @@
 package com.tickettrack.app.ui.trips.create
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -12,12 +14,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 /**
  * Paso 3: Presupuesto y Transportista
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Step3BudgetScreen(
     viewModel: TripCreateViewModel,
@@ -27,13 +27,12 @@ fun Step3BudgetScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // Título del paso
         Text(
-            text = "Presupuesto y Asignación",
+            text = "Presupuesto y Transportista",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
@@ -46,245 +45,102 @@ fun Step3BudgetScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Presupuesto
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = Color(0xFFF5F5F5)
-            )
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = "💰",
-                        fontSize = 24.sp,
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                    Text(
-                        text = "Presupuesto",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF5AC5C5)
-                    )
+        // Campo de presupuesto
+        OutlinedTextField(
+            value = state.budget,
+            onValueChange = viewModel::onBudgetChanged,
+            label = { Text("Presupuesto Asignado (MXN)*") },
+            placeholder = { Text("Ej: 50000") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            isError = state.budgetError != null,
+            supportingText = {
+                state.budgetError?.let {
+                    Text(it, color = MaterialTheme.colorScheme.error)
                 }
-
-                OutlinedTextField(
-                    value = state.budget,
-                    onValueChange = viewModel::onBudgetChanged,
-                    label = { Text("Presupuesto Inicial (MXN)*") },
-                    placeholder = { Text("Ej: 25000") },
-                    isError = state.budgetError != null,
-                    supportingText = {
-                        state.budgetError?.let {
-                            Text(it, color = MaterialTheme.colorScheme.error)
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    leadingIcon = {
-                        Text(
-                            text = "$",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Color.Gray
-                        )
-                    },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFF5AC5C5),
-                        focusedLabelColor = Color(0xFF5AC5C5),
-                        unfocusedContainerColor = Color.White,
-                        focusedContainerColor = Color.White
-                    )
-                )
-
-                // Nota sobre presupuesto
-                Text(
-                    text = "Este será el presupuesto inicial del viaje. Podrás aumentarlo más tarde si es necesario.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
-                )
-            }
-        }
-
-        // Transportista
-        Card(
+            },
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = Color(0xFFF5F5F5)
+            singleLine = true,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF5AC5C5),
+                focusedLabelColor = Color(0xFF5AC5C5)
             )
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = "🚛",
-                        fontSize = 24.sp,
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                    Text(
-                        text = "Transportista",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF5AC5C5)
-                    )
-                }
+        )
 
-                if (state.isLoadingDrivers) {
-                    // Loading
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(
-                            color = Color(0xFF5AC5C5)
-                        )
-                    }
-                } else if (state.availableDrivers.isEmpty()) {
-                    // Sin transportistas
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Sección de transportistas
+        Text(
+            text = "Seleccionar Transportista*",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+
+        // Loading de transportistas
+        if (state.isLoadingDrivers) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    CircularProgressIndicator(color = Color(0xFF5AC5C5))
                     Text(
-                        text = "No hay transportistas disponibles",
+                        text = "Cargando transportistas...",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray
                     )
-                } else {
-                    // Dropdown de transportistas
-                    var expanded by remember { mutableStateOf(false) }
-                    val selectedDriver = state.availableDrivers.find { it.id == state.selectedDriverId }
-
-                    ExposedDropdownMenuBox(
-                        expanded = expanded,
-                        onExpandedChange = { expanded = it }
-                    ) {
-                        OutlinedTextField(
-                            value = selectedDriver?.name ?: "",
-                            onValueChange = {},
-                            readOnly = true,
-                            label = { Text("Seleccionar Transportista*") },
-                            placeholder = { Text("Selecciona un transportista disponible") },
-                            isError = state.selectedDriverError != null,
-                            supportingText = {
-                                state.selectedDriverError?.let {
-                                    Text(it, color = MaterialTheme.colorScheme.error)
-                                }
-                            },
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .menuAnchor(),
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = Color(0xFF5AC5C5),
-                                focusedLabelColor = Color(0xFF5AC5C5),
-                                unfocusedContainerColor = Color.White,
-                                focusedContainerColor = Color.White
-                            )
-                        )
-
-                        ExposedDropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false }
-                        ) {
-                            state.availableDrivers.forEach { driver ->
-                                DropdownMenuItem(
-                                    text = {
-                                        Column {
-                                            Text(
-                                                text = driver.name,
-                                                fontWeight = FontWeight.Medium
-                                            )
-                                            Text(
-                                                text = "${driver.brand} ${driver.model} - ${driver.plates}",
-                                                style = MaterialTheme.typography.bodySmall,
-                                                color = Color.Gray
-                                            )
-                                            Text(
-                                                text = "${driver.completedTrips} viajes completados",
-                                                style = MaterialTheme.typography.bodySmall,
-                                                color = Color(0xFF4CAF50)
-                                            )
-                                        }
-                                    },
-                                    onClick = {
-                                        viewModel.onDriverSelected(driver.id)
-                                        expanded = false
-                                    }
-                                )
-                            }
-                        }
-                    }
-
-                    // Información del transportista seleccionado
-                    if (selectedDriver != null) {
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Card(
-                            modifier = Modifier.fillMaxWidth(),
-                            colors = CardDefaults.cardColors(
-                                containerColor = Color.White
-                            ),
-                            elevation = CardDefaults.cardElevation(2.dp)
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(12.dp),
-                                verticalArrangement = Arrangement.spacedBy(4.dp)
-                            ) {
-                                Text(
-                                    text = "Información del Transportista",
-                                    style = MaterialTheme.typography.titleSmall,
-                                    fontWeight = FontWeight.Bold
-                                )
-
-                                DriverInfoRow("Nombre", selectedDriver.name)
-                                DriverInfoRow("Unidad", selectedDriver.assignedUnit)
-                                DriverInfoRow("Placas", selectedDriver.plates)
-                                DriverInfoRow("Vehículo", "${selectedDriver.brand} ${selectedDriver.model}")
-                                DriverInfoRow(
-                                    "Viajes Completados",
-                                    "${selectedDriver.completedTrips}",
-                                    valueColor = Color(0xFF4CAF50)
-                                )
-                            }
-                        }
-                    }
+                }
+            }
+        } else if (state.availableDrivers.isEmpty()) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFFFEBEE)
+                )
+            ) {
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "⚠️",
+                        style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier.padding(end = 12.dp)
+                    )
+                    Text(
+                        text = "No hay transportistas disponibles en este momento",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color(0xFFC62828)
+                    )
+                }
+            }
+        } else {
+            // Lista de transportistas
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(state.availableDrivers) { driver ->
+                    DriverCard(
+                        driver = driver,
+                        isSelected = state.selectedDriverId == driver.uid,
+                        onClick = { viewModel.onDriverSelected(driver.uid) }
+                    )
                 }
             }
         }
 
-        // Resumen del viaje
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = Color(0xFFE8F5E9)
+        // Error de transportista
+        state.selectedDriverError?.let {
+            Text(
+                text = it,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall
             )
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = "📋 Resumen",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-
-                SummaryRow("Carga", state.cargoName)
-                SummaryRow("Tipo", state.cargoType)
-                SummaryRow("Peso", "${state.weight} kg")
-                SummaryRow("Origen", "${state.originCity}, ${state.originState}")
-                SummaryRow("Destino", "${state.destinationCity}, ${state.destinationState}")
-                SummaryRow("Presupuesto", "$${state.budget} MXN")
-
-                val selectedDriver = state.availableDrivers.find { it.id == state.selectedDriverId }
-                if (selectedDriver != null) {
-                    SummaryRow("Transportista", selectedDriver.name)
-                }
-            }
         }
 
         // Espaciador para los botones
@@ -292,46 +148,94 @@ fun Step3BudgetScreen(
     }
 }
 
+/**
+ * Tarjeta de transportista individual.
+ */
 @Composable
-private fun DriverInfoRow(
-    label: String,
-    value: String,
-    valueColor: Color = Color.Black
+private fun DriverCard(
+    driver: DriverResponse,
+    isSelected: Boolean,
+    onClick: () -> Unit
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isSelected) {
+                Color(0xFFE0F7FA)
+            } else {
+                Color.White
+            }
+        ),
+        border = if (isSelected) {
+            BorderStroke(2.dp, Color(0xFF5AC5C5))
+        } else {
+            BorderStroke(1.dp, Color(0xFFE0E0E0))
+        },
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = if (isSelected) 4.dp else 1.dp
+        )
     ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodySmall,
-            color = Color.Gray
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.Medium,
-            color = valueColor
-        )
-    }
-}
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Icono de selección
+            RadioButton(
+                selected = isSelected,
+                onClick = onClick,
+                colors = RadioButtonDefaults.colors(
+                    selectedColor = Color(0xFF5AC5C5)
+                )
+            )
 
-@Composable
-private fun SummaryRow(label: String, value: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color(0xFF2E7D32)
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Medium,
-            color = Color(0xFF1B5E20)
-        )
+            Spacer(modifier = Modifier.width(12.dp))
+
+            // Información del transportista
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = driver.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = if (isSelected) Color(0xFF00796B) else Color.Black
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = driver.email,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Gray
+                )
+
+                if (driver.phone.isNotBlank()) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "📱 ${driver.phone}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Gray
+                    )
+                }
+            }
+
+            // Badge de estado
+            Surface(
+                shape = MaterialTheme.shapes.small,
+                color = if (driver.isActive) Color(0xFF4CAF50) else Color(0xFFFF5252)
+            ) {
+                Text(
+                    text = if (driver.isActive) "Activo" else "Inactivo",
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
     }
 }
