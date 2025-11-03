@@ -1,5 +1,6 @@
 package com.tickettrack.app.domain.model.expense
 
+import com.tickettrack.app.domain.model.trip.Location
 import java.time.Instant
 
 /**
@@ -13,14 +14,14 @@ data class Expense(
     val currency: String = "MXN",
     val category: ExpenseCategory,
     val description: String,
-    val date: Instant,
+    val date: String,
 
     // Evidencia - Ticket
     val ticketImagePath: String? = null,
     val ticketPublicUrl: String? = null,
     val ticketModerationStatus: ModerationStatus = ModerationStatus.PENDING,
     val moderationNote: String = "",
-    val moderatedAt: Instant? = null,
+    val moderatedAt: String = "",
     val moderatedBy: String? = null,
 
     // Ubicación (opcional)
@@ -31,8 +32,8 @@ data class Expense(
     val createdByName: String,
 
     // Timestamps
-    val createdAt: Instant = Instant.now(),
-    val updatedAt: Instant = Instant.now()
+    val createdAt: String = Instant.now().toString(),
+    val updatedAt: String = Instant.now().toString()
 ) {
     /**
      * Verifica si el gasto tiene ticket aprobado

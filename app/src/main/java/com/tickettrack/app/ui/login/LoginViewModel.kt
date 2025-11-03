@@ -56,9 +56,13 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                         name = response.name,
                         email = response.email,
                         role = response.claims.role,
-                        companyEmail = response.claims.companyEmail,
+                        companyEmail = response.claims.companyEmail ?: response.email,  // ✅ Usar email si no hay companyEmail
                         expiresAt = response.expiresAt
                     )
+
+                    if (response.claims.companyName != null) {
+                        tokenManager.saveCompanyName(response.claims.companyName)
+                    }
 
                     _state.value = _state.value.copy(
                         isLoading = false,

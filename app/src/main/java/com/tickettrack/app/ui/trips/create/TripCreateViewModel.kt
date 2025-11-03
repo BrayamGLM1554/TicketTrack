@@ -4,11 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tickettrack.app.data.local.TokenManager
-import com.tickettrack.app.data.model.trip.TransportistaResponse
 import com.tickettrack.app.data.remote.TripRetrofitClient
 import com.tickettrack.app.data.repository.trip.TripRepository
 import com.tickettrack.app.domain.model.trip.*
-import com.tickettrack.app.domain.validator.TripValidator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,9 +1,11 @@
 package com.tickettrack.app.domain.model.expense
 
+import com.tickettrack.app.domain.model.trip.Coordinates
+
 /**
  * Ubicación donde se realizó el gasto (opcional)
  */
-data class Location(
+data class ExpenseLocation(
     val address: String,
     val coordinates: Coordinates
 )
