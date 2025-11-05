@@ -1,11 +1,11 @@
-package com.tickettrack.app.ui.trips
+package com.tickettrack.app.ui.main.trips
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import com.tickettrack.app.data.local.TokenManager
-import com.tickettrack.app.ui.trips.create.TripCreateScreen
-import com.tickettrack.app.ui.trips.detail.TripDetailScreen
-import com.tickettrack.app.ui.trips.list.TripListScreen
+import com.tickettrack.app.ui.main.trips.create.TripCreateScreen
+import com.tickettrack.app.ui.main.trips.detail.TripDetailScreen
+import com.tickettrack.app.ui.main.trips.list.TripListScreen
 
 /**
  * Navegación del módulo de Viajes.

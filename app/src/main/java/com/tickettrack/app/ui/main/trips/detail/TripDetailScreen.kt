@@ -1,4 +1,4 @@
-package com.tickettrack.app.ui.trips.detail
+package com.tickettrack.app.ui.main.trips.detail
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -20,9 +20,9 @@ import com.tickettrack.app.data.local.TokenManager
 import com.tickettrack.app.domain.model.trip.StatusChange
 import com.tickettrack.app.domain.model.trip.Trip
 import com.tickettrack.app.domain.model.trip.TripStatus
-import com.tickettrack.app.ui.trips.detail.components.BudgetSection
-import com.tickettrack.app.ui.trips.detail.components.DriverSection
-import com.tickettrack.app.ui.trips.detail.components.IncreaseBudgetDialog
+import com.tickettrack.app.ui.main.trips.detail.components.BudgetSection
+import com.tickettrack.app.ui.main.trips.detail.components.DriverSection
+import com.tickettrack.app.ui.main.trips.detail.components.IncreaseBudgetDialog
 
 /**
  * Pantalla de detalle de un viaje.

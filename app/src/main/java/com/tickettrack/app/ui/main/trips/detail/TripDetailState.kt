@@ -1,8 +1,8 @@
-package com.tickettrack.app.ui.trips.detail
+package com.tickettrack.app.ui.main.trips.detail
 
 import com.tickettrack.app.domain.model.trip.Trip
 import com.tickettrack.app.domain.model.trip.Urgency
-import com.tickettrack.app.ui.trips.create.DriverResponse
+import com.tickettrack.app.ui.main.trips.create.DriverResponse
 
 /**
  * Estado de la pantalla de detalle de viaje.

@@ -1,4 +1,4 @@
-package com.tickettrack.app.ui.trips.list
+package com.tickettrack.app.ui.main.trips.list
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

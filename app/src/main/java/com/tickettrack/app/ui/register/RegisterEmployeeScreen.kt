@@ -1,19 +1,18 @@
 package com.tickettrack.app.ui.register
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Error
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -52,6 +51,7 @@ fun RegisterEmployeeScreen(
         }
     }
 
+    // Dialog de error
     if (state.errorMessage != null) {
         AlertDialog(
             onDismissRequest = { viewModel.clearError() },
@@ -81,7 +81,7 @@ fun RegisterEmployeeScreen(
                 Button(
                     onClick = { viewModel.clearError() },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF5AC5C5)
+                        containerColor = Color(0xFF187083)
                     )
                 ) {
                     Text("Entendido")
@@ -99,239 +99,180 @@ fun RegisterEmployeeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .background(Color(0xFFF5F5F5))
     ) {
-        // Botón de regreso
-        IconButton(
-            onClick = onNavigateBack,
-            modifier = Modifier.padding(16.dp)
+        // Header personalizado
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.White,
+            shadowElevation = 2.dp
         ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Regresar",
-                tint = Color(0xFF5AC5C5)
-            )
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Regresar",
+                            tint = Color(0xFF187083)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Column {
+                        Text(
+                            text = "Crea tu cuenta",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF2C3E50)
+                        )
+                        Text(
+                            text = "Datos del encargado",
+                            fontSize = 13.sp,
+                            color = Color.Gray
+                        )
+                    }
+                }
+
+                Divider(color = Color(0xFFE0E0E0), thickness = 1.dp)
+            }
         }
 
+        // Contenido con scroll
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
-                text = "Crea tu cuenta",
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.Bold
-                ),
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
+            // Card: Información Personal
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text(
+                        text = "Información Personal",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF187083)
+                    )
 
-            Text(
-                text = "Ingresa tus datos",
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = Color.Gray
-                ),
-                modifier = Modifier.padding(bottom = 32.dp)
-            )
+                    InputFieldWithIcon(
+                        value = state.ownerName,
+                        onValueChange = viewModel::onOwnerNameChanged,
+                        label = "Nombre del encargado",
+                        icon = Icons.Default.Person,
+                        placeholder = "Nombre completo",
+                        isError = state.ownerNameError != null,
+                        errorMessage = state.ownerNameError,
+                        isRequired = true
+                    )
 
-            OutlinedTextField(
-                value = state.ownerName,
-                onValueChange = viewModel::onOwnerNameChanged,
-                label = { Text("Nombre del encargado de la cuenta") },
-                placeholder = { Text("Ingrese el nombre") },
-                isError = state.ownerNameError != null,
-                supportingText = {
-                    state.ownerNameError?.let {
-                        Text(it, color = MaterialTheme.colorScheme.error)
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                singleLine = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF5AC5C5),
-                    focusedLabelColor = Color(0xFF5AC5C5),
-                    unfocusedTextColor = Color.Black,
-                    focusedTextColor = Color.Black,
-                    errorTextColor = Color.Black
-                )
-            )
+                    InputFieldWithIcon(
+                        value = state.ownerCurp,
+                        onValueChange = viewModel::onOwnerCurpChanged,
+                        label = "CURP",
+                        icon = Icons.Default.Badge,
+                        placeholder = "CURP del encargado",
+                        isError = state.ownerCurpError != null,
+                        errorMessage = state.ownerCurpError,
+                        isRequired = true
+                    )
 
-            OutlinedTextField(
-                value = state.ownerCurp,
-                onValueChange = viewModel::onOwnerCurpChanged,
-                label = { Text("CURP") },
-                placeholder = { Text("CURP") },
-                isError = state.ownerCurpError != null,
-                supportingText = {
-                    state.ownerCurpError?.let {
-                        Text(it, color = MaterialTheme.colorScheme.error)
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF5AC5C5),
-                    focusedLabelColor = Color(0xFF5AC5C5),
-                    unfocusedTextColor = Color.Black,
-                    focusedTextColor = Color.Black,
-                    errorTextColor = Color.Black
-                )
-            )
+                    InputFieldWithIcon(
+                        value = state.ownerPhone,
+                        onValueChange = viewModel::onOwnerPhoneChanged,
+                        label = "Teléfono de trabajo",
+                        icon = Icons.Default.Phone,
+                        placeholder = "222-2222-222",
+                        keyboardType = KeyboardType.Phone,
+                        isError = state.ownerPhoneError != null,
+                        errorMessage = state.ownerPhoneError,
+                        isRequired = true
+                    )
 
-            OutlinedTextField(
-                value = state.ownerPhone,
-                onValueChange = viewModel::onOwnerPhoneChanged,
-                label = { Text("Teléfono de trabajo") },
-                placeholder = { Text("222-2222-222") },
-                isError = state.ownerPhoneError != null,
-                supportingText = {
-                    state.ownerPhoneError?.let {
-                        Text(it, color = MaterialTheme.colorScheme.error)
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF5AC5C5),
-                    focusedLabelColor = Color(0xFF5AC5C5),
-                    unfocusedTextColor = Color.Black,
-                    focusedTextColor = Color.Black,
-                    errorTextColor = Color.Black
-                )
-            )
+                    InputFieldWithIcon(
+                        value = state.ownerEmail,
+                        onValueChange = viewModel::onOwnerEmailChanged,
+                        label = "Correo empresarial",
+                        icon = Icons.Default.Email,
+                        placeholder = "correo@empresa.com",
+                        keyboardType = KeyboardType.Email,
+                        isError = state.ownerEmailError != null,
+                        errorMessage = state.ownerEmailError,
+                        isRequired = true
+                    )
+                }
+            }
 
-            OutlinedTextField(
-                value = state.ownerEmail,
-                onValueChange = viewModel::onOwnerEmailChanged,
-                label = { Text("Correo empresarial") },
-                placeholder = { Text("example.employee@enterprise.com") },
-                isError = state.ownerEmailError != null,
-                supportingText = {
-                    state.ownerEmailError?.let {
-                        Text(it, color = MaterialTheme.colorScheme.error)
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF5AC5C5),
-                    focusedLabelColor = Color(0xFF5AC5C5),
-                    unfocusedTextColor = Color.Black,
-                    focusedTextColor = Color.Black,
-                    errorTextColor = Color.Black
-                )
-            )
+            // Card: Seguridad
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text(
+                        text = "Seguridad de la Cuenta",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF187083)
+                    )
 
-            OutlinedTextField(
-                value = state.password,
-                onValueChange = viewModel::onPasswordChanged,
-                label = { Text("Contraseña") },
-                placeholder = { Text("Mínimo 8 caracteres") },
-                isError = state.passwordError != null,
-                supportingText = {
-                    state.passwordError?.let {
-                        Text(it, color = MaterialTheme.colorScheme.error)
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                singleLine = true,
-                visualTransformation = if (passwordVisible)
-                    VisualTransformation.None
-                else
-                    PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                trailingIcon = {
-                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                        Icon(
-                            imageVector = if (passwordVisible)
-                                Icons.Filled.Visibility
-                            else
-                                Icons.Filled.VisibilityOff,
-                            contentDescription = if (passwordVisible)
-                                "Ocultar contraseña"
-                            else
-                                "Mostrar contraseña",
-                            tint = Color(0xFF5AC5C5)
-                        )
-                    }
-                },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF5AC5C5),
-                    focusedLabelColor = Color(0xFF5AC5C5),
-                    unfocusedTextColor = Color.Black,
-                    focusedTextColor = Color.Black,
-                    errorTextColor = Color.Black
-                )
-            )
+                    PasswordFieldWithIcon(
+                        value = state.password,
+                        onValueChange = viewModel::onPasswordChanged,
+                        label = "Contraseña",
+                        placeholder = "Mínimo 8 caracteres",
+                        isError = state.passwordError != null,
+                        errorMessage = state.passwordError,
+                        passwordVisible = passwordVisible,
+                        onVisibilityChange = { passwordVisible = !passwordVisible }
+                    )
 
-            OutlinedTextField(
-                value = state.confirmPassword,
-                onValueChange = viewModel::onConfirmPasswordChanged,
-                label = { Text("Confirmar contraseña") },
-                placeholder = { Text("Repite tu contraseña") },
-                isError = state.confirmPasswordError != null,
-                supportingText = {
-                    state.confirmPasswordError?.let {
-                        Text(it, color = MaterialTheme.colorScheme.error)
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 32.dp),
-                singleLine = true,
-                visualTransformation = if (confirmPasswordVisible)
-                    VisualTransformation.None
-                else
-                    PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                trailingIcon = {
-                    IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
-                        Icon(
-                            imageVector = if (confirmPasswordVisible)
-                                Icons.Filled.Visibility
-                            else
-                                Icons.Filled.VisibilityOff,
-                            contentDescription = if (confirmPasswordVisible)
-                                "Ocultar contraseña"
-                            else
-                                "Mostrar contraseña",
-                            tint = Color(0xFF5AC5C5)
-                        )
-                    }
-                },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF5AC5C5),
-                    focusedLabelColor = Color(0xFF5AC5C5),
-                    unfocusedTextColor = Color.Black,
-                    focusedTextColor = Color.Black,
-                    errorTextColor = Color.Black
-                )
-            )
+                    PasswordFieldWithIcon(
+                        value = state.confirmPassword,
+                        onValueChange = viewModel::onConfirmPasswordChanged,
+                        label = "Confirmar contraseña",
+                        placeholder = "Repite tu contraseña",
+                        isError = state.confirmPasswordError != null,
+                        errorMessage = state.confirmPasswordError,
+                        passwordVisible = confirmPasswordVisible,
+                        onVisibilityChange = { confirmPasswordVisible = !confirmPasswordVisible }
+                    )
+                }
+            }
 
+            // Botón Registrar
             Button(
                 onClick = { viewModel.register() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF5AC5C5)
+                    containerColor = Color(0xFF187083)
                 ),
-                shape = MaterialTheme.shapes.medium,
+                shape = RoundedCornerShape(8.dp),
                 enabled = !state.isLoading
             ) {
                 if (state.isLoading) {
@@ -341,37 +282,45 @@ fun RegisterEmployeeScreen(
                         strokeWidth = 2.dp
                     )
                 } else {
+                    Icon(
+                        imageVector = Icons.Default.CheckCircle,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Registrar",
+                        text = "Registrar Cuenta",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
+        // Overlay de éxito
         if (state.registrationSuccess) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(24.dp),
+                    .background(Color.Black.copy(alpha = 0.5f)),
                 contentAlignment = Alignment.Center
             ) {
                 Card(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(0.9f)
                         .padding(16.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = Color(0xFF4CAF50)
                     ),
-                    elevation = CardDefaults.cardElevation(8.dp)
+                    elevation = CardDefaults.cardElevation(8.dp),
+                    shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(24.dp),
+                            .padding(32.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Icon(
@@ -399,16 +348,177 @@ fun RegisterEmployeeScreen(
                             textAlign = TextAlign.Center
                         )
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(24.dp))
 
                         CircularProgressIndicator(
                             color = Color.White,
                             modifier = Modifier.size(32.dp),
                             strokeWidth = 3.dp
                         )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = "Redirigiendo...",
+                            color = Color.White,
+                            fontSize = 14.sp
+                        )
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun InputFieldWithIcon(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    icon: ImageVector,
+    placeholder: String = "",
+    keyboardType: KeyboardType = KeyboardType.Text,
+    isError: Boolean = false,
+    errorMessage: String? = null,
+    isRequired: Boolean = false
+) {
+    Column {
+        Row(
+            modifier = Modifier.padding(bottom = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = label,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color(0xFF2C3E50)
+            )
+            if (isRequired) {
+                Text(
+                    text = " *",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Red
+                )
+            }
+        }
+
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = {
+                if (placeholder.isNotEmpty()) {
+                    Text(placeholder, color = Color.Gray, fontSize = 14.sp)
+                }
+            },
+            leadingIcon = {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = if (isError) MaterialTheme.colorScheme.error else Color(0xFF187083)
+                )
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            isError = isError,
+            supportingText = {
+                if (errorMessage != null) {
+                    Text(
+                        text = errorMessage,
+                        color = MaterialTheme.colorScheme.error,
+                        fontSize = 12.sp
+                    )
+                }
+            },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF187083),
+                unfocusedBorderColor = Color(0xFFBDBDBD),
+                errorBorderColor = MaterialTheme.colorScheme.error,
+                focusedLeadingIconColor = Color(0xFF187083),
+                unfocusedLeadingIconColor = Color.Gray
+            ),
+            shape = MaterialTheme.shapes.small,
+            singleLine = true
+        )
+    }
+}
+
+@Composable
+private fun PasswordFieldWithIcon(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    placeholder: String = "",
+    isError: Boolean = false,
+    errorMessage: String? = null,
+    passwordVisible: Boolean,
+    onVisibilityChange: () -> Unit
+) {
+    Column {
+        Row(
+            modifier = Modifier.padding(bottom = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = label,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color(0xFF2C3E50)
+            )
+            Text(
+                text = " *",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.Red
+            )
+        }
+
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = {
+                if (placeholder.isNotEmpty()) {
+                    Text(placeholder, color = Color.Gray, fontSize = 14.sp)
+                }
+            },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Lock,
+                    contentDescription = null,
+                    tint = if (isError) MaterialTheme.colorScheme.error else Color(0xFF187083)
+                )
+            },
+            trailingIcon = {
+                IconButton(onClick = onVisibilityChange) {
+                    Icon(
+                        imageVector = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                        contentDescription = if (passwordVisible) "Ocultar contraseña" else "Mostrar contraseña",
+                        tint = Color(0xFF187083)
+                    )
+                }
+            },
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            isError = isError,
+            supportingText = {
+                if (errorMessage != null) {
+                    Text(
+                        text = errorMessage,
+                        color = MaterialTheme.colorScheme.error,
+                        fontSize = 12.sp
+                    )
+                }
+            },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF187083),
+                unfocusedBorderColor = Color(0xFFBDBDBD),
+                errorBorderColor = MaterialTheme.colorScheme.error,
+                focusedLeadingIconColor = Color(0xFF187083),
+                unfocusedLeadingIconColor = Color.Gray
+            ),
+            shape = MaterialTheme.shapes.small,
+            singleLine = true
+        )
     }
 }

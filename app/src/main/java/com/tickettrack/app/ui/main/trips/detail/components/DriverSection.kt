@@ -1,4 +1,4 @@
-package com.tickettrack.app.ui.trips.detail.components
+package com.tickettrack.app.ui.main.trips.detail.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*

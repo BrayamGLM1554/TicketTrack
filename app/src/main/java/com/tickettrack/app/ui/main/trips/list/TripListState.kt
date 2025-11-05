@@ -1,4 +1,4 @@
-package com.tickettrack.app.ui.trips.list
+package com.tickettrack.app.ui.main.trips.list
 
 import com.tickettrack.app.domain.model.trip.Trip
 import com.tickettrack.app.domain.model.trip.TripStatus

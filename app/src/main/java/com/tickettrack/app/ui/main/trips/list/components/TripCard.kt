@@ -1,4 +1,4 @@
-package com.tickettrack.app.ui.trips.list.components
+package com.tickettrack.app.ui.main.trips.list.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

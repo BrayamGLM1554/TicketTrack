@@ -116,8 +116,6 @@ class RegisterViewModel(
         val curpValidation = CurpValidator.validate(_state.value.ownerCurp)
         val phoneValidation = PhoneValidator.validate(_state.value.ownerPhone)
         val emailValidation = EmailValidator.validate(_state.value.ownerEmail)
-
-        // NUEVO: Validar contraseñas usando el PasswordValidator de tu compañero
         val passwordValidation = PasswordValidator.validate(_state.value.password)
         val passwordsMatch = _state.value.password == _state.value.confirmPassword
 
@@ -126,14 +124,13 @@ class RegisterViewModel(
             ownerCurpError = curpValidation.errorMessage,
             ownerPhoneError = phoneValidation.errorMessage,
             ownerEmailError = emailValidation.errorMessage,
-            // NUEVO: Errores de contraseña
             passwordError = passwordValidation.errorMessage,
             confirmPasswordError = if (!passwordsMatch) "Las contraseñas no coinciden" else null
         )
 
         if (!nameValid || !curpValidation.isValid ||
             !phoneValidation.isValid || !emailValidation.isValid ||
-            !passwordValidation.isValid || !passwordsMatch) {  // NUEVO: Validar contraseñas
+            !passwordValidation.isValid || !passwordsMatch) {
             return
         }
 
@@ -144,11 +141,9 @@ class RegisterViewModel(
             )
 
             try {
-                // Limpiar teléfonos (quitar guiones)
                 val cleanCompanyPhone = _state.value.companyPhone.replace("-", "")
                 val cleanOwnerPhone = _state.value.ownerPhone.replace("-", "")
 
-                // MODIFICADO: Usar la contraseña del usuario en lugar de generar una temporal
                 val request = RegisterRequest(
                     companyName = _state.value.companyName,
                     rfc = _state.value.companyRfc,
@@ -158,21 +153,40 @@ class RegisterViewModel(
                     curp = _state.value.ownerCurp,
                     workPhone = cleanOwnerPhone,
                     personalEmail = _state.value.ownerEmail,
-                    password = _state.value.password  // MODIFICADO: Usar password del estado
+                    password = _state.value.password
                 )
 
                 Log.d(TAG, "Starting registration...")
                 val response = repository.register(request)
                 Log.d(TAG, "Registration response: $response")
 
-                _state.value = _state.value.copy(
-                    isLoading = false,
-                    registrationSuccess = response.success,
-                    errorMessage = if (!response.success) response.message else null
-                )
-
                 if (response.success) {
-                    Log.i(TAG, "Registration successful")
+                    // ✅ Registro exitoso
+                    Log.i(TAG, "✅ Registration successful with uid: ${response.uid}")
+                    _state.value = _state.value.copy(
+                        isLoading = false,
+                        registrationSuccess = true,
+                        errorMessage = null
+                    )
+                } else {
+                    // ❌ Error (incluyendo email duplicado)
+                    Log.e(TAG, "❌ Registration failed: ${response.errorMessage}")
+
+                    // Si es error de email duplicado, marcarlo en el campo específico
+                    if (response.isEmailAlreadyExists) {
+                        _state.value = _state.value.copy(
+                            isLoading = false,
+                            registrationSuccess = false,
+                            ownerEmailError = response.errorMessage,
+                            errorMessage = response.errorMessage
+                        )
+                    } else {
+                        _state.value = _state.value.copy(
+                            isLoading = false,
+                            registrationSuccess = false,
+                            errorMessage = response.errorMessage
+                        )
+                    }
                 }
 
             } catch (e: Exception) {
@@ -184,6 +198,7 @@ class RegisterViewModel(
             }
         }
     }
+
     fun clearError() {
         _state.value = _state.value.copy(errorMessage = null)
     }

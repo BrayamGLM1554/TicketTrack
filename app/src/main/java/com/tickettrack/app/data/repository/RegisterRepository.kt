@@ -10,15 +10,12 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import java.io.IOException
 
-/**
- * Repositorio para manejar las operaciones de registro de usuarios.
- */
 class RegisterRepository(
     private val httpClient: io.ktor.client.HttpClient = HttpClientProvider.client
 ) {
     companion object {
         private const val TAG = "RegisterRepository"
-        private const val BASE_URL = "http://ApiGatewayTicket.somee.com"
+        private const val BASE_URL = "http://apigatewayticket.somee.com"
         private const val REGISTER_ENDPOINT = "$BASE_URL/api/Auth/register"
     }
 
@@ -34,77 +31,71 @@ class RegisterRepository(
 
             Log.d(TAG, "Response status: ${response.status}")
 
-            // Si el código de respuesta es 200 o 201, consideramos exitoso
+            // Intentar parsear el body como RegisterResponse
+            val body: RegisterResponse = response.body()
+            Log.d(TAG, "Response body: $body")
+
+            // Si el código es 200 o 201 Y hay uid, fue exitoso
             if (response.status.value in 200..201) {
-                Log.d(TAG, "Registration successful with status: ${response.status}")
-                RegisterResponse(
-                    success = true,
-                    message = "Usuario registrado exitosamente",
-                    uid = null
-                )
+                if (body.success && body.uid != null) {
+                    Log.d(TAG, "✅ Registration successful with uid: ${body.uid}")
+                    body
+                } else if (body.isEmailAlreadyExists) {
+                    Log.w(TAG, "❌ Email already exists")
+                    body
+                } else {
+                    Log.w(TAG, "⚠️ Unexpected response: ${body.message}")
+                    body
+                }
             } else {
                 Log.w(TAG, "Unexpected status code: ${response.status}")
                 RegisterResponse(
-                    success = false,
                     message = "Respuesta inesperada del servidor"
                 )
             }
 
         } catch (e: ClientRequestException) {
-            // Error 4xx (errores del cliente)
             Log.e(TAG, "Client error: ${e.response.status}", e)
-            when (e.response.status.value) {
-                400 -> RegisterResponse(
-                    success = false,
-                    message = "Los datos ingresados no son válidos. Por favor verifica la información."
-                )
-                401 -> RegisterResponse(
-                    success = false,
-                    message = "No tienes autorización para realizar esta acción."
-                )
-                409 -> RegisterResponse(
-                    success = false,
-                    message = "El correo electrónico o RFC ya están registrados. Intenta con otros datos."
-                )
-                422 -> RegisterResponse(
-                    success = false,
-                    message = "Los datos no cumplen con el formato requerido."
-                )
-                429 -> RegisterResponse(
-                    success = false,
-                    message = "Demasiados intentos. Por favor espera unos minutos e intenta de nuevo."
-                )
-                else -> RegisterResponse(
-                    success = false,
-                    message = "Error en la solicitud. Por favor intenta nuevamente."
-                )
+
+            try {
+                val errorBody: RegisterResponse = e.response.body()
+                Log.d(TAG, "Error body parsed: $errorBody")
+                errorBody
+            } catch (parseError: Exception) {
+                Log.e(TAG, "Could not parse error body", parseError)
+                when (e.response.status.value) {
+                    400 -> RegisterResponse(
+                        message = "Los datos ingresados no son válidos. Por favor verifica la información."
+                    )
+                    409 -> RegisterResponse(
+                        message = "El correo electrónico o RFC ya están registrados. Intenta con otros datos."
+                    )
+                    422 -> RegisterResponse(
+                        message = "Los datos no cumplen con el formato requerido."
+                    )
+                    else -> RegisterResponse(
+                        message = "Error en la solicitud. Por favor intenta nuevamente."
+                    )
+                }
             }
         } catch (e: ServerResponseException) {
-            // Error 5xx (errores del servidor)
             Log.e(TAG, "Server error: ${e.response.status}", e)
             RegisterResponse(
-                success = false,
                 message = "El servidor está experimentando problemas. Por favor intenta más tarde."
             )
         } catch (e: HttpRequestTimeoutException) {
-            // Timeout
             Log.e(TAG, "Timeout error", e)
             RegisterResponse(
-                success = false,
                 message = "La conexión tardó demasiado tiempo. Verifica tu conexión a internet e intenta nuevamente."
             )
         } catch (e: IOException) {
-            // Error de red
             Log.e(TAG, "Network error", e)
             RegisterResponse(
-                success = false,
                 message = "No se pudo conectar al servidor. Verifica tu conexión a internet."
             )
         } catch (e: Exception) {
-            // Error desconocido
             Log.e(TAG, "Unexpected error", e)
             RegisterResponse(
-                success = false,
                 message = "Ocurrió un error inesperado: ${e.message ?: "Por favor intenta nuevamente"}"
             )
         }

@@ -1,4 +1,4 @@
-package com.tickettrack.app.ui.trips.list
+package com.tickettrack.app.ui.main.trips.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tickettrack.app.domain.model.trip.TripStatus
-import com.tickettrack.app.ui.trips.list.components.TripCard
+import com.tickettrack.app.ui.main.trips.list.components.TripCard
 
 /**
  * Pantalla de lista de viajes.

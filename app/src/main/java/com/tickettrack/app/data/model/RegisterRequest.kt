@@ -3,17 +3,12 @@ package com.tickettrack.app.data.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * Modelo de datos para la petición de registro al API Gateway.
- *
- * Los nombres de campos coinciden con el formato esperado por el backend.
- */
 @Serializable
 data class RegisterRequest(
     @SerialName("CompanyName")
     val companyName: String,
 
-    @SerialName("Rfc")
+    @SerialName("RFC")
     val rfc: String,
 
     @SerialName("OfficePhone")
@@ -25,7 +20,7 @@ data class RegisterRequest(
     @SerialName("NameOfManager")
     val nameOfManager: String,
 
-    @SerialName("Curp")
+    @SerialName("CURP")
     val curp: String,
 
     @SerialName("WorkPhone")

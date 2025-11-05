@@ -1,4 +1,4 @@
-package com.tickettrack.app.ui.trips.detail.components
+package com.tickettrack.app.ui.main.trips.detail.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable

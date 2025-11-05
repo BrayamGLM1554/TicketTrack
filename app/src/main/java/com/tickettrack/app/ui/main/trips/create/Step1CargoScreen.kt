@@ -1,4 +1,4 @@
-package com.tickettrack.app.ui.trips.create
+package com.tickettrack.app.ui.main.trips.create
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
