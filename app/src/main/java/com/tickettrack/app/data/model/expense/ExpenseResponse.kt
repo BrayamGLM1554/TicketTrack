@@ -1,6 +1,7 @@
 package com.tickettrack.app.data.model.expense
 
 import com.tickettrack.app.domain.model.expense.*
+import com.tickettrack.app.domain.model.trip.Location
 import java.time.Instant
 
 /**
@@ -46,26 +47,27 @@ data class ExpenseResponse(
             currency = currency,
             category = ExpenseCategory.fromApiValue(category),
             description = description,
-            date = Instant.parse(date),
+            date = Instant.parse(date).toString(),
             ticketImagePath = ticketImagePath,
             ticketPublicUrl = ticketPublicUrl,
             ticketModerationStatus = ModerationStatus.fromApiValue(ticketModerationStatus),
             moderationNote = moderationNote,
-            moderatedAt = moderatedAt?.let { Instant.parse(it) },
+            moderatedAt = moderatedAt?.let { Instant.parse(it) }.toString(),
             moderatedBy = moderatedBy,
             location = location?.let {
                 Location(
                     address = it.address,
-                    coordinates = Coordinates(
+                    coordinates = com.tickettrack.app.domain.model.trip.Coordinates( // Use the explicit path
                         latitude = it.coordinates.latitude,
                         longitude = it.coordinates.longitude
                     )
                 )
             },
+
             createdBy = createdBy,
             createdByName = createdByName,
-            createdAt = Instant.parse(createdAt),
-            updatedAt = Instant.parse(updatedAt)
+            createdAt = Instant.parse(createdAt).toString(),
+            updatedAt = Instant.parse(updatedAt).toString()
         )
     }
 }

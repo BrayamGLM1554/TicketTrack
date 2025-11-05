@@ -1,9 +1,7 @@
 package com.tickettrack.app.domain.model.expense
 
-/**
- * Categorías de gastos según Firebase
- * fuel | food | toll | maintenance | other
- */
+import androidx.compose.ui.graphics.Color
+
 enum class ExpenseCategory(val displayName: String, val apiValue: String) {
     FUEL("Combustible", "fuel"),
     FOOD("Alimentos", "food"),
@@ -11,24 +9,28 @@ enum class ExpenseCategory(val displayName: String, val apiValue: String) {
     MAINTENANCE("Mantenimiento", "maintenance"),
     OTHER("Otros", "other");
 
+    /**
+     * Devuelve un color representativo para cada categoría
+     */
+    fun getColor(): Long {
+        return when (this) {
+            FUEL -> 0xFFFFC107 // Ámbar
+            FOOD -> 0xFF4CAF50 // Verde
+            TOLL -> 0xFF03A9F4 // Azul claro
+            MAINTENANCE -> 0xFFF44336 // Rojo
+            OTHER -> 0xFF9E9E9E // Gris
+        }
+    }
+
     companion object {
-        /**
-         * Obtiene la categoría desde el valor de la API
-         */
         fun fromApiValue(value: String): ExpenseCategory {
             return values().find { it.apiValue == value } ?: OTHER
         }
 
-        /**
-         * Obtiene todas las categorías como lista de strings para UI
-         */
         fun getAllDisplayNames(): List<String> {
             return values().map { it.displayName }
         }
 
-        /**
-         * Obtiene la categoría desde el nombre de display
-         */
         fun fromDisplayName(displayName: String): ExpenseCategory {
             return values().find { it.displayName == displayName } ?: OTHER
         }

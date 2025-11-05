@@ -20,7 +20,7 @@ import com.tickettrack.app.domain.model.expense.Expense
 import com.tickettrack.app.domain.model.expense.ExpenseCategory
 import java.text.SimpleDateFormat
 import java.util.*
-
+import java.time.Instant
 /**
  * Card para mostrar un gasto individual
  */
@@ -96,7 +96,7 @@ fun ExpenseCard(
                         tint = Color.Gray
                     )
                     Text(
-                        text = dateFormatter.format(Date.from(expense.date)),
+                        text = dateFormatter.format(Date.from(Instant.parse(expense.date))),
                         style = MaterialTheme.typography.bodySmall,
                         color = Color.Gray
                     )
