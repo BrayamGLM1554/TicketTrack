@@ -12,7 +12,20 @@
           "package_name": "com.tickettrack.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "119196505193-6mfa5dvbncdlhnp0j0j4rf60giefka4f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tickettrack.app",
+            "certificate_hash": "2499f60be93bd22bd9b222052d13ac3c74315dc7"
+          }
+        },
+        {
+          "client_id": "119196505193-gctg8tk4g77dk7nojf0sjfn4s24vva72.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBJj5FBc0ReIjBnKdVZ-zMc-L0sFhISRkc"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "119196505193-gctg8tk4g77dk7nojf0sjfn4s24vva72.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

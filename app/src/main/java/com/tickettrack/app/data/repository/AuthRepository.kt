@@ -1,114 +1,106 @@
 package com.tickettrack.app.data.repository
 
 import android.util.Log
-import com.tickettrack.app.data.model.Claims
-import com.tickettrack.app.data.model.LoginRequest
-import com.tickettrack.app.data.model.LoginResponse
-import com.tickettrack.app.data.remote.RetrofitClient
-import kotlinx.coroutines.delay
-import retrofit2.Response
+import com.tickettrack.app.data.remote.api.AuthApi
+import com.tickettrack.app.data.remote.dto.LoginRequest
+import com.tickettrack.app.data.remote.dto.RegisterRequest
+import com.tickettrack.app.domain.model.AuthResult
+import com.tickettrack.app.domain.repository.IAuthRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class AuthRepository {
+class AuthRepository(
+    private val authApi: AuthApi
+) : IAuthRepository {
 
-    private val authApiService = RetrofitClient.authApiService
+    override suspend fun login(email: String, password: String): AuthResult {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = authApi.login(LoginRequest(email, password))
 
-    // ✅ NUEVO: Flag para habilitar/deshabilitar fallback a mock
-    // Cambiar a false cuando la API esté 100% lista
-    private val enableMockFallback = true  // ← Cambiar a false en producción
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()!!
 
-    suspend fun login(request: LoginRequest): Result<LoginResponse> {
-        return try {
-            Log.d(TAG, "🔄 Intentando login con API real: ${request.email}")
-
-            // ✅ Llamada a la API real
-            val response = authApiService.login(request)
-
-            if (response.isSuccessful && response.body() != null) {
-                val loginData = response.body()!!
-                Log.d(TAG, "✅ Login exitoso con API real")
-                Log.d(TAG, "👤 Usuario: ${loginData.name}")
-                Log.d(TAG, "🎭 Rol: ${loginData.claims.role}")
-                Log.d(TAG, "🏢 Company: ${loginData.claims.companyEmail ?: loginData.claims.companyName ?: "N/A"}")
-
-                Result.success(loginData)
-            } else {
-                val errorBody = response.errorBody()?.string()
-                Log.e(TAG, "❌ Error en API: ${response.code()} - ${response.message()}")
-                Log.e(TAG, "📄 Error body: $errorBody")
-
-                // ✅ Intentar con mock solo si está habilitado
-                if (enableMockFallback) {
-                    Log.w(TAG, "⚠️ Fallback activado: usando datos ficticios")
-                    loginWithMockData(request)
+                    if (body.token != null && body.name != null) {
+                        Log.d("AuthRepository", "Login exitoso para: ${body.name}")
+                        AuthResult.Success(
+                            token = body.token,
+                            name = body.name,
+                            email = body.email ?: email,
+                            role = body.claims?.role ?: "USER",
+                            companyEmail = body.claims?.companyEmail ?: "",
+                            companyName = body.companyName ?: body.claims?.companyName ?: "", // USAR companyName del response
+                            profileImageUrl = body.profileImageUrl
+                        )
+                    } else {
+                        Log.e("AuthRepository", "Login fallido - No se recibió token o nombre")
+                        AuthResult.Error("Credenciales incorrectas")
+                    }
                 } else {
-                    Result.failure(Exception("Error ${response.code()}: ${response.message()}"))
+                    Log.e("AuthRepository", "Login fallido - Código: ${response.code()}")
+                    AuthResult.Error("Error de autenticación. Intenta más tarde.")
                 }
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "💥 Excepción en API: ${e.message}", e)
-
-            // ✅ Intentar con mock solo si está habilitado
-            if (enableMockFallback) {
-                Log.w(TAG, "⚠️ Fallback activado por excepción: usando datos ficticios")
-                loginWithMockData(request)
-            } else {
-                Result.failure(Exception("Error de conexión: ${e.message}"))
+            } catch (e: Exception) {
+                Log.e("AuthRepository", "Excepción en login: ${e.message}", e)
+                AuthResult.Error("Error de conexión. Verifica tu internet.")
             }
         }
     }
 
-    // ✅ MEJORADO: Datos mock para ADMIN y USER
-    private suspend fun loginWithMockData(request: LoginRequest): Result<LoginResponse> {
-        delay(1200) // Simular latencia de red
-
-        // ✅ Credenciales ficticias para ADMIN
-        if (request.email == "admin@tickettrack.com" && request.password == "1234") {
-            Log.d(TAG, "🎭 Login mock exitoso como ADMIN")
-            return Result.success(
-                LoginResponse(
-                    name = "Admin Ficticio",
-                    email = request.email,
-                    token = "fake_jwt_token_admin_${System.currentTimeMillis()}",
-                    loginAt = java.time.Instant.now().toString(),
-                    expiresAt = java.time.Instant.now().plusSeconds(3600).toString(),
-                    claims = Claims(
-                        role = "ADMIN",
-                        companyEmail = request.email,
-                        companyName = null  // ✅ ADMIN no tiene companyName
-                    ),
-                    profileFilePath = null,
-                    profileImageUrl = ""
+    override suspend fun register(
+        companyName: String,
+        rfc: String,
+        officePhone: String,
+        companyEmail: String,
+        nameOfManager: String,
+        curp: String,
+        workPhone: String,
+        personalEmail: String,
+        password: String
+    ): AuthResult {
+        return withContext(Dispatchers.IO) {
+            try {
+                val request = RegisterRequest(
+                    CompanyName = companyName,
+                    Rfc = rfc,
+                    OfficePhone = officePhone,
+                    CompanyEmail = companyEmail,
+                    NameOfManager = nameOfManager,
+                    Curp = curp,
+                    WorkPhone = workPhone,
+                    PersonalEmail = personalEmail,
+                    Password = password
                 )
-            )
-        }
 
-        // ✅ NUEVO: Credenciales ficticias para USER (transportista)
-        if (request.email == "chofer@example.com" && request.password == "1234") {
-            Log.d(TAG, "🚚 Login mock exitoso como USER (Transportista)")
-            return Result.success(
-                LoginResponse(
-                    name = "Juan Pérez Ficticio",
-                    email = request.email,
-                    token = "fake_jwt_token_user_${System.currentTimeMillis()}",
-                    loginAt = java.time.Instant.now().toString(),
-                    expiresAt = java.time.Instant.now().plusSeconds(3600).toString(),
-                    claims = Claims(
+                val response = authApi.register(request)
+
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()!!
+                    Log.d("AuthRepository", "Registro exitoso: ${body.message}")
+                    AuthResult.Success(
+                        token = "",
+                        name = nameOfManager,
+                        email = companyEmail,
                         role = "USER",
-                        companyEmail = null,           // ✅ USER no tiene companyEmail
-                        companyName = "Empresa Mock"   // ✅ USER tiene companyName
-                    ),
-                    profileFilePath = null,
-                    profileImageUrl = ""
-                )
-            )
+                        companyEmail = companyEmail,
+                        companyName = companyName, // USAR companyName del registro
+                        profileImageUrl = null
+                    )
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("AuthRepository", "Error en registro: $errorBody")
+
+                    if (errorBody?.contains("EMAIL_EXISTS") == true ||
+                        errorBody?.contains("already exists") == true) {
+                        AuthResult.Error("Este correo ya está registrado. Intenta con otro.")
+                    } else {
+                        AuthResult.Error("Error al registrar. Intenta más tarde.")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("AuthRepository", "Excepción en registro: ${e.message}", e)
+                AuthResult.Error("Error de conexión. Verifica tu internet.")
+            }
         }
-
-        // ✅ Si no coincide ninguna credencial
-        Log.d(TAG, "❌ Credenciales mock inválidas")
-        return Result.failure(Exception("Credenciales inválidas"))
-    }
-
-    companion object {
-        private const val TAG = "AuthRepository"
     }
 }

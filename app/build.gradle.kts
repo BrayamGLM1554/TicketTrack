@@ -2,9 +2,11 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("org.jetbrains.kotlin.kapt")
     id("com.google.gms.google-services")
     kotlin("plugin.serialization") version "1.9.20"
 }
+
 
 android {
     namespace = "com.tickettrack.app"
@@ -17,8 +19,8 @@ android {
         minSdk = 26
         targetSdk = 35
 //        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -85,12 +87,35 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
     implementation("io.ktor:ktor-client-logging:2.3.7")
 
+    // Google Maps
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.maps.android:maps-compose:4.3.0")
+    // Google Places API
+    implementation("com.google.android.libraries.places:places:3.3.0")
+
     // Kotlinx Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
-    // Coil para imágenes (si no está)
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    // Coil para imágenes (Compose integration)
+    implementation("io.coil-kt:coil-compose:2.5.0") // <-- Corrected line!
 
     // SwipeRefresh (si no está)
+    // Note: accompanist-swiperefresh is now often replaced by Compose's built-in PullRefresh
     implementation("com.google.accompanist:accompanist-swiperefresh:0.32.0")
+
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // Navigation para Jetpack Compose
+    implementation("androidx.navigation:navigation-compose:2.8.3")
+
+    // DataStore (almacenamiento de preferencias)
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // Koin para Dependency Injection (reemplazo de Hilt)
+    implementation("io.insert-koin:koin-android:3.5.3")
+    implementation("io.insert-koin:koin-androidx-compose:3.5.3")
 }
