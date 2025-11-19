@@ -27,6 +27,7 @@ fun TransportistaHomeScreen(
     driverId: String,
     onNavigateToTripDetails: (String) -> Unit,
     onNavigateToRegisterExpense: (String, String) -> Unit, // tripId, driverId
+    onNavigateToRequestBudget: (String, String, Double) -> Unit, // tripId, driverId, currentBudget
     viewModel: TransportistaHomeViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -105,11 +106,17 @@ fun TransportistaHomeScreen(
                             driverId
                         )
                     },
-                    onRequestBudget = { /* TODO: Navigate to request budget */ }
-                )
+                    onRequestBudget = {
+                        // Navegar a la pantalla de solicitar aumento
+                        onNavigateToRequestBudget(
+                            uiState.currentTrip!!.id,
+                            driverId,
+                            uiState.currentTrip!!.budgetAssigned
+                        )
+                    }                )
 
                 // Sección de últimos gastos (placeholder)
-                LastExpensesSection()
+                LastExpensesSection(expenses = uiState.recentExpenses)
             }
             else -> {
                 EmptyStateCard(
@@ -404,7 +411,7 @@ fun BudgetCard(
 }
 
 @Composable
-fun LastExpensesSection() {
+fun LastExpensesSection(expenses: List<com.tickettrack.app.domain.model.Expense>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -438,14 +445,108 @@ fun LastExpensesSection() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
-                text = "No hay gastos recientes",
-                fontSize = 14.sp,
-                color = TextSecondary,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
-            )
+            if (expenses.isEmpty()) {
+                Text(
+                    text = "No hay gastos recientes",
+                    fontSize = 14.sp,
+                    color = TextSecondary,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
+            } else {
+                expenses.forEachIndexed { index, expense ->
+                    ExpenseItem(expense = expense)
+
+                    // Añadir divisor entre items (excepto el último)
+                    if (index < expenses.size - 1) {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 12.dp),
+                            color = Color(0xFFE0E0E0)
+                        )
+                    }
+                }
+            }
         }
+    }
+}
+
+// Cambio 3: Agrega estas nuevas funciones al final del archivo (antes del último })
+@Composable
+fun ExpenseItem(expense: com.tickettrack.app.domain.model.Expense) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.weight(1f)
+        ) {
+            // Icono según categoría
+            Surface(
+                modifier = Modifier.size(40.dp),
+                shape = RoundedCornerShape(20.dp),
+                color = Primary.copy(alpha = 0.1f)
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        imageVector = getCategoryIcon(expense.category),
+                        contentDescription = null,
+                        tint = Primary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = expense.description,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color(0xFF1A1A1A),
+                    maxLines = 1
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = formatExpenseDate(expense.createdAt),
+                    fontSize = 12.sp,
+                    color = TextSecondary
+                )
+            }
+        }
+
+        Text(
+            text = "$${String.format("%.2f", expense.amount)}",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF1A1A1A)
+        )
+    }
+}
+
+// Helper para obtener el ícono según categoría
+fun getCategoryIcon(category: String): androidx.compose.ui.graphics.vector.ImageVector {
+    return when (category.uppercase()) {
+        "FUEL", "COMBUSTIBLE" -> Icons.Default.LocalGasStation
+        "FOOD", "ALIMENTACIÓN" -> Icons.Default.Restaurant
+        "TOLL", "CASETA" -> Icons.Default.Toll
+        "MAINTENANCE", "MANTENIMIENTO" -> Icons.Default.Build
+        "PARKING", "ESTACIONAMIENTO" -> Icons.Default.LocalParking
+        else -> Icons.Default.Receipt
+    }
+}
+
+// Helper para formatear la fecha
+fun formatExpenseDate(createdAt: String): String {
+    return try {
+        val instant = java.time.Instant.parse(createdAt)
+        val zonedDateTime = instant.atZone(java.time.ZoneId.systemDefault())
+        val formatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM, HH:mm", java.util.Locale("es", "ES"))
+        zonedDateTime.format(formatter)
+    } catch (e: Exception) {
+        "Fecha no disponible"
     }
 }
 

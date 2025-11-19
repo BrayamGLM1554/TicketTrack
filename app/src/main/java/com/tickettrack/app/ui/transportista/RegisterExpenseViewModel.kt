@@ -31,6 +31,16 @@ class RegisterExpenseViewModel(
         description: String,
         imageFile: File?
     ) {
+        val lowerCaseCategory = category.lowercase()
+
+        val formattedCategory = if (lowerCaseCategory.isNotEmpty()) {
+            lowerCaseCategory.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase() else it.toString()
+            }
+        } else {
+            category // Si la cadena está vacía, mantenerla como estaba
+        }
+
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
                 isLoading = true,
@@ -42,7 +52,7 @@ class RegisterExpenseViewModel(
                 token = token,
                 tripId = tripId,
                 driverId = driverId,
-                category = category,
+                category = formattedCategory, // <-- ¡USAR LA CATEGORÍA FORMATEADA AQUÍ!
                 amount = amount,
                 description = description,
                 imageFile = imageFile

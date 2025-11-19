@@ -21,6 +21,20 @@ class BudgetRequestsRepository(
         }
     }
 
+    // NUEVO: Crear solicitud de presupuesto
+    override suspend fun createBudgetRequest(
+        token: String,
+        request: CreateBudgetRequest
+    ): Result<BudgetRequest> {
+        return try {
+            val response = api.createBudgetRequest("Bearer $token", request)
+            Result.success(response.data)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
     override suspend fun getBudgetRequestById(
         token: String,
         id: String

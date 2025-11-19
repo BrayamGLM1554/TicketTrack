@@ -19,8 +19,8 @@ android {
         minSdk = 26
         targetSdk = 35
 //        targetSdk = 36
-        versionCode = 2
-        versionName = "1.0.2"
+        versionCode = 5
+        versionName = "1.0.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,6 +51,8 @@ dependencies {
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.0")
+    implementation("com.google.firebase:firebase-messaging:23.4.0")
 
     // Integración de ViewModel con Jetpack Compose
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")

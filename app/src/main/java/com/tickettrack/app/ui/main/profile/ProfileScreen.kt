@@ -31,6 +31,7 @@ import com.tickettrack.app.ui.theme.TextSecondary
 fun ProfileScreen(
     userProfile: UserProfile,
     onBackPressed: () -> Unit,
+    onNavigateToNotifications: () -> Unit, // NUEVO
     onLogout: () -> Unit
 ) {
     val context = LocalContext.current
@@ -227,10 +228,11 @@ fun ProfileScreen(
 
                     Divider(modifier = Modifier.padding(vertical = 12.dp))
 
+                    // ACTUALIZADO: Ahora navega a la pantalla de notificaciones
                     ProfileActionItem(
                         icon = Icons.Default.Notifications,
                         text = "Notificaciones",
-                        onClick = { /* TODO */ }
+                        onClick = onNavigateToNotifications
                     )
 
                     Divider(modifier = Modifier.padding(vertical = 12.dp))

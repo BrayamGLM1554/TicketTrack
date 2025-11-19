@@ -1,16 +1,24 @@
 package com.tickettrack.app.ui.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.tickettrack.app.data.local.SessionManager
 import com.tickettrack.app.domain.model.UserProfile
 import com.tickettrack.app.ui.auth.GoogleAuthViewModel
 import com.tickettrack.app.ui.auth.LoginScreen
@@ -23,30 +31,68 @@ import com.tickettrack.app.ui.expenses.BudgetRequestDetailsScreen
 import com.tickettrack.app.ui.expenses.ExpenseDetailsScreen
 import com.tickettrack.app.ui.expenses.ExpensesScreen
 import com.tickettrack.app.ui.main.MainScreen
+import com.tickettrack.app.ui.notifications.NotificationViewModel
+import com.tickettrack.app.ui.notifications.NotificationsScreen
 import com.tickettrack.app.ui.profile.ProfileScreen
+import com.tickettrack.app.ui.theme.Primary
 import com.tickettrack.app.ui.transportista.RegisterExpenseScreen
+import com.tickettrack.app.ui.transportista.RequestBudgetIncreaseScreen
 import com.tickettrack.app.ui.trips.CreateTripScreen
 import com.tickettrack.app.ui.trips.TripDetailsScreen
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    val sessionManager: SessionManager = koinInject()
+    val scope = rememberCoroutineScope()
+
     var currentUserProfile by remember { mutableStateOf<UserProfile?>(null) }
+    var isCheckingSession by remember { mutableStateOf(true) }
+    var startDestination by remember { mutableStateOf(Screen.Login.route) }
 
     // Obtener ViewModels a nivel de navegación
     val loginViewModel: LoginViewModel = koinViewModel()
     val googleViewModel: GoogleAuthViewModel = koinViewModel()
 
+    val notificationViewModel: NotificationViewModel = koinInject()
+
+    // Verificar sesión persistente al iniciar
+    LaunchedEffect(Unit) {
+        val savedSession = sessionManager.getSession()
+        if (savedSession != null) {
+            currentUserProfile = savedSession
+            startDestination = Screen.Main.route
+        }
+        isCheckingSession = false
+    }
+
+    // Mostrar splash mientras verifica sesión
+    if (isCheckingSession) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(color = Primary)
+        }
+        return
+    }
+
     NavHost(
         navController = navController,
-        startDestination = Screen.Login.route
+        startDestination = startDestination
     ) {
         // Login
         composable(Screen.Login.route) {
             LoginScreen(
                 onLoginSuccess = { userProfile ->
                     currentUserProfile = userProfile
+                    // NUEVO: Guardar sesión
+                    scope.launch {
+                        sessionManager.saveSession(userProfile)
+                    }
                     navController.navigate(Screen.Main.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
@@ -90,6 +136,10 @@ fun AppNavigation() {
                 userEmail = userEmail,
                 onRegistrationSuccess = { userProfile ->
                     currentUserProfile = userProfile
+                    // NUEVO: Guardar sesión
+                    scope.launch {
+                        sessionManager.saveSession(userProfile)
+                    }
                     navController.navigate(Screen.Main.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
@@ -109,7 +159,11 @@ fun AppNavigation() {
                     onNavigateToProfile = {
                         navController.navigate(Screen.Profile.route)
                     },
-                    onNavigateToCreateDriver = {
+                    onNavigateToNotifications = { // NUEVO
+                        navController.navigate(Screen.Notifications.route)
+                    },
+                    notificationViewModel = notificationViewModel,
+                            onNavigateToCreateDriver = {
                         navController.navigate(Screen.CreateDriver.route)
                     },
                     onNavigateToDriverDetails = { driverUid ->
@@ -130,11 +184,15 @@ fun AppNavigation() {
                     onNavigateToRegisterExpense = { tripId, driverId ->
                         navController.navigate(Screen.RegisterExpense.createRoute(tripId, driverId))
                     },
+                    onNavigateToRequestBudget = { tripId, driverId, currentBudget ->
+                        navController.navigate(Screen.RequestBudget.createRoute(tripId, driverId, currentBudget))
+                    },
                     onLogout = {
                         handleLogout(
                             navController = navController,
                             loginViewModel = loginViewModel,
                             googleViewModel = googleViewModel,
+                            sessionManager = sessionManager,
                             onLogoutComplete = {
                                 currentUserProfile = null
                             }
@@ -152,16 +210,40 @@ fun AppNavigation() {
                     onBackPressed = {
                         navController.popBackStack()
                     },
+                    onNavigateToNotifications = { // NUEVO
+                        navController.navigate(Screen.Notifications.route)
+                    },
+
                     onLogout = {
                         handleLogout(
                             navController = navController,
                             loginViewModel = loginViewModel,
                             googleViewModel = googleViewModel,
+                            sessionManager = sessionManager,
                             onLogoutComplete = {
                                 currentUserProfile = null
                             }
                         )
                     }
+                )
+            }
+        }
+
+        // NUEVO: Notificaciones
+        composable(Screen.Notifications.route) {
+            currentUserProfile?.let { userProfile ->
+                NotificationsScreen(
+                    token = userProfile.token,
+                    onBackPressed = {
+                        navController.popBackStack()
+                    },
+                    onNavigateToTripDetails = { tripId ->
+                        navController.navigate(Screen.TripDetails.createRoute(tripId))
+                    },
+                    onNavigateToBudgetRequestDetails = { requestId ->
+                        navController.navigate(Screen.BudgetRequestDetails.createRoute(requestId))
+                    },
+                    viewModel = notificationViewModel
                 )
             }
         }
@@ -292,7 +374,7 @@ fun AppNavigation() {
             }
         }
 
-        // Register Expense (CORREGIDO)
+        // Register Expense
         composable(
             route = Screen.RegisterExpense.route,
             arguments = listOf(
@@ -314,6 +396,32 @@ fun AppNavigation() {
                 )
             }
         }
+
+        // Request Budget Increase
+        composable(
+            route = Screen.RequestBudget.route,
+            arguments = listOf(
+                navArgument("tripId") { type = NavType.StringType },
+                navArgument("driverId") { type = NavType.StringType },
+                navArgument("currentBudget") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val tripId = backStackEntry.arguments?.getString("tripId") ?: ""
+            val driverId = backStackEntry.arguments?.getString("driverId") ?: ""
+            val currentBudget = backStackEntry.arguments?.getString("currentBudget")?.toDoubleOrNull() ?: 0.0
+
+            currentUserProfile?.let { userProfile ->
+                RequestBudgetIncreaseScreen(
+                    token = userProfile.token,
+                    tripId = tripId,
+                    driverId = driverId,
+                    currentBudget = currentBudget,
+                    onNavigateBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+        }
     }
 }
 
@@ -322,6 +430,7 @@ private fun handleLogout(
     navController: NavHostController,
     loginViewModel: LoginViewModel,
     googleViewModel: GoogleAuthViewModel,
+    sessionManager: SessionManager, // NUEVO
     onLogoutComplete: () -> Unit
 ) {
     // 1. Limpiar estados de Google
@@ -330,10 +439,15 @@ private fun handleLogout(
     // 2. Limpiar estados de login normal
     loginViewModel.resetStates()
 
-    // 3. Limpiar usuario actual
+    // 3. NUEVO: Limpiar sesión persistente
+    kotlinx.coroutines.GlobalScope.launch {
+        sessionManager.clearSession()
+    }
+
+    // 4. Limpiar usuario actual
     onLogoutComplete()
 
-    // 4. Navegar a login limpiando todo el stack
+    // 5. Navegar a login limpiando todo el stack
     navController.navigate(Screen.Login.route) {
         popUpTo(0) { inclusive = true }
     }

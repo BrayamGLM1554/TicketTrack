@@ -57,6 +57,7 @@ fun RegisterExpenseScreen(
     var showCategoryMenu by remember { mutableStateOf(false) }
 
     // Permisos de cámara
+    // Permisos de cámara
     var hasCameraPermission by remember { mutableStateOf(false) }
 
     val cameraPermissionLauncher = rememberLauncherForActivityResult(

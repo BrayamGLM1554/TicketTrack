@@ -14,11 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "119196505193-6mfa5dvbncdlhnp0j0j4rf60giefka4f.apps.googleusercontent.com",
+          "client_id": "119196505193-9cc6jr2pgh3isjlcq10v2nrurjhpnf3m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.tickettrack.app",
-            "certificate_hash": "2499f60be93bd22bd9b222052d13ac3c74315dc7"
+            "certificate_hash": "d23b9d23c4f4cfea84dca4f723b841f6ff01dd21"
+          }
+        },
+        {
+          "client_id": "119196505193-rcj80ul3drdepfab9vviqfqunvdsl99m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tickettrack.app",
+            "certificate_hash": "51c84e29eb2a2ef9a470cf5386c0ecfcf2fcc434"
           }
         },
         {

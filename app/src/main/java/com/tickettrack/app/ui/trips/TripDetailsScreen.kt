@@ -1,5 +1,6 @@
 package com.tickettrack.app.ui.trips
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,6 +26,7 @@ import com.tickettrack.app.ui.expenses.getCategoryColor
 import com.tickettrack.app.ui.expenses.getCategoryLabel
 import com.tickettrack.app.ui.theme.Primary
 import com.tickettrack.app.ui.theme.TextSecondary
+import com.tickettrack.app.utils.JwtDecoder
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 import java.time.ZonedDateTime
@@ -43,6 +45,13 @@ fun TripDetailsScreen(
     val uiState by viewModel.uiState.collectAsState()
     var showStartDialog by remember { mutableStateOf(false) }
     var showCompleteDialog by remember { mutableStateOf(false) }
+
+    // Extraer rol del token
+    val userRole = remember(token) {
+        val role = JwtDecoder.extractRole(token) ?: "USER"
+        Log.d("TripDetailsScreen", "Rol extraído del token: $role")
+        role
+    }
 
     LaunchedEffect(tripId) {
         viewModel.loadTripDetails(token, tripId)
@@ -132,12 +141,13 @@ fun TripDetailsScreen(
                         onExpenseClick = onNavigateToExpenseDetails,
                         onStartTrip = { showStartDialog = true },
                         onCompleteTrip = { showCompleteDialog = true },
-                        isUpdatingStatus = uiState.isUpdatingStatus
+                        isUpdatingStatus = uiState.isUpdatingStatus,
+                        userRole = userRole
                     )
                 }
             }
 
-            // Diálogo de confirmación para INICIAR viaje
+            // Diálogo de confirmación para INICIAR viaje (solo Admin)
             if (showStartDialog) {
                 AlertDialog(
                     onDismissRequest = { showStartDialog = false },
@@ -175,7 +185,7 @@ fun TripDetailsScreen(
                 )
             }
 
-            // Diálogo de confirmación para COMPLETAR viaje
+            // Diálogo de confirmación para COMPLETAR viaje (solo ADMIN)
             if (showCompleteDialog) {
                 AlertDialog(
                     onDismissRequest = { showCompleteDialog = false },
@@ -253,7 +263,8 @@ fun TripDetailsContent(
     onExpenseClick: (String) -> Unit,
     onStartTrip: () -> Unit,
     onCompleteTrip: () -> Unit,
-    isUpdatingStatus: Boolean
+    isUpdatingStatus: Boolean,
+    userRole: String
 ) {
     Column(
         modifier = Modifier
@@ -291,81 +302,107 @@ fun TripDetailsContent(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Text(
-                    text = "ID: ${trip.id}",
-                    fontSize = 12.sp,
-                    color = TextSecondary
-                )
-
-                // Botón de acción según el estado
-                when (trip.status) {
-                    TripStatus.PENDING -> {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = onStartTrip,
-                            modifier = Modifier.fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF42A5F5)
-                            ),
-                            enabled = !isUpdatingStatus,
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            if (isUpdatingStatus) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.size(20.dp),
-                                    strokeWidth = 2.dp,
-                                    color = Color.White
+                // Botón de acción SOLO para USER
+                if (userRole == "ADMIN") {
+                    when (trip.status) {
+                        TripStatus.PENDING -> {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(
+                                onClick = onStartTrip,
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF42A5F5)
+                                ),
+                                enabled = !isUpdatingStatus,
+                                shape = RoundedCornerShape(8.dp)
+                            ) {
+                                if (isUpdatingStatus) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(20.dp),
+                                        strokeWidth = 2.dp,
+                                        color = Color.White
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                } else {
+                                    Icon(
+                                        imageVector = Icons.Default.PlayArrow,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                }
+                                Text(
+                                    text = if (isUpdatingStatus) "Iniciando..." else "Iniciar Viaje",
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
-                            } else {
-                                Icon(
-                                    imageVector = Icons.Default.PlayArrow,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
                             }
-                            Text(
-                                text = if (isUpdatingStatus) "Iniciando..." else "Iniciar Viaje",
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold
-                            )
                         }
-                    }
-                    TripStatus.IN_PROGRESS -> {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = onCompleteTrip,
-                            modifier = Modifier.fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF66BB6A)
-                            ),
-                            enabled = !isUpdatingStatus,
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            if (isUpdatingStatus) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.size(20.dp),
-                                    strokeWidth = 2.dp,
-                                    color = Color.White
+                        TripStatus.IN_PROGRESS -> {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(
+                                onClick = onCompleteTrip,
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF66BB6A)
+                                ),
+                                enabled = !isUpdatingStatus,
+                                shape = RoundedCornerShape(8.dp)
+                            ) {
+                                if (isUpdatingStatus) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(20.dp),
+                                        strokeWidth = 2.dp,
+                                        color = Color.White
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                } else {
+                                    Icon(
+                                        imageVector = Icons.Default.CheckCircle,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                }
+                                Text(
+                                    text = if (isUpdatingStatus) "Completando..." else "Completar Viaje",
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
-                            } else {
-                                Icon(
-                                    imageVector = Icons.Default.CheckCircle,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
                             }
-                            Text(
-                                text = if (isUpdatingStatus) "Completando..." else "Completar Viaje",
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold
-                            )
                         }
+                        TripStatus.COMPLETED -> {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Surface(
+                                modifier = Modifier.fillMaxWidth(),
+                                color = Color(0xFF66BB6A).copy(alpha = 0.1f),
+                                shape = RoundedCornerShape(8.dp)
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(12.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.CheckCircle,
+                                        contentDescription = null,
+                                        tint = Color(0xFF66BB6A),
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = "Viaje Completado",
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Medium,
+                                        color = Color(0xFF66BB6A)
+                                    )
+                                }
+                            }
+                        }
+                        null -> { /* No mostrar nada */ }
                     }
-                    TripStatus.COMPLETED -> {
+                } else {
+                    // Para USER solo mostrar el estado si está completado
+                    if (trip.status == TripStatus.COMPLETED) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
@@ -392,7 +429,6 @@ fun TripDetailsContent(
                             }
                         }
                     }
-                    null -> { /* No mostrar nada */ }
                 }
             }
         }

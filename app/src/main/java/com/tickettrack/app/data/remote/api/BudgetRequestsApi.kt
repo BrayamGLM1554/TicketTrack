@@ -27,6 +27,13 @@ interface BudgetRequestsApi {
         @Path("id") id: String
     ): BudgetRequestDetailResponse
 
+    // NUEVO: Crear solicitud de aumento de presupuesto
+    @POST("api/budget-requests")
+    suspend fun createBudgetRequest(
+        @Header("Authorization") token: String,
+        @Body request: CreateBudgetRequest
+    ): BudgetRequestDetailResponse
+
     @PUT("api/budget-requests/{id}/approve")
     suspend fun approveBudgetRequest(
         @Header("Authorization") token: String,

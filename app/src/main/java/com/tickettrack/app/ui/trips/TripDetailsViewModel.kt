@@ -21,7 +21,8 @@ data class TripDetailsUiState(
     val expensesError: String? = null,
     val isUpdatingStatus: Boolean = false,
     val statusUpdateError: String? = null,
-    val statusUpdateSuccess: Boolean = false
+    val statusUpdateSuccess: Boolean = false,
+    val userRole: String = ""
 )
 
 class TripDetailsViewModel(

@@ -30,8 +30,8 @@ class TransportistaExpensesViewModel(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 
-            // Primero obtener el viaje activo
-            val tripsResult = tripsRepository.getTrips(token)
+            // Primero obtener el viaje activo del transportista
+            val tripsResult = tripsRepository.getAssignedTrips(token)
 
             tripsResult.fold(
                 onSuccess = { trips ->
@@ -40,7 +40,8 @@ class TransportistaExpensesViewModel(
                     }
 
                     if (activeTrip != null) {
-                        loadExpenses(token, activeTrip.id)
+                        // Cargar gastos usando el endpoint de mis gastos
+                        loadMyExpenses(token, activeTrip.id)
                     } else {
                         _uiState.value = _uiState.value.copy(
                             isLoading = false,
@@ -59,25 +60,25 @@ class TransportistaExpensesViewModel(
         }
     }
 
-    private suspend fun loadExpenses(token: String, tripId: String) {
-        val expensesResult = expensesRepository.getExpenses(
-            token = token,
-            tripId = tripId,
-            limit = 100
-        )
+    private suspend fun loadMyExpenses(token: String, currentTripId: String) {
+        // Usar el endpoint específico para el transportista
+        val expensesResult = expensesRepository.getMyExpenses(token)
 
         expensesResult.fold(
-            onSuccess = { response ->
+            onSuccess = { expenses ->
+                // Filtrar solo los gastos del viaje actual
+                val currentTripExpenses = expenses.filter { it.tripId == currentTripId }
+
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    currentTripId = tripId,
-                    expenses = response.expenses
+                    currentTripId = currentTripId,
+                    expenses = currentTripExpenses.sortedByDescending { it.createdAt }
                 )
             },
             onFailure = { exception ->
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    currentTripId = tripId,
+                    currentTripId = currentTripId,
                     expenses = emptyList(),
                     error = exception.message ?: "Error al cargar gastos"
                 )

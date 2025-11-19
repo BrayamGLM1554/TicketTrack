@@ -29,6 +29,7 @@ import com.tickettrack.app.ui.theme.Primary
 import com.tickettrack.app.ui.theme.TextSecondary
 import org.koin.androidx.compose.koinViewModel
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpensesScreen(
@@ -39,13 +40,28 @@ fun ExpensesScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.loadData(token)
+        viewModel.loadData(token, forceRefresh = false)
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Gastos y Presupuestos") },
+                title = {
+                    Column {
+                        Text("Gastos y Presupuestos")
+                        // Mostrar si está usando caché
+                        if (uiState.lastRefreshTime > 0 && !uiState.isLoading) {
+                            val secondsAgo = (System.currentTimeMillis() - uiState.lastRefreshTime) / 1000
+                            if (secondsAgo < 60) {
+                                Text(
+                                    text = "Actualizado hace ${secondsAgo}s",
+                                    fontSize = 11.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                        }
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.White,
                     titleContentColor = Color(0xFF1A1A1A)
@@ -55,7 +71,7 @@ fun ExpensesScreen(
                         Icon(
                             imageVector = Icons.Default.Refresh,
                             contentDescription = "Actualizar",
-                            tint = Color.White
+                            tint = if (uiState.isLoading) Color.Gray else Color(0xFF1A1A1A)
                         )
                     }
                 }
@@ -68,77 +84,91 @@ fun ExpensesScreen(
                 .padding(paddingValues)
                 .background(Color(0xFFF5F5F5))
         ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                // Total de gastos
-                item {
-                    TotalExpensesCard(totalExpenses = uiState.totalExpenses)
+            if (uiState.isLoading && uiState.expenses.isEmpty()) {
+                // Mostrar loading solo si no hay datos previos
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        CircularProgressIndicator(color = Primary)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text("Cargando gastos...", color = Color.Gray)
+                    }
                 }
-
-                // Gráfica de pastel
-                if (uiState.expensesByCategory.isNotEmpty()) {
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    // Total de gastos
                     item {
-                        ExpensesPieChart(expensesByCategory = uiState.expensesByCategory)
+                        TotalExpensesCard(totalExpenses = uiState.totalExpenses)
                     }
-                }
 
-                // Solicitudes de presupuesto pendientes
-                item {
-                    Text(
-                        text = "Solicitudes de Aumento",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1A1A1A),
-                        modifier = Modifier.padding(top = 8.dp)
-                    )
-                }
-
-                when {
-                    uiState.isLoadingBudgetRequests -> {
+                    // Gráfica de pastel
+                    if (uiState.expensesByCategory.isNotEmpty()) {
                         item {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(32.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator(color = Primary)
+                            ExpensesPieChart(expensesByCategory = uiState.expensesByCategory)
+                        }
+                    }
+
+                    // Solicitudes de presupuesto pendientes
+                    item {
+                        Text(
+                            text = "Solicitudes de Aumento",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF1A1A1A),
+                            modifier = Modifier.padding(top = 8.dp)
+                        )
+                    }
+
+                    when {
+                        uiState.isLoadingBudgetRequests -> {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(32.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator(color = Primary)
+                                }
                             }
                         }
-                    }
 
-                    uiState.budgetRequestsError != null -> {
-                        item {
-                            Card(
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = Color(0xFFFFEBEE)
-                                )
-                            ) {
-                                Text(
-                                    text = uiState.budgetRequestsError ?: "Error",
-                                    color = Color(0xFFC62828),
-                                    modifier = Modifier.padding(16.dp)
-                                )
+                        uiState.budgetRequestsError != null -> {
+                            item {
+                                Card(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = Color(0xFFFFEBEE)
+                                    )
+                                ) {
+                                    Text(
+                                        text = uiState.budgetRequestsError ?: "Error",
+                                        color = Color(0xFFC62828),
+                                        modifier = Modifier.padding(16.dp)
+                                    )
+                                }
                             }
                         }
-                    }
 
-                    uiState.pendingBudgetRequests.isEmpty() -> {
-                        item {
-                            EmptyBudgetRequestsCard()
+                        uiState.pendingBudgetRequests.isEmpty() -> {
+                            item {
+                                EmptyBudgetRequestsCard()
+                            }
                         }
-                    }
 
-                    else -> {
-                        items(uiState.pendingBudgetRequests) { request ->
-                            BudgetRequestCard(
-                                request = request,
-                                onClick = { onNavigateToBudgetRequestDetails(request.id) }
-                            )
+                        else -> {
+                            items(uiState.pendingBudgetRequests) { request ->
+                                BudgetRequestCard(
+                                    request = request,
+                                    onClick = { onNavigateToBudgetRequestDetails(request.id) }
+                                )
+                            }
                         }
                     }
                 }

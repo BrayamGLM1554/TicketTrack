@@ -7,5 +7,5 @@ data class UserProfile(
     val role: String,
     val companyEmail: String,
     val companyName: String, // AGREGAR ESTO
-    val profileImageUrl: String?
+    val profileImageUrl: String?,
 )

@@ -60,3 +60,11 @@ data class BudgetActionResponse(
     @SerializedName("data") val data: BudgetRequest
 )
 
+// Agrega este modelo después de BudgetRequestDetailResponse en tu archivo de modelos:
+
+data class CreateBudgetRequest(
+    @SerializedName("tripId") val tripId: String,
+    @SerializedName("driverId") val driverId: String,
+    @SerializedName("requestedBudget") val requestedBudget: Double,
+    @SerializedName("reason") val reason: String
+)

@@ -14,6 +14,12 @@ interface IBudgetRequestsRepository {
         id: String
     ): Result<BudgetRequest>
 
+    // NUEVO: Crear solicitud de presupuesto
+    suspend fun createBudgetRequest(
+        token: String,
+        request: CreateBudgetRequest
+    ): Result<BudgetRequest>
+
     suspend fun approveBudgetRequest(
         token: String,
         id: String,
