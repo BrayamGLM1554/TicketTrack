@@ -13,7 +13,7 @@ data class DashboardUiState(
     val isLoading: Boolean = false,
     val dashboard: DashboardResponse? = null,
     val error: String? = null,
-    val selectedPeriod: String = "month"
+    val selectedPeriod: String = "today"
 )
 
 class DashboardViewModel(
@@ -23,7 +23,7 @@ class DashboardViewModel(
     private val _uiState = MutableStateFlow(DashboardUiState())
     val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
 
-    fun loadDashboard(token: String, period: String = "month") {
+    fun loadDashboard(token: String, period: String = "today") {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
                 isLoading = true,

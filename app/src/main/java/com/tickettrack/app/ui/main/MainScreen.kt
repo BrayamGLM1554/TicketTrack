@@ -60,18 +60,18 @@ fun MainScreen(
 
     // Iniciar listeners de notificaciones
     LaunchedEffect(userProfile.token) {
-        Log.d("MainScreen", "🚀 Iniciando listeners para rol: ${userProfile.role}")
-        Log.d("MainScreen", "🔑 UID extraído: ${com.tickettrack.app.utils.JwtDecoder.extractUid(userProfile.token)}")
-        notificationViewModel.startListening(userProfile.token)
-    }
-
-    LaunchedEffect(userProfile.token) {
         val userId = JwtDecoder.extractUid(userProfile.token)
 
+        Log.d("MainScreen", "🚀 Iniciando setup para usuario: $userId")
+        Log.d("MainScreen", "👤 Rol: ${userProfile.role}")
+
         if (userId != null) {
-            // Obtener token FCM
+            // 1. Obtener y guardar FCM token
             FirebaseMessaging.getInstance().token.addOnSuccessListener { fcmToken ->
                 Log.d("MainScreen", "🔑 FCM Token obtenido: $fcmToken")
+
+                // Guardar en ViewModel
+                notificationViewModel.saveFcmToken(userId, fcmToken)
 
                 // Guardar en Firestore
                 FirebaseFirestore.getInstance()
@@ -82,13 +82,17 @@ fun MainScreen(
                         Log.d("MainScreen", "✅ FCM Token guardado en Firestore")
                     }
                     .addOnFailureListener { e ->
-                        Log.e("MainScreen", "❌ Error al guardar token: ${e.message}")
+                        Log.e("MainScreen", "❌ Error al guardar FCM Token: ${e.message}")
                     }
+            }.addOnFailureListener { e ->
+                Log.e("MainScreen", "❌ Error al obtener FCM Token: ${e.message}")
             }
-        }
 
-        // Iniciar listeners de notificaciones
-        notificationViewModel.startListening(userProfile.token)
+            // 2. Iniciar listeners de notificaciones in-app
+            notificationViewModel.startListening(userProfile.token)
+        } else {
+            Log.e("MainScreen", "❌ No se pudo extraer UID del token")
+        }
     }
 
     // Determinar items del bottom nav según el rol
@@ -96,19 +100,6 @@ fun MainScreen(
         BottomNavItem.adminItems
     } else {
         BottomNavItem.userItems
-    }
-
-    LaunchedEffect(userProfile.token) {
-        // Obtener token FCM
-        FirebaseMessaging.getInstance().token.addOnSuccessListener { fcmToken ->
-            val userId = JwtDecoder.extractUid(userProfile.token)
-            if (userId != null) {
-                notificationViewModel.saveFcmToken(userId, fcmToken)
-            }
-        }
-
-        // Iniciar listeners de notificaciones in-app
-        notificationViewModel.startListening(userProfile.token)
     }
 
     Box(modifier = Modifier.fillMaxSize()) {

@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,7 +50,9 @@ fun AppNavigation() {
     val sessionManager: SessionManager = koinInject()
     val scope = rememberCoroutineScope()
 
-    var currentUserProfile by remember { mutableStateOf<UserProfile?>(null) }
+    var currentUserProfile by rememberSaveable(
+        stateSaver = UserProfile.Saver
+    ) { mutableStateOf<UserProfile?>(null) }
     var isCheckingSession by remember { mutableStateOf(true) }
     var startDestination by remember { mutableStateOf(Screen.Login.route) }
 
@@ -153,17 +156,40 @@ fun AppNavigation() {
 
         // Main Screen
         composable(Screen.Main.route) {
-            currentUserProfile?.let { userProfile ->
+            val userProfile = currentUserProfile
+
+            if (userProfile == null) {
+                // Si perdimos el perfil, intentar recuperar de sesión
+                LaunchedEffect(Unit) {
+                    val savedSession = sessionManager.getSession()
+                    if (savedSession != null) {
+                        currentUserProfile = savedSession
+                    } else {
+                        // No hay sesión guardada, forzar logout
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    }
+                }
+
+                // Mostrar loading mientras recupera
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = Primary)
+                }
+            } else {
                 MainScreen(
                     userProfile = userProfile,
                     onNavigateToProfile = {
                         navController.navigate(Screen.Profile.route)
                     },
-                    onNavigateToNotifications = { // NUEVO
+                    onNavigateToNotifications = {
                         navController.navigate(Screen.Notifications.route)
                     },
                     notificationViewModel = notificationViewModel,
-                            onNavigateToCreateDriver = {
+                    onNavigateToCreateDriver = {
                         navController.navigate(Screen.CreateDriver.route)
                     },
                     onNavigateToDriverDetails = { driverUid ->
@@ -204,16 +230,23 @@ fun AppNavigation() {
 
         // Profile
         composable(Screen.Profile.route) {
-            currentUserProfile?.let { userProfile ->
+            val userProfile = currentUserProfile
+
+            if (userProfile == null) {
+                LaunchedEffect(Unit) {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            } else {
                 ProfileScreen(
                     userProfile = userProfile,
                     onBackPressed = {
                         navController.popBackStack()
                     },
-                    onNavigateToNotifications = { // NUEVO
+                    onNavigateToNotifications = {
                         navController.navigate(Screen.Notifications.route)
                     },
-
                     onLogout = {
                         handleLogout(
                             navController = navController,
@@ -231,21 +264,26 @@ fun AppNavigation() {
 
         // NUEVO: Notificaciones
         composable(Screen.Notifications.route) {
-            currentUserProfile?.let { userProfile ->
-                NotificationsScreen(
-                    token = userProfile.token,
-                    onBackPressed = {
-                        navController.popBackStack()
-                    },
-                    onNavigateToTripDetails = { tripId ->
-                        navController.navigate(Screen.TripDetails.createRoute(tripId))
-                    },
-                    onNavigateToBudgetRequestDetails = { requestId ->
-                        navController.navigate(Screen.BudgetRequestDetails.createRoute(requestId))
-                    },
-                    viewModel = notificationViewModel
-                )
+            val userProfile = currentUserProfile ?: run {
+                LaunchedEffect(Unit) {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+                return@composable
             }
+
+            NotificationsScreen(
+                token = userProfile.token,
+                onBackPressed = { navController.popBackStack() },
+                onNavigateToTripDetails = { tripId ->
+                    navController.navigate(Screen.TripDetails.createRoute(tripId))
+                },
+                onNavigateToBudgetRequestDetails = { requestId ->
+                    navController.navigate(Screen.BudgetRequestDetails.createRoute(requestId))
+                },
+                viewModel = notificationViewModel
+            )
         }
 
         // Create Driver
