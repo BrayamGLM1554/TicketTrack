@@ -114,8 +114,19 @@ fun AppNavigation() {
         // Registro normal
         composable(Screen.Register.route) {
             RegisterScreen(
-                onRegisterSuccess = {
-                    navController.popBackStack()
+                onRegisterSuccess = { userProfile ->
+                    // Guardar el perfil del usuario
+                    currentUserProfile = userProfile
+
+                    // Guardar sesión persistente
+                    scope.launch {
+                        sessionManager.saveSession(userProfile)
+                    }
+
+                    // Navegar a Main y limpiar el stack
+                    navController.navigate(Screen.Main.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
                 },
                 onBackPressed = {
                     navController.popBackStack()

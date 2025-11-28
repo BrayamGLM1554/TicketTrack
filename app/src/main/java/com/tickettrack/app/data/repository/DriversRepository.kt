@@ -1,5 +1,6 @@
 package com.tickettrack.app.data.repository
 
+import com.tickettrack.app.data.remote.api.AuthApi
 import com.tickettrack.app.data.remote.api.DriversApi
 import com.tickettrack.app.domain.model.CreateDriverRequest
 import com.tickettrack.app.domain.model.CreateDriverResponse
@@ -12,7 +13,8 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class DriversRepository(
-    private val driversApi: DriversApi
+    private val driversApi: DriversApi,
+    private val authApi: AuthApi // Agregamos AuthApi para eliminación
 ) : IDriversRepository {
 
     override suspend fun getDrivers(
@@ -88,4 +90,33 @@ class DriversRepository(
         }
     }
 
+    /**
+     * Elimina un transportista usando AuthApi
+     * DELETE https://tickettrakedauth.runasp.net/auth/api/users/{userId}
+     */
+    override suspend fun deleteDriver(
+        token: String,
+        uid: String
+    ): Result<Unit> {
+        return try {
+            val response = authApi.deleteUser(
+                userId = uid,
+                token = "Bearer $token"
+            )
+
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                val errorMsg = when (response.code()) {
+                    401 -> "No autorizado. Inicia sesión nuevamente."
+                    403 -> "No tienes permisos para eliminar este transportista."
+                    404 -> "Transportista no encontrado."
+                    else -> "Error al eliminar: ${response.message()}"
+                }
+                Result.failure(Exception(errorMsg))
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception("Error de conexión: ${e.message}"))
+        }
+    }
 }

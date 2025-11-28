@@ -22,13 +22,18 @@ data class DriversUiState(
     val createSuccess: Boolean = false,
     val createError: String? = null,
 
-    // Nuevos estados para detalles y edición
+    // Estados para detalles y edición
     val selectedDriver: Driver? = null,
     val isLoadingDetails: Boolean = false,
     val detailsError: String? = null,
     val isUpdating: Boolean = false,
     val updateSuccess: Boolean = false,
-    val updateError: String? = null
+    val updateError: String? = null,
+
+    // Nuevos estados para eliminación
+    val isDeleting: Boolean = false,
+    val deleteSuccess: Boolean = false,
+    val deleteError: String? = null
 )
 
 class DriversViewModel(
@@ -178,4 +183,40 @@ class DriversViewModel(
         )
     }
 
+    /**
+     * Elimina un transportista por su UID
+     */
+    fun deleteDriver(token: String, uid: String) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(
+                isDeleting = true,
+                deleteError = null,
+                deleteSuccess = false
+            )
+
+            val result = repository.deleteDriver(token, uid)
+
+            result.fold(
+                onSuccess = {
+                    _uiState.value = _uiState.value.copy(
+                        isDeleting = false,
+                        deleteSuccess = true
+                    )
+                },
+                onFailure = { exception ->
+                    _uiState.value = _uiState.value.copy(
+                        isDeleting = false,
+                        deleteError = exception.message ?: "Error al eliminar transportista"
+                    )
+                }
+            )
+        }
+    }
+
+    fun clearDeleteState() {
+        _uiState.value = _uiState.value.copy(
+            deleteSuccess = false,
+            deleteError = null
+        )
+    }
 }

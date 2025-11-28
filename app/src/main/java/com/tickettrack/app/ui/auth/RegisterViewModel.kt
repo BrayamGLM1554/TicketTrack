@@ -3,6 +3,7 @@ package com.tickettrack.app.ui.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tickettrack.app.domain.model.AuthResult
+import com.tickettrack.app.domain.model.UserProfile
 import com.tickettrack.app.domain.repository.IAuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -79,10 +80,14 @@ class RegisterViewModel(
             _registerState.value = RegisterState.Error("Correo personal inválido")
             return
         }
-        if (password.length < 8) {
-            _registerState.value = RegisterState.Error("La contraseña debe tener al menos 8 caracteres")
+
+        // Validación mejorada de contraseña
+        val passwordValidation = validatePassword(password)
+        if (!passwordValidation.isValid) {
+            _registerState.value = RegisterState.Error(passwordValidation.errorMessage)
             return
         }
+
         if (password != confirmPassword) {
             _registerState.value = RegisterState.Error("Las contraseñas no coinciden")
             return
@@ -91,6 +96,7 @@ class RegisterViewModel(
         _registerState.value = RegisterState.Loading
 
         viewModelScope.launch {
+            // Primero registrar
             when (val result = authRepository.register(
                 companyName = companyName,
                 rfc = rfc,
@@ -103,13 +109,54 @@ class RegisterViewModel(
                 password = password
             )) {
                 is AuthResult.Success -> {
-                    _registerState.value = RegisterState.Success
+                    // Registro exitoso, ahora iniciar sesión automáticamente
+                    loginAfterRegister(companyEmail, password)
                 }
                 is AuthResult.Error -> {
                     _registerState.value = RegisterState.Error(result.message)
                 }
             }
         }
+    }
+
+    private suspend fun loginAfterRegister(email: String, password: String) {
+        when (val loginResult = authRepository.login(email, password)) {
+            is AuthResult.Success -> {
+                val userProfile = UserProfile(
+                    name = loginResult.name,
+                    email = loginResult.email,
+                    token = loginResult.token,
+                    role = loginResult.role,
+                    companyEmail = loginResult.companyEmail,
+                    companyName = loginResult.companyName,
+                    profileImageUrl = loginResult.profileImageUrl
+                )
+                _registerState.value = RegisterState.Success(userProfile)
+            }
+            is AuthResult.Error -> {
+                // Si falla el login automático, mostrar mensaje pero considerar el registro exitoso
+                _registerState.value = RegisterState.SuccessButLoginFailed
+            }
+        }
+    }
+
+    private fun validatePassword(password: String): PasswordValidation {
+        if (password.length < 8) {
+            return PasswordValidation(false, "La contraseña debe tener al menos 8 caracteres")
+        }
+        if (!password.any { it.isUpperCase() }) {
+            return PasswordValidation(false, "Debe contener al menos una mayúscula")
+        }
+        if (!password.any { it.isLowerCase() }) {
+            return PasswordValidation(false, "Debe contener al menos una minúscula")
+        }
+        if (!password.any { it.isDigit() }) {
+            return PasswordValidation(false, "Debe contener al menos un número")
+        }
+        if (!password.any { !it.isLetterOrDigit() }) {
+            return PasswordValidation(false, "Debe contener al menos un caracter especial (!@#\$%^&*)")
+        }
+        return PasswordValidation(true, "")
     }
 
     private fun isValidEmail(email: String): Boolean {
@@ -121,9 +168,15 @@ class RegisterViewModel(
     }
 }
 
+data class PasswordValidation(
+    val isValid: Boolean,
+    val errorMessage: String
+)
+
 sealed class RegisterState {
     object Idle : RegisterState()
     object Loading : RegisterState()
-    object Success : RegisterState()
+    data class Success(val userProfile: UserProfile) : RegisterState()
+    object SuccessButLoginFailed : RegisterState()
     data class Error(val message: String) : RegisterState()
 }

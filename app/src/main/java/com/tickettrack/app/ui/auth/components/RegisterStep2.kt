@@ -6,10 +6,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +32,13 @@ fun RegisterStep2(viewModel: RegisterViewModel) {
     var confirmPassword by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
+
+    // Validaciones de contraseña en tiempo real
+    val hasMinLength = password.length >= 8
+    val hasUpperCase = password.any { it.isUpperCase() }
+    val hasLowerCase = password.any { it.isLowerCase() }
+    val hasDigit = password.any { it.isDigit() }
+    val hasSpecialChar = password.any { !it.isLetterOrDigit() }
 
     Column(
         modifier = Modifier
@@ -140,7 +147,6 @@ fun RegisterStep2(viewModel: RegisterViewModel) {
             value = password,
             onValueChange = { password = it },
             label = { Text("Crear contraseña") },
-            supportingText = { Text("Mínimo 8 caracteres") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -159,6 +165,48 @@ fun RegisterStep2(viewModel: RegisterViewModel) {
                 cursorColor = Primary
             )
         )
+
+        // Requisitos de contraseña
+        if (password.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFF5F5F5)
+                )
+            ) {
+                Column(modifier = Modifier.padding(12.dp)) {
+                    Text(
+                        text = "La contraseña debe contener:",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color(0xFF666666)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    PasswordRequirement(
+                        text = "Mínimo 8 caracteres",
+                        isMet = hasMinLength
+                    )
+                    PasswordRequirement(
+                        text = "Una letra mayúscula (A-Z)",
+                        isMet = hasUpperCase
+                    )
+                    PasswordRequirement(
+                        text = "Una letra minúscula (a-z)",
+                        isMet = hasLowerCase
+                    )
+                    PasswordRequirement(
+                        text = "Un número (0-9)",
+                        isMet = hasDigit
+                    )
+                    PasswordRequirement(
+                        text = "Un caracter especial (!@#$%^&*)",
+                        isMet = hasSpecialChar
+                    )
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -228,5 +276,29 @@ fun RegisterStep2(viewModel: RegisterViewModel) {
                 Text("Registrar", fontSize = 16.sp)
             }
         }
+    }
+}
+
+@Composable
+fun PasswordRequirement(
+    text: String,
+    isMet: Boolean
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(vertical = 2.dp)
+    ) {
+        Icon(
+            imageVector = if (isMet) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
+            contentDescription = null,
+            tint = if (isMet) Color(0xFF4CAF50) else Color(0xFFBDBDBD),
+            modifier = Modifier.size(16.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = text,
+            fontSize = 12.sp,
+            color = if (isMet) Color(0xFF4CAF50) else Color(0xFF666666)
+        )
     }
 }

@@ -119,12 +119,12 @@ val appModule = module {
 
     // ============ API INTERFACES ============
 
-    // AuthApi
+    // AuthApi - Para autenticación Y eliminación de usuarios
     single {
         get<Retrofit>(named("auth")).create(AuthApi::class.java)
     }
 
-    // DriversApi
+    // DriversApi - Para gestión de transportistas
     single {
         get<Retrofit>(named("drivers")).create(DriversApi::class.java)
     }
@@ -155,8 +155,12 @@ val appModule = module {
         AuthRepository(get())
     }
 
+    // DriversRepository ahora recibe AMBOS: DriversApi y AuthApi
     single<IDriversRepository> {
-        DriversRepository(get())
+        DriversRepository(
+            driversApi = get(), // Para CRUD normal
+            authApi = get()     // Para eliminación de usuarios
+        )
     }
 
     single<ITripsRepository> {

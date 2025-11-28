@@ -1,13 +1,9 @@
 package com.tickettrack.app.domain.repository
 
-import com.tickettrack.app.domain.model.CreateDriverRequest
-import com.tickettrack.app.domain.model.CreateDriverResponse
-import com.tickettrack.app.domain.model.DriverDetailsResponse
-import com.tickettrack.app.domain.model.DriversResponse
-import com.tickettrack.app.domain.model.UpdateDriverRequest
-import com.tickettrack.app.domain.model.UpdateDriverResponse
+import com.tickettrack.app.domain.model.*
 
 interface IDriversRepository {
+
     suspend fun getDrivers(
         token: String,
         page: Int,
@@ -30,4 +26,14 @@ interface IDriversRepository {
         uid: String,
         request: UpdateDriverRequest
     ): Result<UpdateDriverResponse>
+
+    /**
+     * Elimina un transportista por su UID usando AuthApi
+     * @param token Token de autorización Bearer
+     * @param uid UUID del transportista a eliminar
+     */
+    suspend fun deleteDriver(
+        token: String,
+        uid: String
+    ): Result<Unit>
 }

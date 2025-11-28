@@ -6,7 +6,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -37,7 +36,7 @@ import org.koin.androidx.compose.koinViewModel
 fun LoginScreen(
     onLoginSuccess: (UserProfile) -> Unit,
     onNavigateToRegister: () -> Unit,
-    onNavigateToRegisterWithGoogle: (String, String) -> Unit, // name, email
+    onNavigateToRegisterWithGoogle: (String, String) -> Unit,
     loginViewModel: LoginViewModel = koinViewModel(),
     googleViewModel: GoogleAuthViewModel = koinViewModel()
 ) {
@@ -281,17 +280,22 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Register Link
+            // Register Link - ARREGLADO
             Row(
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "¿No tienes una cuenta? ",
+                    text = "¿No tienes una cuenta?",
                     color = TextSecondary,
                     fontSize = 14.sp
                 )
-                TextButton(onClick = onNavigateToRegister) {
+                Spacer(modifier = Modifier.width(4.dp))
+                TextButton(
+                    onClick = onNavigateToRegister,
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
+                ) {
                     Text(
                         text = "Crear cuenta empresarial",
                         color = Primary,
