@@ -289,14 +289,6 @@ fun DriverDetailsContent(
                     label = "Fecha de registro",
                     value = formatDate(driver.createdAt)
                 )
-
-                Divider(modifier = Modifier.padding(vertical = 12.dp))
-
-                DetailInfoItem(
-                    icon = Icons.Default.PersonAdd,
-                    label = "Creado por",
-                    value = driver.createdBy
-                )
             }
         }
 

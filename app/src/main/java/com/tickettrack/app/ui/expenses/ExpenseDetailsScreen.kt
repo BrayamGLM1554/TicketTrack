@@ -222,48 +222,7 @@ fun ExpenseDetailsContent(expense: Expense) {
             }
         }
 
-        // Card de IDs (opcional, para debugging o referencia)
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = "Referencias",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFF1A1A1A)
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                InfoRow(
-                    icon = Icons.Default.Tag,
-                    label = "ID del Gasto",
-                    value = expense.id,
-                    iconTint = TextSecondary
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-                Divider()
-                Spacer(modifier = Modifier.height(12.dp))
-
-                InfoRow(
-                    icon = Icons.Default.DirectionsCar,
-                    label = "ID del Viaje",
-                    value = expense.tripId,
-                    iconTint = TextSecondary
-                )
-            }
-        }
-
-        // Card de imagen del ticket
+                // Card de imagen del ticket
         if (!expense.ticketImageUrl.isNullOrEmpty()) {
             Card(
                 modifier = Modifier.fillMaxWidth(),

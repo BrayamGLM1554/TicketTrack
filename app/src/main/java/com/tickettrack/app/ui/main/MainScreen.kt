@@ -283,8 +283,8 @@ fun MainScreen(
                                 onNavigateToBudgetRequestDetails(notif.relatedId)
                             }
                             NotificationType.GENERAL -> {
-                            onNavigateToNotifications()
-                        }
+                                onNavigateToNotifications()
+                            }
                         }
                     }
                 }

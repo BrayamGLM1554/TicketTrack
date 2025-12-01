@@ -93,6 +93,7 @@ class NotificationRepository(
 
     /**
      * Listener de nuevos viajes asignados (para USER) - SOLO PENDING
+     * ❌ Eliminada la llamada a saveNotification para evitar duplicados.
      */
     fun observeNewTripsForUser(token: String): Flow<AppNotification?> = callbackFlow {
         val uid = JwtDecoder.extractUid(token)
@@ -147,8 +148,7 @@ class NotificationRepository(
                             )
                         )
 
-                        // Guardar en Firestore
-                        saveNotification(notification)
+                        // ❌ Eliminada la llamada a saveNotification
                         trySend(notification)
                     }
                 }
@@ -221,6 +221,7 @@ class NotificationRepository(
                             )
                         )
 
+                        // La notificación para ADMIN SÍ se guarda aquí, ya que no hay un servicio Push externo para ADMIN.
                         saveNotification(notification)
                         trySend(notification)
                     }
@@ -234,6 +235,7 @@ class NotificationRepository(
     }
     /**
      * Listener de cambios en peticiones de presupuesto (para USER)
+     * ❌ Eliminada la llamada a saveNotification para evitar duplicados.
      */
     fun observeBudgetRequestStatusForUser(token: String): Flow<AppNotification?> = callbackFlow {
         val uid = JwtDecoder.extractUid(token)
@@ -303,7 +305,7 @@ class NotificationRepository(
                                 ).plus(rejectionReason?.let { mapOf("reason" to it) } ?: emptyMap())
                             )
 
-                            saveNotification(notification)
+                            // ❌ Eliminada la llamada a saveNotification
                             trySend(notification)
                         }
                     }
