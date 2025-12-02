@@ -14,6 +14,7 @@ import com.tickettrack.app.utils.JwtDecoder
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -35,7 +36,7 @@ class NotificationRepository(
         .build()
 
     // ✅ URL de tu endpoint de Vercel
-    private val vercelEndpoint = "https://notification-service-neon.vercel.app/send-push"
+    private val vercelEndpoint = "https://tickettrack-push-service.onrender.com/send-push"
 
     companion object {
         private const val TAG = "NotificationRepo"
@@ -148,7 +149,17 @@ class NotificationRepository(
                             )
                         )
 
-                        // ❌ Eliminada la llamada a saveNotification
+                        // 👇 AGREGAR ESTO - Llamar a la función que envía push
+                        kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
+                            createNotificationAndSendPush(
+                                userId = uid,
+                                title = "Nuevo viaje asignado",
+                                message = "Se te ha asignado el viaje: $tripName",
+                                type = NotificationType.TRIP_ASSIGNED,
+                                relatedId = tripId
+                            )
+                        }
+
                         trySend(notification)
                     }
                 }
@@ -160,7 +171,6 @@ class NotificationRepository(
         }
     }
 
-    // En NotificationRepository
     suspend fun getUserProfile(): UserProfile? {
         return sessionManager.getSession()
     }
@@ -276,26 +286,23 @@ class NotificationRepository(
                             notifiedStatusChanges.add(notificationKey)
 
                             val tripName = data["tripName"] as? String ?: "Sin nombre"
-                            val increaseAmount =
-                                (data["increaseAmount"] as? Number)?.toDouble() ?: 0.0
+                            val increaseAmount = (data["increaseAmount"] as? Number)?.toDouble() ?: 0.0
                             val rejectionReason = data["rejectionReason"] as? String
 
                             Log.d(TAG, "✅ Petición $requestId cambió a: $status")
 
+                            val title = if (status == "approved") "Petición aprobada" else "Petición rechazada"
+                            val message = if (status == "approved") {
+                                "Tu petición de $${String.format("%.2f", increaseAmount)} ha sido aprobada"
+                            } else {
+                                "Tu petición fue rechazada${rejectionReason?.let { ": $it" } ?: ""}"
+                            }
+
                             val notification = AppNotification(
                                 userId = uid,
                                 type = if (status == "approved") NotificationType.BUDGET_APPROVED else NotificationType.BUDGET_REJECTED,
-                                title = if (status == "approved") "Petición aprobada" else "Petición rechazada",
-                                message = if (status == "approved") {
-                                    "Tu petición de $${
-                                        String.format(
-                                            "%.2f",
-                                            increaseAmount
-                                        )
-                                    } ha sido aprobada"
-                                } else {
-                                    "Tu petición fue rechazada${rejectionReason?.let { ": $it" } ?: ""}"
-                                },
+                                title = title,
+                                message = message,
                                 relatedId = requestId,
                                 createdAt = Timestamp.now(),
                                 metadata = mapOf(
@@ -305,7 +312,17 @@ class NotificationRepository(
                                 ).plus(rejectionReason?.let { mapOf("reason" to it) } ?: emptyMap())
                             )
 
-                            // ❌ Eliminada la llamada a saveNotification
+                            // 👇 AGREGAR ESTO
+                            kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
+                                createNotificationAndSendPush(
+                                    userId = uid,
+                                    title = title,
+                                    message = message,
+                                    type = if (status == "approved") NotificationType.BUDGET_APPROVED else NotificationType.BUDGET_REJECTED,
+                                    relatedId = requestId
+                                )
+                            }
+
                             trySend(notification)
                         }
                     }
